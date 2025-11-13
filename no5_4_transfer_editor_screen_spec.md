@@ -1,123 +1,287 @@
-# 轉帳編輯器畫面 (TransferEditorScreen)
+# 交易編輯器規格: TransactionEditorScreen
 
-_(本文件定義新增/編輯「轉帳」畫面的 UI、流程與邏輯)_
+## 畫面目標
 
-## 畫面目標 (Screen Objective)
+- **提供:** 新增, 編輯, 刪除 收入 或 支出 交易的介面
+- **作為:** 建立 定期收支 排程的入口
+- **處理:** 編輯由定期排程所產生交易的特殊邏輯
 
-- 提供一個統一的介面，讓使用者可以**新增**、**編輯**或**刪除**一筆「轉帳」記錄。
-- 支援**同幣別**轉帳與**跨幣別**轉帳 _[付費功能]_。
-- 作為建立**定期轉帳**排程的入口 _[付費功能]_。
-- 處理編輯由定期排程所產生的轉帳時的特殊邏輯。
+## UI 佈局
 
-## UI 佈局與元件 (UI Layout & Components)
-
-- **頂部導航列 (Top Navigation Bar):**
-    - **左側:** 「關閉」或「取消」按鈕。
-    - **中間:** 畫面標題，顯示「轉帳」。
-    - **右側:**
-        - **定期交易按鈕:** 一個循環圖示的按鈕。
-        - **邏輯:**
-            - **(付費牆檢查)** 點擊時，檢查「**本機狀態 (e.g., PremiumContext)**」中的 `isPremiumUser` 狀態。
-            - **若為免費版使用者:** 導航至 `PaywallScreen`。
-            - **若為付費版使用者:** 開啟 `ScheduleModal` 進行設定。
-
-- **日期選擇區 (Date Area):**
-    - **元件:** `DatePicker`。
-    - **邏輯:** 點擊後開啟日期選擇器。此為**必填項**。
-
-- **帳戶選擇區 (Account Selection Area):**
-    - **UI:** 左右並排的兩個帳戶選擇器，中間有一個向右的箭頭圖示。
-    - **項目:**
-        - **左側 (轉出帳戶):**
-            - **元件:** `AccountSelector`。
-            - **邏輯:** 列表應按 `sortOrder` 排序。選擇後返回 `accountFromId`。此為**必填項**。
-        - **右側 (轉入帳戶):**
-            - **元件:** `AccountSelector`。
-            - **邏輯:** 列表應按 `sortOrder` 排序。選擇後返回 `accountToId`。此為**必填項**。
-    - **防呆邏輯:**
-        - 當使用者選擇的「轉出帳戶」與「轉入帳戶」相同時，兩個帳戶選擇器應顯示錯誤狀態（例如紅色邊框）。
-
-- **備註區 (Note Area):**
-    - **UI:** 一個簡單的文字輸入框。
-
-- **金額輸入區 (Amount Entry Area):**
-    - **UI:** 上下垂直排列的金額輸入框 (`TextInput`)。
-    - **項目:**
-        - **轉出金額 (Amount From):**
-            - **UI:** 一個大型的金額輸入框。點擊後彈出原生數字鍵盤。此為**必填項**。
-        - **匯率與箭頭 (Rate & Arrow):**
-            - **UI:** 僅在**跨幣別轉帳**時顯示。一個向下的箭頭圖示，旁邊顯示即時計算的隱含匯率 (e.g., "1 USD = 32.5 TWD")。
-        - **轉入金額 (Amount To):**
-            - **UI:** 一個大型的金額輸入框。點擊後彈出原生數字鍵盤。
-            - **邏輯:**
-                - **同幣別轉帳:** 此欄位**不顯示**。儲存時，`amountToCents` 的值自動等於 `amountFromCents`。
-                - **跨幣別轉帳 ([付費功能]):** 此欄位顯示並可編輯，允許使用者輸入實際收到的金額。
-
-- **表單提交區 (Form Submission Area):**
-    - **UI:**
-        - **刪除按鈕:** 紅色的「刪除此轉帳」按鈕，僅在「編輯」模式下顯示。
-        - **儲存按鈕:** 主要顏色的「儲存」按鈕。僅在所有必填欄位都有效，**且轉出/轉入帳戶不同**時才可點擊。
+- **呈現方式:** Modal 形式從底部彈出
+- **頂部導航列:**
+    - **內部元件:**
+        - **關閉按鈕**
+        - **標題**
+            - **內容:** 依模式顯示 新增支出, 新增收入, 編輯支出, 編輯收入
+            - **備註:** 標題不可點擊
+        - **定期交易按鈕**
+            - **圖示:** 循環圖示
+- **日期選擇區:**
+    - **位置:** 導航列正下方
+    - **元件:** DatePicker
+    - **屬性:** 必填項
+- **金額輸入區:**
+    - **UI:** 大型金額輸入框, TextInput
+    - **行為:** 點擊彈出原生數字鍵盤
+- **核心欄位區:**
+    - **UI:** 列表
+    - **內部元件:**
+        - **類別 (Category):**
+            - **元件:** CategorySelector
+            - **邏輯:** 列表依 `type` 參數 (income/expense) 過濾
+            - **屬性:** 必填項
+        - **帳戶 (Account):**
+            - **元件:** AccountSelector
+            - **邏輯:** 帳戶按 `sortOrder` 排序
+            - **屬性:** 必填項
+        - **備註 (Note):**
+            - **UI:** 文字輸入框
+- **表單提交區:**
+    - **內部元件:**
+        - **刪除按鈕**
+            - **UI:** 紅色文字
+            - **可見性:** 僅 編輯模式 顯示
+        - **儲存按鈕**
+            - **UI:** 主要顏色
+            - **可見性:** 僅所有必填欄位有效時才可點擊
 
 ## 核心邏輯
 
-- **模式判斷與預設值 (Mode Detection & Defaults):**
-    - 畫面載入時，檢查導航參數中是否傳入 `transferId`。
-    - **若有 `transferId` (編輯模式):**
-        - 從「**本機資料庫 (Local DB)**」中讀取該筆轉帳的完整資料，填入表單。
-        - 顯示「刪除按鈕」。
-    - **若無 `transferId` (新增模式):**
-        - **日期預設值:** 遵循 `TransactionEditorScreen` 的邏輯，檢查 `defaultDate` 參數，否則為今天。
-        - **帳戶預設值:**
-            - 「轉出帳戶」應預選 `sortOrder` 最高的項目。
-            - 「轉入帳戶」應預選 `sortOrder` 第二高的項目 (若存在)。
-            - 若使用者僅有少於 2 個帳戶，則「轉入帳戶」留空，且「儲存」按鈕應為禁用狀態。
-
-- **儲存邏輯 (Save Logic):**
-    - 點擊「儲存」按鈕時，組合表單所有狀態 (按鈕的可點擊狀態已完成驗證)。
+- **定期交易按鈕邏輯:**
+    - **觸發:** 點擊 定期交易按鈕
+    - **檢查:** `PremiumContext.isPremiumUser`
+    - **IF** False (免費版):
+        - **導航:** PaywallScreen
+    - **IF** True (付費版):
+        - **行為:** 開啟 ScheduleModal 進行設定
+- **模式判斷與預設值:**
+    - **觸發:** 畫面載入
+    - **檢查:** 導航參數是否傳入 `transactionId`
+    - **IF** 有 `transactionId` (編輯模式):
+        - **讀取:** 從 本機 DB 讀取該筆交易資料填入表單
+        - **顯示:** 標題 編輯支出 / 編輯收入
+        - **顯示:** 刪除按鈕
+    - **IF** 無 `transactionId` (新增模式):
+        - **顯示:** 標題 新增支出 / 新增收入
+        - **預設值 - 日期:**
+            - **檢查:** 導航參數 `defaultDate`
+            - **IF** 有 `defaultDate`:
+                - **行為:** 使用 `defaultDate`
+            - **ELSE:**
+                - **行為:** 預設為 今天
+        - **預設值 - 類別/帳戶:**
+            - **行為:** 預選 `sortOrder` 最高的項目
+- **儲存邏輯:**
+    - **觸發:** 點擊 儲存按鈕
     - **新增模式:**
-        - **跨幣別匯率記錄:** 若偵測到為跨幣別轉帳 (轉出與轉入帳戶的幣別不同)，執行以下操作：
-            - 從 `amountFromCents`, `accountFromId` (取得幣別), `amountToCents`, `accountToId` (取得幣別) 中取得所需資訊。
-            - 計算出隱含匯率 (`rateCents`)。
-            - 在儲存轉帳的同一個批次 (batch) 操作中，呼叫在「**本機資料庫 (Local DB)**」中新增一筆 `CurrencyRates` 記錄（**必須**設定 `updatedOn` 時間戳記）。，將此匯率存入 `CurrencyRates` 表，並將 `rateDate` 設為該筆轉帳的 `transactionDate`。
-            - 此操作為付費功能，執行前需檢查「**本機狀態 (e.g., PremiumContext)**」中的 `isPremiumUser` 狀態。若為免費版，應導航至付費牆畫面 (`PaywallScreen`)。
-
-        - **如果未設定重複規則:** 直接在「**本機資料庫 (Local DB)**」建立一筆新記錄（**必須**設定 `updatedOn` 時間戳記）。
-        - **如果設定了重複規則 ([付費功能]):**
-            - 在「**本機資料庫 (Local DB)**」建立一筆 `Schedules` 記錄（**必須**設定 `updatedOn`），並**立即**為 `startOn` 日期產生第一筆轉帳實例（同樣寫入本機）。
+        - **IF** 未設定重複規則:
+            - **行為:** 於 本機 DB 建立新 `Transaction` 記錄
+            - **欄位:** 必須設定 `updatedOn`
+        - **IF** 設定重複規則 (付費功能):
+            - **觸發:** 執行 建立邏輯
+            - **定義:** 參見 `no6_5_recurring_transaction_spec`
     - **編輯模式:**
-        - **檢查是否為定期交易產生:** 檢查該筆轉帳的 `scheduleId` 是否有值。
-        - **普通轉帳:** 直接更新「**本機資料庫 (Local DB)**」中的該筆記錄（**必須**更新 `updatedOn` 時間戳記）。
-        - **定期轉帳產生:**
-            - 彈出對話框，提供選項：「僅此一筆」、「此筆及未來所有」。
-            - **「僅此一筆」:** 直接修改當前這筆 `Transfer`。
-            - **「此筆及未來所有」:** 在「**本機資料庫 (Local DB)**」中更新原 `Schedule` 的 `endOn`（需更新 `updatedOn`），並建立一個新的 `Schedule` 記錄（也需設定 `updatedOn`）。
-    - 儲存成功後，關閉畫面並導航返回前一頁。
+        - **檢查:** 該筆交易 `scheduleInstanceDate` 是否有值
+        - **IF** `scheduleInstanceDate` 為 null (普通交易):
+            - **行為:** 更新 本機 DB 該筆 `Transaction` 記錄
+            - **欄位:** 必須更新 `updatedOn`
+        - **IF** `scheduleInstanceDate` 有值 (定期交易):
+            - **觸發:** 執行 編輯/刪除邏輯
+            - **定義:** 參見 `no6_5_recurring_transaction_spec`
+    - **成功:**
+        - **導航:** 關閉畫面, 返回前一頁
+- **刪除邏輯:**
+    - **條件:** 僅 編輯模式 可用
+    - **觸發:** 點擊 刪除按鈕
+    - **檢查:** 該筆交易 `scheduleInstanceDate` 是否有值
+    - **IF** `scheduleInstanceDate` 為 null (普通交易):
+        - **行為:** 軟刪除 本機 DB 該筆 `Transaction`
+        - **欄位:** 必須設定 `deletedOn` 並更新 `updatedOn`
+    - **IF** `scheduleInstanceDate` 有值 (定期交易):
+        - **觸發:** 執行 編輯/刪除邏輯
+        - **定義:** 參見 `no6_5_recurring_transaction_spec`
+    - **成功:**
+        - **導航:** 關閉畫面, 返回前一頁
 
-- **刪除邏輯 (Delete Logic):**
-    - 僅在「編輯」模式下可用。
-    - **普通轉帳:** 直接在「**本機資料庫 (Local DB)**」中軟刪除該筆 `Transfer`（**必須**設定 `deletedOn` 並更新 `updatedOn`，以觸發「批次同步規格」的同步）。
-    - **定期轉帳產生:**
-        - 彈出對話框，提供選項：「僅此一筆」、「此筆及未來所有」。
-        - **「僅此一筆」:** 同上，軟刪除當前的 `Transfer` 記錄（更新 `deletedOn` 和 `updatedOn`）。
-        - **「此筆及未來所有」:** 在「**本機資料庫 (Local DB)**」中更新原 `Schedule` 的 `endOn`（**必須**更新 `updatedOn` 以觸發同步）。
+## 狀態管理
 
-## 狀態管理 (State Management)
+- **來自導航:**
+    - `type`: 'expense' | 'income'
+- **本地狀態:**
+    - `amountCents`
+    - `categoryId`
+    - `accountId`
+    - `transactionDate`
+    - `note`
+    - `schedule`
 
-- 使用 `useState` 或表單管理庫來管理以下狀態：
-    - `accountFromId: string | null`
-    - `accountToId: string | null`
-    - `amountFromCents: bigint`
-    - `amountToCents: bigint`
-    - `transactionDate: number`
-    - `note: string`
-    - `schedule: Schedule | null`
-
-## 導航 (Navigation)
+## 導航
 
 - **進入:**
-    - 從 `HomeScreen` 的 FAB 或列表項點擊進入。
-    - 可選參數:
-        - `transferId?: string` (用於編輯模式)
-        - `defaultDate?: number` (用於預設日期)
+    - **來源:** HomeScreen
+    - **必要參數:**
+        - `type`: 'income' | 'expense'
+    - **可選參數:**
+        - `transactionId`
+        - `defaultDate`
 - **退出:**
-    - 點擊「關閉/取消」按鈕，或在「儲存/刪除」成功後，呼叫 `navigation.goBack()`。
+    - **觸發:** 點擊 關閉按鈕, 或 儲存/刪除 成功
+    - **行為:** `navigation.goBack()`
+
+# 轉帳編輯器規格: TransferEditorScreen
+
+## 畫面目標
+
+- **提供:** 新增, 編輯, 刪除 轉帳 記錄的介面
+- **支援:** 同幣別轉帳 與 跨幣別轉帳 (付費功能)
+- **作為:** 建立 定期轉帳 排程的入口 (付費功能)
+- **處理:** 編輯由定期排程所產生轉帳的特殊邏輯
+
+## UI 佈局
+
+- **呈現方式:** Modal 形式從底部彈出
+- **頂部導航列:**
+    - **內部元件:**
+        - **關閉按鈕**
+        - **標題**
+            - **內容:** 轉帳
+        - **定期交易按鈕**
+            - **圖示:** 循環圖示
+- **日期選擇區:**
+    - **元件:** DatePicker
+    - **屬性:** 必填項
+- **帳戶選擇區:**
+    - **內部元件:**
+        - **轉出帳戶:**
+            - **元件:** AccountSelector
+            - **邏輯:** 列表按 `sortOrder` 排序
+            - **屬性:** 必填項
+        - **轉入帳戶:**
+            - **元件:** AccountSelector
+            - **邏輯:** 列表按 `sortOrder` 排序
+            - **屬性:** 必填項
+    - **防呆邏輯:**
+        - **條件:** 轉出帳戶 等於 轉入帳戶
+        - **UI:** 顯示錯誤狀態
+- **備註區:**
+    - **UI:** 文字輸入框
+- **金額輸入區:**
+    - **UI:** 上下垂直排列
+    - **內部元件:**
+        - **轉出金額 (Amount From):**
+            - **UI:** 大型金額輸入框, 彈出原生數字鍵盤
+            - **屬性:** 必填項
+        - **匯率與箭頭:**
+            - **可見性:** 僅 跨幣別轉帳 時顯示
+            - **UI:** 向下箭頭, 顯示即時計算的隱含匯率
+        - **轉入金額 (Amount To):**
+            - **UI:** 大型金額輸入框, 彈出原生數字鍵盤
+            - **邏輯:**
+                - **同幣別轉帳:**
+                    - **可見性:** 不顯示
+                    - **儲存:** amountToCents = amountFromCents
+                - **跨幣別轉帳 (付費功能):**
+                    - **可見性:** 顯示並可編輯
+- **表單提交區:**
+    - **內部元件:**
+        - **刪除按鈕**
+            - **UI:** 紅色文字
+            - **可見性:** 僅 編輯模式 顯示
+        - **儲存按鈕**
+            - **UI:** 主要顏色
+            - **可見性:**
+                - 所有必填欄位有效
+                - 轉出與轉入帳戶不同
+
+## 核心邏輯
+
+- **定期交易按鈕邏輯:**
+    - **觸發:** 點擊 定期交易按鈕
+    - **檢查:** `PremiumContext.isPremiumUser`
+    - **IF** False (免費版):
+        - **導航:** PaywallScreen
+    - **IF** True (付費版):
+        - **行為:** 開啟 ScheduleModal 進行設定
+- **模式判斷與預設值:**
+    - **觸發:** 畫面載入
+    - **檢查:** 導航參數 `transferId`
+    - **IF** 有 `transferId` (編輯模式):
+        - **讀取:** 從 本機 DB 讀取轉帳資料填入表單
+        - **顯示:** 刪除按鈕
+    - **IF** 無 `transferId` (新增模式):
+        - **預設值 - 日期:**
+            - **檢查:** 導航參數 `defaultDate`
+            - **IF** 有 `defaultDate`:
+                - **行為:** 使用 `defaultDate`
+            - **ELSE:**
+                - **行為:** 預設為 今天
+        - **預設值 - 帳戶:**
+            - **轉出帳戶:** 預選 `sortOrder` 最高的項目
+            - **轉入帳戶:** 預選 `sortOrder` 第二高的項目
+            - **IF** 帳戶 < 2 個:
+                - **轉入帳戶:** 留空
+                - **儲存按鈕:** 禁用
+- **儲存邏輯:**
+    - **觸發:** 點擊 儲存按鈕
+    - **新增模式:**
+        - **跨幣別匯率記錄 (付費功能):**
+            - **條件:** 轉出與轉入帳戶的幣別不同
+            - **檢查:** `PremiumContext.isPremiumUser`
+            - **IF** False (免費版):
+                - **導航:** PaywallScreen
+            - **IF** True (付費版):
+                - **計算:** 隱含匯率 rateCents
+                - **儲存:** 於 本機 DB 批次新增 `CurrencyRates` 記錄
+                - **欄位:** 必須設定 `updatedOn`
+                - **備註:** rateDate 設為該筆轉帳的 transactionDate
+        - **IF** 未設定重複規則:
+            - **行為:** 於 本機 DB 建立新 `Transfer` 記錄
+            - **欄位:** 必須設定 `updatedOn`
+        - **IF** 設定重複規則 (付費功能):
+            - **觸發:** 執行 建立邏輯
+            - **定義:** 參見 `no6_5_recurring_transaction_spec`
+    - **編輯模式:**
+        - **檢查:** 該筆轉帳 `scheduleId` 是否有值
+        - **IF** `scheduleId` 為 null (普通轉帳):
+            - **行為:** 更新 本機 DB 該筆 `Transfer` 記錄
+            - **欄位:** 必須更新 `updatedOn`
+        - **IF** `scheduleId` 有值 (定期轉帳):
+            - **觸發:** 執行 編輯/刪除邏輯
+            - **定義:** 參見 `no6_5_recurring_transaction_spec`
+    - **成功:**
+        - **導航:** 關閉畫面, 返回前一頁
+- **刪除邏輯:**
+    - **條件:** 僅 編輯模式 可用
+    - **觸發:** 點擊 刪除按鈕
+    - **檢查:** 該筆轉帳 `scheduleId` 是否有值
+    - **IF** `scheduleId` 為 null (普通轉帳):
+        - **行為:** 軟刪除 本機 DB 該筆 `Transfer`
+        - **欄位:** 必須設定 `deletedOn` 並更新 `updatedOn`
+    - **IF** `scheduleId` 有值 (定期轉帳):
+        - **觸發:** 執行 編輯/刪除邏輯
+        - **定義:** 參見 `no6_5_recurring_transaction_spec`
+    - **成功:**
+        - **導航:** 關閉畫面, 返回前一頁
+
+## 狀態管理
+
+- **本地狀態:**
+    - `accountFromId`
+    - `accountToId`
+    - `amountFromCents`
+    - `amountToCents`
+    - `transactionDate`
+    - `note`
+    - `schedule`
+
+## 導航
+
+- **進入:**
+    - **來源:** HomeScreen
+    - **可選參數:**
+        - `transferId`
+        - `defaultDate`
+- **退出:**
+    - **觸發:** 點擊 關閉按鈕, 或 儲存/刪除 成功
+    - **行為:** `navigation.goBack()`
