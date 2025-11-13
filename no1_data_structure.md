@@ -107,7 +107,7 @@ _(現況: 這些是 App 的核心動態資料，將儲存在 Firestore 中並與
         
     - `amountToCents`: BigInt - Not Null (轉入帳戶的金額，以該帳戶幣別計)
         
-    - `impliedRateScaled`: BigInt - Not Null- Nullable (儲存匯率 * 1,000,000 後的整數)
+    - `impliedRateScaled`: BigInt - Nullable (儲存匯率 * 1,000,000 後的整數)
         
     - `transactionDate`: Number (Unix Timestamp ms) - Not Null (轉帳發生日，用於報表篩選)
         
