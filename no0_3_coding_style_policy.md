@@ -1,0 +1,84 @@
+# 程式碼風格規範
+
+## 核心工具
+
+- **Linter:** ESLint
+- **Formatter:** Prettier
+- **要求:**
+    - **行為:** 
+      - 提交 PR 前必須通過所有 Lint 檢查
+      - 程式碼應在儲存時自動格式化
+
+## 命名規範
+
+- **檔案 - 元件**
+    - **風格:** 大駝峰式命名 PascalCase
+    - **範例:** 
+      - `TransactionEditorScreen.tsx`
+      - `CustomPieChart.tsx`
+- **檔案 - 服務/輔助/Hook**
+    - **風格:** 小駝峰式命名 camelCase
+    - **範例:** 
+      - `authService.ts`
+      - `useAuth.ts`
+- **變數與函式**
+    - **風格:** 小駝峰式命名 camelCase
+    - **範例:**
+        - `const transactionDate`
+        - `function handleSave()`
+- **常數**
+    - **風格:** 全大寫蛇底式 SCREAMING_SNAKE_CASE
+    - **範例:** 
+      - `const THEME_COLORS`
+- **介面與型別**
+    - **風格:** 大駝峰式命名 PascalCase
+    - **禁止:** 使用 `I` 或 `T` 作為型別前綴
+    - **範例:** 
+      - `interface Account`
+      - `type TransactionType`
+
+## React / React Native 規範
+
+- **元件**
+    - **偏好:** 函數式元件 Function Components
+    - **禁止:** 類別元件 Class Components
+- **狀態**
+    - **偏好:** Hooks
+    - **範例:** `useState`, `useContext`, `useEffect`
+- **樣式**
+    - **偏好:** `StyleSheet.create`
+    - **禁止:** 行內樣式 Inline Styles
+    - **備註:** 僅允許在極少數動態樣式情境中使用行內樣式
+- **匯入**
+    - **順序:**
+        - React / React Native 核心
+        - 第三方套件
+        - 本地 `src` 絕對路徑
+        - 本地相對路徑
+    - **路徑:**
+        - **偏好:** 絕對路徑
+        - **備註:** 應設定 `tsconfig.json` 的 `baseUrl` 與 `paths`
+
+## TypeScript 規範
+
+- **嚴格模式**
+    - **要求:** 必須啟用 `strict` 模式
+- **型別**
+    - **要求:** 盡可能提供明確型別
+    - **禁止:** `any` 型別
+    - **替代:**
+        - **IF** 型別未知:
+            - **行為:** 使用 `unknown`
+        - **IF** 故意省略:
+            - **行為:** 使用 `eslint-disable-next-line @typescript-eslint/no-explicit-any` 並附上理由
+
+## 註解規範
+
+- **要求:**
+    - **行為:** 複雜的業務邏輯、演算法、或「為何如此」的決策必須有註解
+    - **行為:** 註解應說明「為何」，而非「如何」
+- **待辦**
+    - **格式:** `// TODO: 描述未來需執行的任務`
+    - **備註:** 應定期清理
+- **修復**
+    - **格式:** `// FIXME: 描述待修復的問題`
