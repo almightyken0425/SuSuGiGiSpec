@@ -9,6 +9,29 @@
       - 提交 PR 前必須通過所有 Lint 檢查
       - 程式碼應在儲存時自動格式化
 
+## 檔案與資料夾命名規範
+
+- **原則:** 確保規格文件與實際開發程式碼之間的命名可預測且一致。
+- **`lowercase`**
+    - **備註:** 全小寫
+    - **用途:** 用於**通用、工具性質**的資料夾。
+    - **範例:**
+        - `assets`
+        - `components`
+        - `constants`
+        - `hooks`
+        - `locales`
+        - `services`
+        - `utils`
+- **`PascalCase`**
+    - **備註:** 大駝峰
+    - **用途:** 用於**特定功能、畫面、或複雜元件**的資料夾。
+    - **範例:**
+        - `HomeScreen`
+        - `TransactionEditor`
+        - `AccountManagement`
+        - `PieChart`
+
 ## 命名規範
 
 - **檔案 - 元件**
