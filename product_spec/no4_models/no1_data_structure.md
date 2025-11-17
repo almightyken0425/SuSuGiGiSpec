@@ -1,10 +1,6 @@
 # 資料結構
 
-_(本文件定義 App 的核心資料模型與靜態定義)_
-
 ## 使用者自訂資料結構 (未來 DB Table)
-
-_(現況: 這些是 App 的核心動態資料，將儲存在 Firestore 中並與 UserId 關聯。)_
 
 ### 帳戶 (Accounts)
 
@@ -12,7 +8,7 @@ _(現況: 這些是 App 的核心動態資料，將儲存在 Firestore 中並與
     
     - `id`: String (UUID/GUID) - Primary Key
         
-    - `userId`: String (Email) - Foreign Key (Users), Not Null, Index
+    - `userId`: String (Auth UID) - Foreign Key (Users), Not Null, Index
         
     - `name`: String - Not Null
         
@@ -41,7 +37,7 @@ _(現況: 這些是 App 的核心動態資料，將儲存在 Firestore 中並與
     
     - `id`: String (UUID/GUID) - Primary Key
         
-    - `userId`: String (Email) - Foreign Key (Users), Not Null, Index
+    - `userId`: String (Auth UID) - Foreign Key (Users), Not Null, Index
         
     - `name`: String - Not Null
         
@@ -68,7 +64,7 @@ _(現況: 這些是 App 的核心動態資料，將儲存在 Firestore 中並與
     
     - `id`: String (UUID/GUID) - Primary Key
         
-    - `userId`: String (Email) - Foreign Key (Users), Not Null, Index
+    - `userId`: String (Auth UID) - Foreign Key (Users), Not Null, Index
         
     - `categoryId`: String - Foreign Key (Categories), Not Null
         
@@ -97,7 +93,7 @@ _(現況: 這些是 App 的核心動態資料，將儲存在 Firestore 中並與
     
     - `id`: String (UUID/GUID) - Primary Key
         
-    - `userId`: String (Email) - Foreign Key (Users), Not Null, Index
+    - `userId`: String (Auth UID) - Foreign Key (Users), Not Null, Index
         
     - `accountFromId`: String - Foreign Key (Accounts), Not Null
         
@@ -130,7 +126,7 @@ _(現況: 這些是 App 的核心動態資料，將儲存在 Firestore 中並與
     
     - `id`: String (UUID/GUID) - Primary Key
         
-    - `userId`: String (Email) - Foreign Key (Users), Not Null (因為是手動輸入)
+    - `userId`: String (Auth UID) - Foreign Key (Users), Not Null (因為是手動輸入)
         
     - `currencyFromId`: Number - Foreign Key (Currencies), Not Null
         
@@ -151,7 +147,7 @@ _(現況: 這些是 App 的核心動態資料，將儲存在 Firestore 中並與
     
     - `id`: String (UUID/GUID) - Primary Key
         
-    - `userId`: String (Email) - Foreign Key (Users), Not Null
+    - `userId`: String (Auth UID) - Foreign Key (Users), Not Null
         
     - `scheduleType`: String - Not Null (e.g., 'daily', 'weekly', 'monthly', 'yearly')
         
@@ -192,7 +188,7 @@ _(現況: 這些是 App 的核心動態資料，將儲存在 Firestore 中並與
     
     - `id`: String (UUID/GUID) - Primary Key
         
-    - `userId`: String (Email) - Foreign Key (Users), Not Null
+    - `userId`: String (Auth UID) - Foreign Key (Users), Not Null
         
     - `settingKey`: String - Not Null (e.g., 'baseCurrencyId', 'timeZone', 'language', 'isPremiumUser', 'lastRecurringCheckDate')
         

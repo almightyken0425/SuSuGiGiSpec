@@ -133,27 +133,24 @@
             - **欄位:** 必須設定 `updatedOn`
         - **IF** 設定重複規則 (付費功能):
             - **觸發:** 執行 建立邏輯
-            - **定義:** 參見 `no6_5_recurring_transaction_spec`
     - **編輯模式:**
-        - **檢查:** 該筆轉帳 `scheduleId` 是否有值
-        - **IF** `scheduleId` 為 null (普通轉帳):
+        - **檢查:** 該筆轉帳 `scheduleInstanceDate` 是否有值
+        - **IF** `scheduleInstanceDate` 為 null (普通轉帳):
             - **行為:** 更新 本機 DB 該筆 `Transfer` 記錄
             - **欄位:** 必須更新 `updatedOn`
-        - **IF** `scheduleId` 有值 (定期轉帳):
+        - **IF** `scheduleInstanceDate` 有值 (定期轉帳):
             - **觸發:** 執行 編輯/刪除邏輯
-            - **定義:** 參見 `no6_5_recurring_transaction_spec`
     - **成功:**
         - **導航:** 關閉畫面, 返回前一頁
 - **刪除邏輯:**
     - **條件:** 僅 編輯模式 可用
     - **觸發:** 點擊 刪除按鈕
-    - **檢查:** 該筆轉帳 `scheduleId` 是否有值
-    - **IF** `scheduleId` 為 null (普通轉帳):
+    - **檢查:** 該筆轉帳 `scheduleInstanceDate` 是否有值
+    - **IF** `scheduleInstanceDate` 為 null (普通轉帳):
         - **行為:** 軟刪除 本機 DB 該筆 `Transfer`
         - **欄位:** 必須設定 `deletedOn` 並更新 `updatedOn`
-    - **IF** `scheduleId` 有值 (定期轉帳):
+    - **IF** `scheduleInstanceDate` 有值 (定期轉帳):
         - **觸發:** 執行 編輯/刪除邏輯
-        - **定義:** 參見 `no6_5_recurring_transaction_spec`
     - **成功:**
         - **導航:** 關閉畫面, 返回前一頁
 
