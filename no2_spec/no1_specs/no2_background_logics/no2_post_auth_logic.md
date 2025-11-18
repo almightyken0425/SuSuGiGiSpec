@@ -1,6 +1,6 @@
 # 登入認證後邏輯
 
-- **觸發:** 認證成功時 (由 LoginScreen.md 觸發)
+- **觸發:** 認證成功時，由 LoginScreen.md 觸發
 - **IF** 新用戶:
     - **行為:** 執行 建立預設資料 至 本機 DB
     - **主要幣別 Primary Currency:**

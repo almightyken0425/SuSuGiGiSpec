@@ -11,22 +11,22 @@
         - **資料:** `Transaction` 或 `Transfer`
         - **欄位:** 包含 `scheduleId` 及 `scheduleInstanceDate`
 
-## 補產生邏輯 (App 啟動時)
+## 補產生邏輯 App 啟動時
 
 - **讀取:** 本地儲存 `lastRecurringCheckDate`
-- **計算:** `currentDateInUserTZ` (基於使用者主要時區)
+- **計算:** 基於使用者主要時區的當前日期 `currentDateInUserTZ`
 - **判斷:**
     - **IF** `currentDateInUserTZ` > `lastRecurringCheckDate`:
         - **執行:** 遍歷所有 `deletedOn` 為 null 的 `Schedules`
-        - **計算:** 找出 `lastRecurringCheckDate` (不含) 到 `currentDateInUserTZ` (含) 之間所有應產生的日期 (instanceDate)
-        - **檢查重複:** (逐筆)
+        - **計算:** 找出從 `lastRecurringCheckDate` 之後到 `currentDateInUserTZ` 當日為止, 所有應產生的日期 `instanceDate`
+        - **檢查重複:** 逐筆檢查
             - **查詢:** `Transactions` / `Transfers` 表
-            - **條件:** `scheduleId` + `scheduleInstanceDate` = `instanceDate` (不論 `deletedOn` 狀態)
+            - **條件:** `scheduleId` 與 `scheduleInstanceDate` 組合匹配 `instanceDate`, 無論 `deletedOn` 狀態
         - **產生交易:**
             - **IF** 檢查不存在:
                 - **行為:** 使用 `Schedule` 模板創建新記錄
                 - **欄位:** `scheduleId`, `scheduleInstanceDate`
-                - **備註:** `transactionDate` 設為 `instanceDate`
+                - **備註:** `transactionDate` 欄位值設為 `instanceDate`
             - **IF** 檢查已存在:
                 - **行為:** 跳過, 不執行任何操作
         - **更新:** `lastRecurringCheckDate` = `currentDateInUserTZ`

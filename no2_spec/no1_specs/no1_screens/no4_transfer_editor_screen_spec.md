@@ -3,8 +3,8 @@
 ## 畫面目標
 
 - **提供:** 新增, 編輯, 刪除 轉帳 記錄的介面
-- **支援:** 同幣別轉帳 與 跨幣別轉帳 (付費功能)
-- **作為:** 建立 定期轉帳 排程的入口 (付費功能)
+- **支援:** 同幣別轉帳 與 跨幣別轉帳
+- **作為:** 建立 定期轉帳 排程的入口
 - **處理:** 編輯由定期排程所產生轉帳的特殊邏輯
 
 ## UI 佈局
@@ -62,19 +62,19 @@
 - **金額輸入區:**
     - **UI:** 上下垂直排列
     - **內部元件:**
-        - **轉出金額 (Amount From):**
+        - **轉出金額 Amount From:**
             - **UI:** 大型金額輸入框, 彈出原生數字鍵盤
             - **屬性:** 必填項
         - **匯率與箭頭:**
             - **可見性:** 僅 跨幣別轉帳 時顯示
             - **UI:** 向下箭頭, 顯示即時計算的隱含匯率
-        - **轉入金額 (Amount To):**
+        - **轉入金額 Amount To:**
             - **UI:** 大型金額輸入框, 彈出原生數字鍵盤
             - **邏輯:**
                 - **同幣別轉帳:**
                     - **可見性:** 不顯示
                     - **儲存:** amountToCents = amountFromCents
-                - **跨幣別轉帳 (付費功能):**
+                - **跨幣別轉帳:**
                     - **可見性:** 顯示並可編輯
 - **表單提交區:**
     - **內部元件:**
@@ -92,17 +92,17 @@
 - **定期交易按鈕邏輯:**
     - **觸發:** 點擊 定期交易按鈕
     - **檢查:** `PremiumContext.isPremiumUser`
-    - **IF** False (免費版):
+    - **IF** False 免費版:
         - **導航:** PaywallScreen
-    - **IF** True (付費版):
+    - **IF** True 付費版:
         - **行為:** 開啟 ScheduleModal 進行設定
 - **模式判斷與預設值:**
     - **觸發:** 畫面載入
     - **檢查:** 導航參數 `transferId`
-    - **IF** 有 `transferId` (編輯模式):
+    - **IF** 有 `transferId` 編輯模式:
         - **讀取:** 從 本機 DB 讀取轉帳資料填入表單
         - **顯示:** 刪除按鈕
-    - **IF** 無 `transferId` (新增模式):
+    - **IF** 無 `transferId` 新增模式:
         - **預設值 - 日期:**
             - **檢查:** 導航參數 `defaultDate`
             - **IF** 有 `defaultDate`:
@@ -118,12 +118,12 @@
 - **儲存邏輯:**
     - **觸發:** 點擊 儲存按鈕
     - **新增模式:**
-        - **跨幣別匯率記錄 (付費功能):**
+        - **跨幣別匯率記錄:**
             - **條件:** 轉出與轉入帳戶的幣別不同
             - **檢查:** `PremiumContext.isPremiumUser`
-            - **IF** False (免費版):
+            - **IF** False 免費版:
                 - **導航:** PaywallScreen
-            - **IF** True (付費版):
+            - **IF** True 付費版:
                 - **計算:** 隱含匯率 rateCents
                 - **儲存:** 於 本機 DB 批次新增 `CurrencyRates` 記錄
                 - **欄位:** 必須設定 `updatedOn`
@@ -131,14 +131,14 @@
         - **IF** 未設定重複規則:
             - **行為:** 於 本機 DB 建立新 `Transfer` 記錄
             - **欄位:** 必須設定 `updatedOn`
-        - **IF** 設定重複規則 (付費功能):
+        - **IF** 設定重複規則:
             - **觸發:** 執行 建立邏輯
     - **編輯模式:**
         - **檢查:** 該筆轉帳 `scheduleInstanceDate` 是否有值
-        - **IF** `scheduleInstanceDate` 為 null (普通轉帳):
+        - **IF** `scheduleInstanceDate` 為 null 一般轉帳:
             - **行為:** 更新 本機 DB 該筆 `Transfer` 記錄
             - **欄位:** 必須更新 `updatedOn`
-        - **IF** `scheduleInstanceDate` 有值 (定期轉帳):
+        - **IF** `scheduleInstanceDate` 有值 定期轉帳:
             - **觸發:** 執行 編輯/刪除邏輯
     - **成功:**
         - **導航:** 關閉畫面, 返回前一頁
@@ -146,10 +146,10 @@
     - **條件:** 僅 編輯模式 可用
     - **觸發:** 點擊 刪除按鈕
     - **檢查:** 該筆轉帳 `scheduleInstanceDate` 是否有值
-    - **IF** `scheduleInstanceDate` 為 null (普通轉帳):
+    - **IF** `scheduleInstanceDate` 為 null 一般轉帳:
         - **行為:** 軟刪除 本機 DB 該筆 `Transfer`
         - **欄位:** 必須設定 `deletedOn` 並更新 `updatedOn`
-    - **IF** `scheduleInstanceDate` 有值 (定期轉帳):
+    - **IF** `scheduleInstanceDate` 有值 定期轉帳:
         - **觸發:** 執行 編輯/刪除邏輯
     - **成功:**
         - **導航:** 關閉畫面, 返回前一頁
