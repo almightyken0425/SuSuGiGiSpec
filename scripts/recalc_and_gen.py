@@ -2,7 +2,7 @@ import csv
 import os
 
 CSV_PATH = 'no2_equity_model/product_value_allocation.csv'
-MD_PATH = 'no2_equity_model/no4_product_component.md'
+MD_PATH = 'no2_equity_model/product_component_value.md'
 
 def calculate_points(row):
     # Columns to sum for Base Points
@@ -86,9 +86,9 @@ def generate_markdown(rows):
     lines.append("## 核心目標")
     lines.append("")
     lines.append("- 本文件依據產品定義的產品個體，詳細列出每個組件的價值構成。")
-    lines.append("- 採用 **雙重價值模型**：每個模組同時包含 **施工價值** (Construction) 與 **維運價值** (Operation)。")
+    lines.append("- 採用 **雙重價值模型**：每個模組同時包含 **施工價值** Construction 與 **維運價值** Operation。")
     lines.append("- 針對每個 **User Story**，依據角色定義進行價值點數分配。")
-    lines.append("- **營運角色整合:** Marketing 與 Operations 角色整合至每個 User Story 中，其施工價值為 0，但隨著功能上線，其維運價值 (Operation Value) 將逐步累積。")
+    lines.append("- **營運角色整合:** Marketing 與 Operations 角色整合至每個 User Story 中，其施工價值為 0，但隨著功能上線，其維運價值 Operation Value 將逐步累積。")
     lines.append("- **價值單位:** 1 點 = 0.1 小時，詳見股權原則文件。")
     lines.append("")
     lines.append("---")
@@ -186,7 +186,7 @@ def generate_markdown(rows):
             
             lines.append(f"### {mod_title}")
             lines.append("")
-            lines.append("| User Story | Role | 施工價值 (Pt) | 維運價值 (Pt/Mo) |")
+            lines.append("| User Story | Role | 施工價值 Pt | 維運價值 Pt/Mo |")
             lines.append("| :--- | :--- | :--- | :--- |")
             
             for item in items:
@@ -220,10 +220,9 @@ def generate_markdown(rows):
                 for role_key, role_name in roles_order:
                     c = int(item.get(f"{role_key}_Construction", 0) or 0)
                     o = int(item.get(f"{role_key}_Operation", 0) or 0)
-                    if c > 0 or o > 0:
-                        active_roles.append((role_name, c, o))
-                        sub_const += c
-                        sub_op += o
+                    active_roles.append((role_name, c, o))
+                    sub_const += c
+                    sub_op += o
                 
                 # Render rows
                 # First role line includes the User Story name
@@ -235,32 +234,14 @@ def generate_markdown(rows):
                     if i == 0:
                         us_col = f"**{us_name}**"
                     elif i == 1:
-                        us_col = f"({us_en})"
+                        us_col = f"{us_en}"
                     
-                    # Bold Marketing and Operations rows as per original style
+                    # No bolding for Marketing and Operations rows
                     r_display = r_name
                     c_display = f"{c:,}"
                     o_display = f"{o:,}"
-                    
-                    if r_name in ['Marketing', 'Operations']:
-                        r_display = f"**{r_name}**"
-                        c_display = f"**{c:,}**"
-                        o_display = f"**{o:,}**"
                         
                     lines.append(f"| {us_col} | {r_display} | {c_display} | {o_display} |")
-                
-                # If US name/en took more lines than roles (unlikely but possible if no roles), handle it.
-                # But here we have roles.
-                # If there are fewer than 2 roles, we still need to print the English name on the second line?
-                # The original format:
-                # | **支出管理** | PDM | 100 | 3 |
-                # | (Expense CRUD) | Designer | 200 | 3 |
-                # If only 1 role:
-                # | **Name** | Role | ... |
-                # | (En Name) | | | |  <-- Need to handle this
-                
-                if len(active_roles) < 2:
-                     lines.append(f"| ({us_en}) | | | |")
                 
                 # Subtotal Row
                 lines.append(f"| | **Subtotal** | **{sub_const:,}** | **{sub_op:,}** |")
@@ -277,7 +258,7 @@ def generate_markdown(rows):
     # Summary Table
     lines.append("## 價值彙整")
     lines.append("")
-    lines.append("| 產品組件 | 施工價值 (點) | 施工工時 | 維運價值 (點/月) | 年化維運 |")
+    lines.append("| 產品組件 | 施工價值 點 | 施工工時 | 維運價值 點/月 | 年化維運 |")
     lines.append("| :--- | ---: | ---: | ---: | ---: |")
     
     for item in summary_data:

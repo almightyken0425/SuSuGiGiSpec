@@ -47,11 +47,11 @@
     - **App 開發, App RD**
         - React Native 應用程式的架構與實作
         - 將 UI/UX 設計稿轉換為可互動的 App 畫面
-        - 串接所有本地資料庫 (SQLite/WatermelonDB)
+        - 串接所有本地資料庫 SQLite/WatermelonDB
     - **Web 開發, Web RD**
         - Web Console 與 B2B Dashboard 的架構與實作
         - 複雜報表與圖表的網頁端呈現
-        - 響應式網頁設計 (RWD)
+        - 響應式網頁設計 RWD
     - **後端開發, Backend RD**
         - Firebase 服務架構，包含 Firestore 與 Auth 的設計與安全規則
         - 實作同步邏輯與 Cloud Functions
