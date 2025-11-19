@@ -73,11 +73,8 @@
 **定位:** 智慧顧問，提供主動式的財務洞察與預測。
 **價值:** 預知價值, Foresight, 顧問價值, Consultancy
 
-### User Stories
 
-#### 智慧偵測, Intelligent Detection
-- **異常支出通知, Anomaly Alert:** 作為使用者，我想要在某類支出異常暴增時收到主動通知。
-- **重複扣款偵測, Duplicate Detection:** 作為使用者，我想要系統自動標記疑似重複扣款的交易。
+### User Stories
 
 #### 預測與診斷, Forecast & Diagnosis
 - **現金流預測, Cashflow Forecast:** 作為使用者，我想要看到依目前消費速度推算的月底結餘預測。
