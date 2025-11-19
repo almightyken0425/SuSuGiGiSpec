@@ -2,13 +2,53 @@
 
 ## 使用者自訂資料結構
 
+### 帳本 Books
+
+- **欄位:**
+    
+    - `id`: String, UUID/GUID - Primary Key
+        
+    - `name`: String - Not Null
+        
+    - `ownerId`: String, Auth UID - Foreign Key to Users, Not Null, 帳本擁有者
+        
+    - `defaultCurrencyId`: Number - Foreign Key to Currencies, Not Null
+        
+    - `createdOn`: Number, Unix Timestamp ms - Not Null
+        
+    - `updatedOn`: Number, Unix Timestamp ms - Not Null
+        
+    - `deletedOn`: Number | Null, Unix Timestamp ms - Nullable
+        
+
+### 帳本成員 BookMembers
+
+- **欄位:**
+    
+    - `id`: String, UUID/GUID - Primary Key
+        
+    - `bookId`: String - Foreign Key to Books, Not Null, Index
+        
+    - `userId`: String, Auth UID - Foreign Key to Users, Not Null, Index
+        
+    - `role`: String - Not Null, e.g. 'owner', 'editor', 'viewer'
+        
+    - `joinedOn`: Number, Unix Timestamp ms - Not Null
+        
+    - `updatedOn`: Number, Unix Timestamp ms - Not Null
+        
+    - `deletedOn`: Number | Null, Unix Timestamp ms - Nullable
+        
+
 ### 帳戶 Accounts
 
 - **欄位:**
     
     - `id`: String, UUID/GUID - Primary Key
         
-    - `userId`: String, Auth UID - Foreign Key to Users, Not Null, Index
+    - `bookId`: String - Foreign Key to Books, Not Null, Index, 資料所屬帳本
+        
+    - `createdBy`: String, Auth UID - Foreign Key to Users, Not Null, 建立者 (原 userId)
         
     - `name`: String - Not Null
         
@@ -20,7 +60,7 @@
         
     - `standardAccountTypeId`: Number | Null - Foreign Key to StandardAccountTypes, Nullable
         
-    - `sortOrder`: Number - Not Null, Default 0, 用於使用者自訂排序, 數字越小越前面
+    - `sortOrder`: Number - Not Null, Default 0, 用於使用者自訂排序, (建議改為 bookId 範圍內排序)
         
     - `createdOn`: Number, Unix Timestamp ms - Not Null, 資料建立的系統時間
         
@@ -37,7 +77,9 @@
     
     - `id`: String, UUID/GUID - Primary Key
         
-    - `userId`: String, Auth UID - Foreign Key to Users, Not Null, Index
+    - `bookId`: String - Foreign Key to Books, Not Null, Index, 資料所屬帳本
+        
+    - `createdBy`: String, Auth UID - Foreign Key to Users, Not Null, 建立者 (原 userId)
         
     - `name`: String - Not Null
         
@@ -47,7 +89,7 @@
         
     - `standardCategoryId`: Number | Null - Foreign Key to StandardCategory, Nullable, 關聯到標準類別
         
-    - `sortOrder`: Number - Not Null, Default 0, 用於使用者自訂排序, 數字越小越前面
+    - `sortOrder`: Number - Not Null, Default 0, 用於使用者自訂排序
         
     - `createdOn`: Number, Unix Timestamp ms - Not Null
         
@@ -64,7 +106,9 @@
     
     - `id`: String, UUID/GUID - Primary Key
         
-    - `userId`: String, Auth UID - Foreign Key to Users, Not Null, Index
+    - `bookId`: String - Foreign Key to Books, Not Null, Index, 資料所屬帳本
+        
+    - `createdBy`: String, Auth UID - Foreign Key to Users, Not Null, 建立者 (原 userId)
         
     - `categoryId`: String - Foreign Key to Categories, Not Null
         
@@ -93,7 +137,9 @@
     
     - `id`: String, UUID/GUID - Primary Key
         
-    - `userId`: String, Auth UID - Foreign Key to Users, Not Null, Index
+    - `bookId`: String - Foreign Key to Books, Not Null, Index, 資料所屬帳本
+        
+    - `createdBy`: String, Auth UID - Foreign Key to Users, Not Null, 建立者 (原 userId)
         
     - `accountFromId`: String - Foreign Key to Accounts, Not Null
         
@@ -126,7 +172,9 @@
     
     - `id`: String, UUID/GUID - Primary Key
         
-    - `userId`: String, Auth UID - Foreign Key to Users, Not Null, 因為是手動輸入
+    - `bookId`: String - Foreign Key to Books, Not Null, Index, 資料所屬帳本
+        
+    - `createdBy`: String, Auth UID - Foreign Key to Users, Not Null, 建立者 (原 userId)
         
     - `currencyFromId`: Number - Foreign Key to Currencies, Not Null
         
@@ -147,7 +195,9 @@
     
     - `id`: String, UUID/GUID - Primary Key
         
-    - `userId`: String, Auth UID - Foreign Key to Users, Not Null
+    - `bookId`: String - Foreign Key to Books, Not Null, Index, 資料所屬帳本
+        
+    - `createdBy`: String, Auth UID - Foreign Key to Users, Not Null, 建立者 (原 userId)
         
     - `scheduleType`: String - Not Null, 例如 daily, weekly, monthly, yearly
         
