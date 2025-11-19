@@ -13,8 +13,8 @@
 ## 1. 記帳 App + Firestore, Accounting App
 
 **價值模型:**
-- **施工價值, Construction:** 22,960 點 / 次 (2,296 小時 = 11.5 人月)
-- **維運價值, Operation:** 1,078 點 / 月 (107.8 小時/月)
+- **施工價值, Construction:** 24,060 點 / 次 (2,406 小時 = 12.0 人月)
+- **維運價值, Operation:** 1,068 點 / 月 (106.8 小時/月)
 
 ### 1.1 交易與自動化, Transaction & Automation
 
@@ -22,36 +22,40 @@
 | :--- | :--- | :--- | :--- |
 | **支出管理** | PDM | 150 | 3 |
 | (Expense CRUD) | PJM | 90 | 2 |
-|  | Designer | 400 | 8 |
-|  | Frontend RD | 100 | 3 |
+|  | UX Designer | 160 | 3 |
+|  | UI Designer | 240 | 4 |
+|  | App RD | 100 | 3 |
 |  | Backend RD | 100 | 3 |
 |  | Data Engineer | 0 | 10 |
 |  | **Marketing** | **0** | **5** |
-| | **Subtotal** | **840** | **34** |
+| | **Subtotal** | **840** | **33** |
 | **收入管理** | PDM | 150 | 3 |
 | (Income CRUD) | PJM | 90 | 2 |
-|  | Designer | 400 | 8 |
-|  | Frontend RD | 100 | 3 |
+|  | UX Designer | 160 | 3 |
+|  | UI Designer | 240 | 4 |
+|  | App RD | 100 | 3 |
 |  | Backend RD | 100 | 3 |
 |  | Data Engineer | 0 | 10 |
 |  | **Marketing** | **0** | **5** |
-| | **Subtotal** | **840** | **34** |
+| | **Subtotal** | **840** | **33** |
 | **轉帳管理** | PDM | 200 | 3 |
 | (Transfer CRUD) | PJM | 120 | 2 |
-|  | Designer | 500 | 8 |
-|  | Frontend RD | 150 | 3 |
+|  | UX Designer | 200 | 3 |
+|  | UI Designer | 300 | 4 |
+|  | App RD | 150 | 3 |
 |  | Backend RD | 130 | 3 |
 |  | Data Engineer | 0 | 10 |
 |  | **Marketing** | **0** | **5** |
-| | **Subtotal** | **1,100** | **34** |
-| **定期交易** | PDM | 390 | 8 |
-| (Recurring) | PJM | 230 | 5 |
-|  | Designer | 900 | 18 |
-|  | Frontend RD | 400 | 10 |
+| | **Subtotal** | **1,100** | **33** |
+| **定期交易** | PDM | 310 | 8 |
+| (Recurring) | PJM | 190 | 5 |
+|  | UX Designer | 400 | 7 |
+|  | UI Designer | 200 | 10 |
+|  | App RD | 400 | 10 |
 |  | Backend RD | 250 | 8 |
 |  | Data Engineer | 0 | 30 |
 |  | **Marketing** | **0** | **10** |
-| | **Subtotal** | **2,170** | **89** |
+| | **Subtotal** | **1,750** | **88** |
 
 ### 1.2 資產管理, Asset Management
 
@@ -59,37 +63,42 @@
 | :--- | :--- | :--- | :--- |
 | **帳戶管理** | PDM | 100 | 3 |
 | (Account CRUD) | PJM | 60 | 2 |
-|  | Designer | 300 | 8 |
+|  | UX Designer | 120 | 3 |
+|  | UI Designer | 180 | 4 |
 |  | Backend RD | 100 | 3 |
 |  | Data Engineer | 0 | 8 |
 |  | **Marketing** | **0** | **5** |
-| | **Subtotal** | **560** | **29** |
+| | **Subtotal** | **560** | **28** |
 | **類別管理** | PDM | 110 | 3 |
 | (Category CRUD) | PJM | 70 | 2 |
-|  | Designer | 350 | 8 |
+|  | UX Designer | 140 | 3 |
+|  | UI Designer | 210 | 4 |
 |  | Backend RD | 100 | 3 |
 |  | Data Engineer | 0 | 8 |
 |  | **Marketing** | **0** | **5** |
-| | **Subtotal** | **630** | **29** |
+| | **Subtotal** | **630** | **28** |
 | **預設資料** | PDM | 60 | 2 |
 | (Onboarding) | PJM | 40 | 1 |
-|  | Designer | 200 | 5 |
+|  | UX Designer | 80 | 2 |
+|  | UI Designer | 120 | 3 |
 |  | Backend RD | 50 | 2 |
 |  | Data Engineer | 0 | 5 |
 |  | **Marketing** | **0** | **3** |
 | | **Subtotal** | **350** | **18** |
 | **多幣別支援** | PDM | 210 | 5 |
 | (Multi-Currency) | PJM | 130 | 3 |
-|  | Designer | 450 | 10 |
-|  | Frontend RD | 250 | 8 |
+|  | UX Designer | 180 | 4 |
+|  | UI Designer | 270 | 6 |
+|  | App RD | 250 | 8 |
 |  | Backend RD | 150 | 5 |
 |  | Data Engineer | 0 | 20 |
 |  | **Marketing** | **0** | **10** |
 | | **Subtotal** | **1,190** | **61** |
 | **解除限制** | PDM | 60 | 2 |
 | (Unlimited) | PJM | 40 | 1 |
-|  | Designer | 100 | 5 |
-|  | Frontend RD | 100 | 5 |
+|  | UX Designer | 40 | 2 |
+|  | UI Designer | 60 | 3 |
+|  | App RD | 100 | 5 |
 |  | Backend RD | 50 | 2 |
 |  | Data Engineer | 0 | 30 |
 |  | **Marketing** | **0** | **15** |
@@ -101,52 +110,58 @@
 | :--- | :--- | :--- | :--- |
 | **離線支援** | PDM | 290 | 0 |
 | (Offline Arch) | PJM | 170 | 0 |
-|  | Designer | 900 | 20 |
+|  | UX Designer | 360 | 8 |
+|  | UI Designer | 540 | 12 |
 |  | Backend RD | 250 | 10 |
 |  | Data Engineer | 0 | 5 |
 |  | **Marketing** | **0** | **3** |
 | | **Subtotal** | **1,610** | **38** |
-| **雲端同步** | PDM | 820 | 10 |
-| (Sync Engine) | PJM | 500 | 6 |
-|  | Designer | 900 | 25 |
-|  | Frontend RD | 1,800 | 50 |
-|  | Backend RD | 600 | 25 |
+| **雲端同步** | PDM | 960 | 10 |
+| (Sync Engine) | PJM | 580 | 6 |
+|  | UX Designer | 500 | 10 |
+|  | UI Designer | 100 | 15 |
+|  | App RD | 2,340 | 50 |
+|  | Backend RD | 900 | 25 |
 |  | Data Engineer | 0 | 40 |
 |  | **Marketing** | **0** | **20** |
-| | **Subtotal** | **4,620** | **176** |
-| **資料匯入** | PDM | 140 | 5 |
-| (CSV Import) | PJM | 90 | 3 |
-|  | Designer | 450 | 10 |
+| | **Subtotal** | **5,380** | **176** |
+| **資料匯入** | PDM | 200 | 5 |
+| (CSV Import) | PJM | 120 | 3 |
+|  | UX Designer | 500 | 4 |
+|  | UI Designer | 200 | 6 |
 |  | Backend RD | 120 | 5 |
 |  | Data Engineer | 0 | 8 |
 |  | **Marketing** | **0** | **5** |
-| | **Subtotal** | **800** | **36** |
+| | **Subtotal** | **1,140** | **36** |
 
 ### 1.4 儀表板與體驗, Dashboard & Experience
 
 | User Story | Role | 施工價值 (Pt) | 維運價值 (Pt/Mo) |
 | :--- | :--- | :--- | :--- |
-| **首頁儀表板** | PDM | 160 | 5 |
-| (Home Dash) | PJM | 90 | 3 |
-|  | Designer | 500 | 12 |
+| **首頁儀表板** | PDM | 230 | 5 |
+| (Home Dash) | PJM | 140 | 3 |
+|  | UX Designer | 200 | 4 |
+|  | UI Designer | 600 | 7 |
 |  | Backend RD | 130 | 5 |
 |  | Data Engineer | 0 | 15 |
 |  | **Marketing** | **0** | **8** |
-| | **Subtotal** | **880** | **48** |
+| | **Subtotal** | **1,300** | **47** |
 | **搜尋功能** | PDM | 70 | 0 |
 | (Local Search) | PJM | 40 | 0 |
-|  | Designer | 220 | 5 |
+|  | UX Designer | 88 | 2 |
+|  | UI Designer | 132 | 3 |
 |  | Backend RD | 60 | 2 |
 |  | Data Engineer | 0 | 3 |
 |  | **Marketing** | **0** | **2** |
 | | **Subtotal** | **390** | **12** |
 | **多語言** | PDM | 80 | 0 |
 | (i18n) | PJM | 50 | 0 |
-|  | Designer | 250 | 6 |
+|  | UX Designer | 100 | 2 |
+|  | UI Designer | 150 | 3 |
 |  | Backend RD | 70 | 3 |
 |  | Data Engineer | 0 | 12 |
 |  | **Marketing** | **0** | **5** |
-| | **Subtotal** | **450** | **26** |
+| | **Subtotal** | **450** | **25** |
 
 ### 1.5 共用帳本, Shared Ledger
 
@@ -154,31 +169,35 @@
 | :--- | :--- | :--- | :--- |
 | **預設帳本** | PDM | 150 | 5 |
 | (Default Book) | PJM | 90 | 3 |
-|  | Designer | 300 | 10 |
-|  | Frontend RD | 200 | 10 |
+|  | UX Designer | 120 | 4 |
+|  | UI Designer | 180 | 6 |
+|  | App RD | 200 | 10 |
 |  | Backend RD | 100 | 5 |
 |  | Data Engineer | 0 | 8 |
 |  | **Marketing** | **0** | **5** |
 | | **Subtotal** | **840** | **46** |
 | **帳本切換** | PDM | 70 | 0 |
 | (Book Switcher) | PJM | 40 | 0 |
-|  | Designer | 220 | 6 |
+|  | UX Designer | 88 | 2 |
+|  | UI Designer | 132 | 3 |
 |  | Backend RD | 60 | 3 |
 |  | Data Engineer | 0 | 5 |
 |  | **Marketing** | **0** | **3** |
-| | **Subtotal** | **390** | **17** |
+| | **Subtotal** | **390** | **16** |
 | **成員邀請** | PDM | 300 | 6 |
 | (Invitation) | PJM | 180 | 4 |
-|  | Designer | 450 | 12 |
-|  | Frontend RD | 500 | 12 |
+|  | UX Designer | 180 | 4 |
+|  | UI Designer | 270 | 7 |
+|  | App RD | 500 | 12 |
 |  | Backend RD | 230 | 6 |
 |  | Data Engineer | 0 | 60 |
 |  | **Marketing** | **0** | **20** |
-| | **Subtotal** | **1,660** | **120** |
+| | **Subtotal** | **1,660** | **119** |
 | **協作權限** | PDM | 590 | 12 |
 | (Collaboration) | PJM | 350 | 7 |
-|  | Designer | 600 | 25 |
-|  | Frontend RD | 1,200 | 35 |
+|  | UX Designer | 240 | 10 |
+|  | UI Designer | 360 | 15 |
+|  | App RD | 1,200 | 35 |
 |  | Backend RD | 550 | 22 |
 |  | Data Engineer | 0 | 55 |
 |  | **Marketing** | **0** | **15** |
@@ -189,65 +208,77 @@
 ## 2. Web 複雜報表, Web Console
 
 **價值模型:**
-- **施工價值, Construction:** 12,060 點 / 次 (1,206 小時 = 6.0 人月)
-- **維運價值, Operation:** 771 點 / 月 (77.1 小時/月)
+- **施工價值, Construction:** 12,340 點 / 次 (1,234 小時 = 6.2 人月)
+- **維運價值, Operation:** 866 點 / 月 (86.6 小時/月)
 
 ### 2.1 高密度資料瀏覽, Data Browsing
 
 | User Story | Role | 施工價值 (Pt) | 維運價值 (Pt/Mo) |
 | :--- | :--- | :--- | :--- |
-| **表格視圖** | PDM | 550 | 12 |
-| (Data Grid) | PJM | 330 | 7 |
-|  | Designer | 1,800 | 55 |
+| **表格視圖** | PDM | 580 | 12 |
+| (Data Grid) | PJM | 340 | 7 |
+|  | UX Designer | 300 | 22 |
+|  | UI Designer | 800 | 33 |
+|  | Web RD | 800 | 30 |
 |  | Backend RD | 400 | 22 |
 |  | Data Engineer | 0 | 80 |
 |  | **Marketing** | **0** | **40** |
-| | **Subtotal** | **3,080** | **216** |
-| **進階匯出** | PDM | 170 | 5 |
-| (Adv Export) | PJM | 100 | 3 |
-|  | Designer | 550 | 22 |
+| | **Subtotal** | **3,220** | **246** |
+| **進階匯出** | PDM | 220 | 5 |
+| (Adv Export) | PJM | 130 | 3 |
+|  | UX Designer | 220 | 8 |
+|  | UI Designer | 330 | 13 |
+|  | Web RD | 200 | 10 |
 |  | Backend RD | 120 | 6 |
 |  | Data Engineer | 0 | 20 |
 |  | **Marketing** | **0** | **8** |
-| | **Subtotal** | **940** | **64** |
+| | **Subtotal** | **1,220** | **73** |
 
 ### 2.2 進階篩選與查詢, Advanced Query
 
 | User Story | Role | 施工價值 (Pt) | 維運價值 (Pt/Mo) |
 | :--- | :--- | :--- | :--- |
-| **JQL 介面** | PDM | 600 | 18 |
-| (JQL Interface) | PJM | 360 | 11 |
-|  | Designer | 1,800 | 58 |
+| **JQL 介面** | PDM | 480 | 18 |
+| (JQL Interface) | PJM | 280 | 11 |
+|  | UX Designer | 500 | 23 |
+|  | UI Designer | 300 | 34 |
+|  | Web RD | 500 | 20 |
 |  | Backend RD | 600 | 28 |
 |  | Data Engineer | 0 | 45 |
 |  | **Marketing** | **0** | **18** |
-| | **Subtotal** | **3,360** | **178** |
-| **視圖儲存** | PDM | 120 | 0 |
-| (Saved Views) | PJM | 70 | 0 |
-|  | Designer | 350 | 12 |
+| | **Subtotal** | **2,660** | **197** |
+| **視圖儲存** | PDM | 160 | 0 |
+| (Saved Views) | PJM | 90 | 0 |
+|  | UX Designer | 140 | 4 |
+|  | UI Designer | 210 | 7 |
+|  | Web RD | 150 | 5 |
 |  | Backend RD | 120 | 6 |
 |  | Data Engineer | 0 | 8 |
 |  | **Marketing** | **0** | **4** |
-| | **Subtotal** | **660** | **30** |
+| | **Subtotal** | **870** | **34** |
 
 ### 2.3 客製化報表, Custom Reporting
 
 | User Story | Role | 施工價值 (Pt) | 維運價值 (Pt/Mo) |
 | :--- | :--- | :--- | :--- |
-| **自訂維度** | PDM | 600 | 18 |
-| (Custom Charts) | PJM | 360 | 11 |
-|  | Designer | 1,800 | 58 |
+| **自訂維度** | PDM | 620 | 18 |
+| (Custom Charts) | PJM | 380 | 11 |
+|  | UX Designer | 300 | 23 |
+|  | UI Designer | 800 | 34 |
+|  | Web RD | 800 | 30 |
 |  | Backend RD | 600 | 28 |
 |  | Data Engineer | 0 | 85 |
 |  | **Marketing** | **0** | **42** |
-| | **Subtotal** | **3,360** | **242** |
-| **報表匯出** | PDM | 120 | 0 |
-| (Report Export) | PJM | 70 | 0 |
-|  | Designer | 350 | 12 |
+| | **Subtotal** | **3,500** | **271** |
+| **報表匯出** | PDM | 160 | 0 |
+| (Report Export) | PJM | 90 | 0 |
+|  | UX Designer | 140 | 4 |
+|  | UI Designer | 210 | 7 |
+|  | Web RD | 150 | 5 |
 |  | Backend RD | 120 | 6 |
 |  | Data Engineer | 0 | 15 |
 |  | **Marketing** | **0** | **8** |
-| | **Subtotal** | **660** | **41** |
+| | **Subtotal** | **870** | **45** |
 
 ---
 
@@ -255,7 +286,7 @@
 
 **價值模型:**
 - **施工價值, Construction:** 15,130 點 / 次 (1,513 小時 = 7.6 人月)
-- **維運價值, Operation:** 1,221 點 / 月 (122.1 小時/月)
+- **維運價值, Operation:** 1,216 點 / 月 (121.6 小時/月)
 
 ### 3.1 智慧偵測, Intelligent Detection
 
@@ -263,22 +294,24 @@
 | :--- | :--- | :--- | :--- |
 | **異常通知** | PDM | 690 | 12 |
 | (Anomaly Alert) | PJM | 420 | 7 |
-|  | Designer | 230 | 12 |
-|  | Frontend RD | 600 | 22 |
+|  | UX Designer | 92 | 4 |
+|  | UI Designer | 138 | 7 |
+|  | Web RD | 600 | 22 |
 |  | Backend RD | 240 | 12 |
 |  | Data Engineer | 0 | 95 |
 |  | QA | 1,700 | 110 |
 |  | **Marketing** | **0** | **45** |
-| | **Subtotal** | **3,880** | **315** |
+| | **Subtotal** | **3,880** | **314** |
 | **重複偵測** | PDM | 450 | 0 |
 | (Duplicate) | PJM | 270 | 0 |
-|  | Designer | 230 | 12 |
-|  | Frontend RD | 350 | 12 |
+|  | UX Designer | 92 | 4 |
+|  | UI Designer | 138 | 7 |
+|  | Web RD | 350 | 12 |
 |  | Backend RD | 120 | 6 |
 |  | Data Engineer | 0 | 48 |
 |  | QA | 1,100 | 55 |
 |  | **Marketing** | **0** | **18** |
-| | **Subtotal** | **2,520** | **151** |
+| | **Subtotal** | **2,520** | **150** |
 
 ### 3.2 預測與診斷, Forecast & Diagnosis
 
@@ -286,63 +319,70 @@
 | :--- | :--- | :--- | :--- |
 | **現金流預測** | PDM | 720 | 12 |
 | (Cashflow) | PJM | 430 | 7 |
-|  | Designer | 350 | 12 |
-|  | Frontend RD | 600 | 22 |
+|  | UX Designer | 140 | 4 |
+|  | UI Designer | 210 | 7 |
+|  | Web RD | 600 | 22 |
 |  | Backend RD | 240 | 12 |
 |  | Data Engineer | 0 | 135 |
 |  | QA | 1,700 | 110 |
 |  | **Marketing** | **0** | **45** |
-| | **Subtotal** | **4,040** | **355** |
+| | **Subtotal** | **4,040** | **354** |
 | **健康評分** | PDM | 450 | 0 |
 | (Health Score) | PJM | 270 | 0 |
-|  | Designer | 230 | 12 |
-|  | Frontend RD | 350 | 12 |
+|  | UX Designer | 92 | 4 |
+|  | UI Designer | 138 | 7 |
+|  | Web RD | 350 | 12 |
 |  | Backend RD | 120 | 6 |
 |  | Data Engineer | 0 | 45 |
 |  | QA | 1,100 | 55 |
 |  | **Marketing** | **0** | **18** |
-| | **Subtotal** | **2,520** | **148** |
+| | **Subtotal** | **2,520** | **147** |
 | **AI 對話** | PDM | 390 | 12 |
 | (AI Chat) | PJM | 230 | 7 |
-|  | Designer | 230 | 12 |
-|  | Frontend RD | 600 | 22 |
+|  | UX Designer | 92 | 4 |
+|  | UI Designer | 138 | 7 |
+|  | Web RD | 600 | 22 |
 |  | Backend RD | 120 | 6 |
 |  | Data Engineer | 0 | 90 |
 |  | QA | 600 | 58 |
 |  | **Marketing** | **0** | **45** |
-| | **Subtotal** | **2,170** | **252** |
+| | **Subtotal** | **2,170** | **251** |
 
 ---
 
 ## 4. 總經分析報表與 API, Macro Data Service
 
 **價值模型:**
-- **施工價值, Construction:** 12,090 點 / 次 (1,209 小時 = 6.0 人月)
-- **維運價值, Operation:** 1,764 點 / 月 (176.4 小時/月)
+- **施工價值, Construction:** 14,190 點 / 次 (1,419 小時 = 7.1 人月)
+- **維運價值, Operation:** 1,802 點 / 月 (180.2 小時/月)
 
 ### 4.1 B2B 數據服務, B2B Data Services
 
 | User Story | Role | 施工價值 (Pt) | 維運價值 (Pt/Mo) |
 | :--- | :--- | :--- | :--- |
-| **市場儀表板** | PDM | 580 | 22 |
-| (Dashboard) | PJM | 350 | 13 |
-|  | Designer | 950 | 58 |
+| **市場儀表板** | PDM | 770 | 22 |
+| (Dashboard) | PJM | 460 | 13 |
+|  | UX Designer | 300 | 23 |
+|  | UI Designer | 800 | 34 |
+|  | Web RD | 600 | 20 |
 |  | Backend RD | 240 | 22 |
 |  | AI Engineer | 1,150 | 110 |
 |  | Data Engineer | 0 | 180 |
 |  | **Marketing** | **0** | **90** |
-| | **Subtotal** | **3,270** | **495** |
-| **競品分析** | PDM | 580 | 22 |
-| (Competitor) | PJM | 350 | 13 |
-|  | Designer | 950 | 58 |
+| | **Subtotal** | **4,320** | **514** |
+| **競品分析** | PDM | 770 | 22 |
+| (Competitor) | PJM | 460 | 13 |
+|  | UX Designer | 300 | 23 |
+|  | UI Designer | 800 | 34 |
+|  | Web RD | 600 | 20 |
 |  | Backend RD | 240 | 22 |
 |  | AI Engineer | 1,150 | 110 |
 |  | Data Engineer | 0 | 180 |
 |  | **Marketing** | **0** | **90** |
-| | **Subtotal** | **3,270** | **495** |
+| | **Subtotal** | **4,320** | **514** |
 | **總經 API** | PDM | 580 | 22 |
 | (Macro API) | PJM | 350 | 13 |
-|  | Frontend RD | 950 | 58 |
+|  | Web RD | 950 | 58 |
 |  | Backend RD | 240 | 22 |
 |  | AI Engineer | 1,150 | 110 |
 |  | Data Engineer | 0 | 180 |
@@ -350,7 +390,7 @@
 | | **Subtotal** | **3,270** | **495** |
 | **隱私合規** | PDM | 410 | 22 |
 | (Privacy) | PJM | 240 | 13 |
-|  | Frontend RD | 240 | 22 |
+|  | Web RD | 240 | 22 |
 |  | Backend RD | 240 | 22 |
 |  | AI Engineer | 1,150 | 110 |
 |  | Data Engineer | 0 | 45 |
@@ -363,8 +403,8 @@
 
 | 產品組件 | 施工價值 (點) | 施工工時 | 維運價值 (點/月) | 年化維運 |
 | :--- | ---: | ---: | ---: | ---: |
-| 1. 記帳 App | 22,960 | 11.5 人月 | 1,078 | 12,936 |
-| 2. Web Console | 12,060 | 6.0 人月 | 771 | 9,252 |
-| 3. AI Advisor | 15,130 | 7.6 人月 | 1,221 | 14,652 |
-| 4. Macro Data | 12,090 | 6.0 人月 | 1,764 | 21,168 |
-| **總計** | **62,240** | **31.1 人月** | **4,834** | **58,008** |
+| 1. 記帳 App | 24,060 | 12.0 人月 | 1,068 | 12,816 |
+| 2. Web Console | 12,340 | 6.2 人月 | 866 | 10,392 |
+| 3. AI Advisor | 15,130 | 7.6 人月 | 1,216 | 14,592 |
+| 4. Macro Data | 14,190 | 7.1 人月 | 1,802 | 21,624 |
+| **總計** | **65,720** | **32.9 人月** | **4,952** | **59,424** |

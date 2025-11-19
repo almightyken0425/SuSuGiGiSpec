@@ -29,19 +29,29 @@
         - 維護所有規格文件
         - 功能開發優先排序
         - 定義產品願景與使用者故事
-    - **UI/UX 設計, Designer**
+    - **UX 設計, UX Designer**
+        - 使用者流程 (User Flow) 與資訊架構 (IA)
+        - 低保真線框圖 (Wireframe) 與原型 (Prototype)
+        - 使用者研究與易用性測試
+        - 規格邏輯驗證與邊緣案例定義 (Edge Cases)
+    - **UI 設計, UI Designer**
         - App 的視覺風格、Logo、品牌形象
-        - 所有畫面的 Flowchart、Wireframe 與 Mockup
-        - 維護設計系統
+        - 高保真視覺稿 (Mockup) 與互動設計
+        - 維護設計系統 (Design System) 與元件庫
+        - 輸出切圖與標註 (Assets & Handoff)
 - **技術長, CTO**
     - **專案管理, PJM**
         - 專案時程規劃與管理
         - 開發進度追蹤
         - 跨職能溝通與資源協調
-    - **前端開發, Frontend RD**
+    - **App 開發, App RD**
         - React Native 應用程式的架構與實作
         - 將 UI/UX 設計稿轉換為可互動的 App 畫面
-        - 串接所有本地資料庫
+        - 串接所有本地資料庫 (SQLite/WatermelonDB)
+    - **Web 開發, Web RD**
+        - Web Console 與 B2B Dashboard 的架構與實作
+        - 複雜報表與圖表的網頁端呈現
+        - 響應式網頁設計 (RWD)
     - **後端開發, Backend RD**
         - Firebase 服務架構，包含 Firestore 與 Auth 的設計與安全規則
         - 實作同步邏輯與 Cloud Functions

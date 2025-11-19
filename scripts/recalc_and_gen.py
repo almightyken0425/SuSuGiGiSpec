@@ -6,8 +6,11 @@ MD_PATH = 'no2_equity_model/no4_product_component.md'
 
 def calculate_points(row):
     # Columns to sum for Base Points
+    # Designer is split into UX and UI
+    # Frontend is split into App RD and Web RD
     tech_roles = [
-        'Designer_Construction', 'Frontend RD_Construction', 'Backend RD_Construction',
+        'UX_Construction', 'UI_Construction', 
+        'App RD_Construction', 'Web RD_Construction', 'Backend RD_Construction',
         'QA_Construction', 'AI Engineer_Construction', 'Data Engineer_Construction'
     ]
     
@@ -31,7 +34,7 @@ def update_csv():
         reader = csv.DictReader(f)
         fieldnames = reader.fieldnames
         
-        # Ensure PJM columns exist
+        # Ensure PJM columns exist (already handled by migration, but safe to keep)
         if 'PJM_Construction' not in fieldnames:
             # Insert after PDM
             pdm_idx = fieldnames.index('PDM_Operation')
@@ -53,14 +56,7 @@ def update_csv():
             
             # Update PJM
             row['PJM_Construction'] = str(pjm)
-            # For PJM Operation, let's assume a small ratio or similar to PDM? 
-            # The plan didn't specify PJM Operation formula, only Construction.
-            # "Set PJM Construction Value to 15%..."
-            # I'll set PJM_Operation to 0 for now or copy PDM? 
-            # Let's look at the CSV. PDM_Operation is present. 
-            # I'll set PJM_Operation to be proportional to PDM_Operation? 
-            # PJM is 15/25 = 0.6 of PDM. 
-            # Let's set PJM_Operation = PDM_Operation * 0.6 roughly.
+            # PJM Operation = PDM Operation * 0.6
             pdm_op = int(row.get('PDM_Operation', '0') or '0')
             pjm_op = int(round(pdm_op * 0.6))
             row['PJM_Operation'] = str(pjm_op)
@@ -201,13 +197,14 @@ def generate_markdown(rows):
                 sub_const = 0
                 sub_op = 0
                 
-                # Roles to display
-                # PDM, PJM, Designer, Frontend RD, Backend RD, QA, AI Engineer, Data Engineer, Marketing, Operations
+                # Roles to display (Updated with App/Web RD)
                 roles_order = [
                     ('PDM', 'PDM'),
                     ('PJM', 'PJM'),
-                    ('Designer', 'Designer'),
-                    ('Frontend RD', 'Frontend RD'),
+                    ('UX', 'UX Designer'),
+                    ('UI', 'UI Designer'),
+                    ('App RD', 'App RD'),
+                    ('Web RD', 'Web RD'),
                     ('Backend RD', 'Backend RD'),
                     ('AI Engineer', 'AI Engineer'),
                     ('Data Engineer', 'Data Engineer'),
