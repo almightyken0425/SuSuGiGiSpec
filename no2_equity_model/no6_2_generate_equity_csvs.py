@@ -113,12 +113,9 @@ def main():
     
     # Build output rows
     output_rows_role_summary = []
-    # output_rows_role_summary.append(['產品', '角色', '施工價值 (點)', '維運價值 (點)', '單一產品施工價值的佔總價值比例', '單一產品維護價值的佔總價值比例', '佔總價值比例', '換算工時'])
     output_rows_role_summary.append(['產品', '角色', '施工價值pt', '維運價值pt', '產品施工%', '產品維護%', '換算工時'])
 
-
     for _, row in role_product_summary.iterrows():
-        if row['Construction Points'] == 0: continue
         output_rows_role_summary.append([
             row['Product'],
             f"**{row['Role']}**",
@@ -126,7 +123,6 @@ def main():
             f"{row['Operation Points']:,}",
             row['Construction_%_by_Product'],
             row['Operation_%_by_Product'],
-            # row['Percentage'],
             row['Man Months']
         ])
         
