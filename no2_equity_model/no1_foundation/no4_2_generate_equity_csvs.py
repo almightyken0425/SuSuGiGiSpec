@@ -25,23 +25,23 @@ output_path_consistency = os.path.join(BASE_DIR, OUTPUT_FILE_CONSISTENCY)
 TIERS = [
     {
         'name': 'Tier 0 (Local)', 'price_mo': '$0', 'price_yr': '$0',
-        'products': ['記帳 App'], 'is_tier_0': True
+        'products': ['Accounting App'], 'is_tier_0': True
     },
     {
         'name': 'Tier 1 (Cloud)', 'price_mo': '$30', 'price_yr': '$360',
-        'products': ['記帳 App'], 'is_tier_0': False
+        'products': ['Accounting App'], 'is_tier_0': False
     },
     {
         'name': 'Tier 2 (Management)', 'price_mo': '$90', 'price_yr': '$900',
-        'products': ['記帳 App', 'Web Console'], 'is_tier_0': False
+        'products': ['Accounting App', 'Web Console'], 'is_tier_0': False
     },
     {
         'name': 'Tier 3 (Intelligence)', 'price_mo': '$140', 'price_yr': '$1,400',
-        'products': ['記帳 App', 'Web Console', 'AI Advisor'], 'is_tier_0': False
+        'products': ['Accounting App', 'Web Console', 'AI Advisor'], 'is_tier_0': False
     },
     {
         'name': 'Tier B (Enterprise)', 'price_mo': '$500+', 'price_yr': '$6,000+',
-        'products': ['記帳 App', 'Web Console', 'AI Advisor', 'Macro Data'], 'is_tier_0': False
+        'products': ['Accounting App', 'Web Console', 'AI Advisor', 'Macro Data'], 'is_tier_0': False
     }
 ]
 
@@ -155,13 +155,13 @@ def main():
     product_summary = df.groupby('Product')['Construction Points'].sum().reset_index()
     
     component_map = {
-        '記帳 App': '記帳 App + Firestore',
-        'Web Console': 'Web 複雜報表',
-        'AI Advisor': 'AI 個人化建議',
-        'Macro Data': '總經分析報表與 API'
+        'Accounting App': 'Accounting App',
+        'Web Console': 'Web Console',
+        'AI Advisor': 'AI Advisor',
+        'Macro Data': 'Macro Data'
     }
     
-    ordered_products = ['記帳 App', 'Web Console', 'AI Advisor', 'Macro Data']
+    ordered_products = ['Accounting App', 'Web Console', 'AI Advisor', 'Macro Data']
     
     output_rows_component_summary = []
     output_rows_component_summary.append(['產品組件', '施工價值 (點)', '佔總價值比例', '換算工時'])
