@@ -82,10 +82,10 @@ def main():
     print(f"Total Construction Points: {total_construction_points}")
 
     # ==========================================
-    # Task 1: Generate no7_1_equity_summary_by_role.csv
+    # Task 1: Generate equity_summary_by_role.csv
     # Group by Role AND Product
     # ==========================================
-    print("Generating no7_1_equity_summary_by_role.csv...")
+    print("Generating equity_summary_by_role.csv...")
     
     # Group by Role and Product
     role_product_summary = df.groupby(['Product', 'Role'])[['Construction Points', 'Operation Points']].sum().reset_index()
@@ -147,10 +147,10 @@ def main():
 
 
     # ==========================================
-    # Task 2: Generate no7_2_equity_summary_by_component.csv
+    # Task 2: Generate equity_summary_by_component.csv
     # Group by Product
     # ==========================================
-    print("Generating no7_2_equity_summary_by_component.csv...")
+    print("Generating equity_summary_by_component.csv...")
     
     product_summary = df.groupby('Product')['Construction Points'].sum().reset_index()
     
@@ -197,9 +197,9 @@ def main():
 
 
     # ==========================================
-    # Task 3: Generate no7_3_equity_consistency_analysis.csv
+    # Task 3: Generate equity_consistency_analysis.csv
     # ==========================================
-    print("Generating no7_3_equity_consistency_analysis.csv...")
+    print("Generating equity_consistency_analysis.csv...")
     
     # Calculate Ops points per product
     prod_ops_summary = df.groupby('Product')['Operation Points'].sum()
