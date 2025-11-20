@@ -1,0 +1,96 @@
+Product,Module,Role,Construction Points,Operation Points
+AI Advisor,預測與診斷,PDM,1560,24
+AI Advisor,預測與診斷,UI Designer,486,21
+AI Advisor,預測與診斷,QA,3400,223
+AI Advisor,預測與診斷,Web RD,1550,56
+AI Advisor,預測與診斷,UX Designer,324,12
+AI Advisor,預測與診斷,PJM,930,14
+AI Advisor,預測與診斷,AI Engineer,1100,55
+AI Advisor,預測與診斷,Backend RD,480,24
+AI Advisor,預測與診斷,Data Engineer,0,270
+AI Advisor,預測與診斷,Marketing,0,108
+Macro Data,B2B 數據服務,PDM,2530,88
+Macro Data,B2B 數據服務,UI Designer,1600,68
+Macro Data,B2B 數據服務,QA,1600,0
+Macro Data,B2B 數據服務,Web RD,2390,120
+Macro Data,B2B 數據服務,UX Designer,600,46
+Macro Data,B2B 數據服務,PJM,1510,52
+Macro Data,B2B 數據服務,AI Engineer,4600,440
+Macro Data,B2B 數據服務,Backend RD,960,88
+Macro Data,B2B 數據服務,Data Engineer,1850,585
+Macro Data,B2B 數據服務,Marketing,0,315
+Macro Data,B2B 數據服務,Operations,0,250
+Web Console,客製化報表,PDM,780,18
+Web Console,客製化報表,UI Designer,1010,41
+Web Console,客製化報表,QA,410,0
+Web Console,客製化報表,Web RD,950,35
+Web Console,客製化報表,UX Designer,440,27
+Web Console,客製化報表,PJM,470,11
+Web Console,客製化報表,Backend RD,720,34
+Web Console,客製化報表,Data Engineer,0,100
+Web Console,客製化報表,Marketing,0,50
+Web Console,客製化報表,Operations,0,10
+Web Console,進階篩選與查詢,PDM,640,18
+Web Console,進階篩選與查詢,UI Designer,510,41
+Web Console,進階篩選與查詢,QA,310,0
+Web Console,進階篩選與查詢,Web RD,650,25
+Web Console,進階篩選與查詢,UX Designer,640,27
+Web Console,進階篩選與查詢,PJM,370,11
+Web Console,進階篩選與查詢,Backend RD,720,34
+Web Console,進階篩選與查詢,Data Engineer,0,53
+Web Console,進階篩選與查詢,Marketing,0,22
+Web Console,進階篩選與查詢,Operations,0,10
+Web Console,高密度資料瀏覽,PDM,800,17
+Web Console,高密度資料瀏覽,UI Designer,1130,46
+Web Console,高密度資料瀏覽,QA,380,0
+Web Console,高密度資料瀏覽,Web RD,1000,40
+Web Console,高密度資料瀏覽,UX Designer,520,30
+Web Console,高密度資料瀏覽,PJM,470,10
+Web Console,高密度資料瀏覽,Backend RD,520,28
+Web Console,高密度資料瀏覽,Data Engineer,0,100
+Web Console,高密度資料瀏覽,Marketing,0,48
+Web Console,高密度資料瀏覽,Operations,0,10
+記帳 App,交易與自動化,PDM,810,17
+記帳 App,交易與自動化,UI Designer,980,22
+記帳 App,交易與自動化,QA,320,0
+記帳 App,交易與自動化,App RD,1130,19
+記帳 App,交易與自動化,UX Designer,920,16
+記帳 App,交易與自動化,PJM,490,11
+記帳 App,交易與自動化,Backend RD,180,17
+記帳 App,交易與自動化,Marketing,0,25
+記帳 App,交易與自動化,Operations,0,10
+記帳 App,儀表板與體驗,PDM,380,5
+記帳 App,儀表板與體驗,UI Designer,882,13
+記帳 App,儀表板與體驗,QA,120,0
+記帳 App,儀表板與體驗,App RD,400,0
+記帳 App,儀表板與體驗,UX Designer,388,8
+記帳 App,儀表板與體驗,PJM,230,3
+記帳 App,儀表板與體驗,Backend RD,100,10
+記帳 App,儀表板與體驗,Marketing,0,15
+記帳 App,共用帳本,PDM,1110,23
+記帳 App,共用帳本,UI Designer,942,31
+記帳 App,共用帳本,QA,530,0
+記帳 App,共用帳本,App RD,1950,57
+記帳 App,共用帳本,UX Designer,628,20
+記帳 App,共用帳本,PJM,660,14
+記帳 App,共用帳本,Backend RD,520,36
+記帳 App,共用帳本,Marketing,0,43
+記帳 App,共用帳本,Operations,0,25
+記帳 App,資料與同步,PDM,1450,15
+記帳 App,資料與同步,UI Designer,840,33
+記帳 App,資料與同步,QA,760,0
+記帳 App,資料與同步,App RD,2940,50
+記帳 App,資料與同步,UX Designer,1360,22
+記帳 App,資料與同步,PJM,870,9
+記帳 App,資料與同步,Backend RD,400,40
+記帳 App,資料與同步,Marketing,0,28
+記帳 App,資料與同步,Operations,0,35
+記帳 App,資產管理,PDM,540,15
+記帳 App,資產管理,UI Designer,840,20
+記帳 App,資產管理,QA,270,0
+記帳 App,資產管理,App RD,955,21
+記帳 App,資產管理,UX Designer,560,14
+記帳 App,資產管理,PJM,340,9
+記帳 App,資產管理,Backend RD,180,15
+記帳 App,資產管理,Marketing,0,38
+記帳 App,資產管理,Operations,0,25
