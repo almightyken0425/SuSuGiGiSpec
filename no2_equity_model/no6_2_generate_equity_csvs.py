@@ -90,19 +90,30 @@ def main():
     # Group by Role and Product
     role_product_summary = df.groupby(['Product', 'Role'])[['Construction Points', 'Operation Points']].sum().reset_index()
     
-    # Sort by Role then Points (descending) or just Points? 
-    # Usually grouping by Role is primary.
+    # Sort by Product then Construction Points descending
     role_product_summary = role_product_summary.sort_values(['Product', 'Construction Points'], ascending=[True, False])
     
-    # Calculate percentages and man-months
+    # Calculate per-product totals for percentages
+    role_product_summary['Construction_Total_By_Product'] = role_product_summary.groupby('Product')['Construction Points'].transform('sum')
+    role_product_summary['Operation_Total_By_Product'] = role_product_summary.groupby('Product')['Operation Points'].transform('sum')
+    
+    # Calculate percentages per product (avoid division by zero)
+    role_product_summary['Construction_%_by_Product'] = role_product_summary.apply(
+        lambda x: f"{(x['Construction Points'] / x['Construction_Total_By_Product'] * 100):.1f}%" if x['Construction_Total_By_Product'] > 0 else "0.0%", axis=1
+    )
+    role_product_summary['Operation_%_by_Product'] = role_product_summary.apply(
+        lambda x: f"{(x['Operation Points'] / x['Operation_Total_By_Product'] * 100):.1f}%" if x['Operation_Total_By_Product'] > 0 else "0.0%", axis=1
+    )
+    
+    # Calculate overall construction percentage
     if total_construction_points == 0:
         total_construction_points = 1
-        
     role_product_summary['Percentage'] = (role_product_summary['Construction Points'] / total_construction_points * 100).map('{:.1f}%'.format)
     role_product_summary['Man Months'] = (role_product_summary['Construction Points'] / 2000).map('{:.1f} 人月'.format)
     
+    # Build output rows
     output_rows_role_summary = []
-    output_rows_role_summary.append(['產品', '角色', '施工價值 (點)', '維運價值 (點)', '佔總價值比例', '換算工時'])
+    output_rows_role_summary.append(['產品', '角色', '施工價值 (點)', '維運價值 (點)', '施工價值的佔總價值比例byProduct', '維護價值的佔總價值比例byProduct', '佔總價值比例', '換算工時'])
     
     for _, row in role_product_summary.iterrows():
         if row['Construction Points'] == 0: continue
@@ -111,6 +122,8 @@ def main():
             f"**{row['Role']}**",
             f"{row['Construction Points']:,}",
             f"{row['Operation Points']:,}",
+            row['Construction_%_by_Product'],
+            row['Operation_%_by_Product'],
             row['Percentage'],
             row['Man Months']
         ])
@@ -123,6 +136,8 @@ def main():
         "",
         f"**{total_construction_points:,}**",
         f"**{total_ops_points:,}**",
+        "",
+        "",
         "**100.0%**",
         f"**{total_mm:.1f} 人月**"
     ])
