@@ -136,7 +136,6 @@ def main():
         f"**{total_ops_points:,}**",
         "",
         "",
-        "**100.0%**",
         f"**{total_mm:.1f} 人月**"
     ])
     
