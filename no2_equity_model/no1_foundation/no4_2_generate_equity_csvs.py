@@ -5,12 +5,12 @@ import os
 # Configuration: File Paths
 # ==========================================
 # Input File (Source of Truth)
-INPUT_FILE = 'no5_1_module_role_points.csv'
+INPUT_FILE = 'no4_1_module_role_points.csv'
 
 # Output Files
-OUTPUT_FILE_ROLE_SUMMARY = 'no5_3_equity_summary_by_role.csv'
-OUTPUT_FILE_COMPONENT_SUMMARY = 'no5_4_equity_summary_by_component.csv'
-OUTPUT_FILE_CONSISTENCY = 'no5_5_equity_consistency_analysis.csv'
+OUTPUT_FILE_ROLE_SUMMARY = 'no4_3_equity_summary_by_role.csv'
+OUTPUT_FILE_COMPONENT_SUMMARY = 'no4_4_equity_summary_by_product.csv'
+OUTPUT_FILE_CONSISTENCY = 'no4_5_equity_consistency_analysis.csv'
 
 # Base Directory (Current Script Directory)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
