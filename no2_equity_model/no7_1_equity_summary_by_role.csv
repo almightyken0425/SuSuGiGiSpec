@@ -1,33 +1,33 @@
-﻿角色,產品,施工價值 (點),佔總價值比例,換算工時
-**AI Engineer**,Macro Data,"4,600",6.9%,2.3 人月
-**AI Engineer**,AI Advisor,"1,100",1.6%,0.6 人月
-**App RD**,記帳 App,"7,375",11.0%,3.7 人月
-**Backend RD**,Web Console,"1,960",2.9%,1.0 人月
-**Backend RD**,記帳 App,"1,380",2.1%,0.7 人月
-**Backend RD**,Macro Data,960,1.4%,0.5 人月
-**Backend RD**,AI Advisor,480,0.7%,0.2 人月
-**Data Engineer**,Macro Data,"1,850",2.8%,0.9 人月
-**PDM**,記帳 App,"4,290",6.4%,2.1 人月
-**PDM**,Macro Data,"2,530",3.8%,1.3 人月
-**PDM**,Web Console,"2,220",3.3%,1.1 人月
-**PDM**,AI Advisor,"1,560",2.3%,0.8 人月
-**PJM**,記帳 App,"2,590",3.9%,1.3 人月
-**PJM**,Macro Data,"1,510",2.3%,0.8 人月
-**PJM**,Web Console,"1,310",2.0%,0.7 人月
-**PJM**,AI Advisor,930,1.4%,0.5 人月
-**QA**,AI Advisor,"3,400",5.1%,1.7 人月
-**QA**,記帳 App,"2,000",3.0%,1.0 人月
-**QA**,Macro Data,"1,600",2.4%,0.8 人月
-**QA**,Web Console,"1,100",1.6%,0.6 人月
-**UI Designer**,記帳 App,"4,484",6.7%,2.2 人月
-**UI Designer**,Web Console,"2,650",4.0%,1.3 人月
-**UI Designer**,Macro Data,"1,600",2.4%,0.8 人月
-**UI Designer**,AI Advisor,486,0.7%,0.2 人月
-**UX Designer**,記帳 App,"3,856",5.8%,1.9 人月
-**UX Designer**,Web Console,"1,600",2.4%,0.8 人月
-**UX Designer**,Macro Data,600,0.9%,0.3 人月
-**UX Designer**,AI Advisor,324,0.5%,0.2 人月
-**Web RD**,Web Console,"2,600",3.9%,1.3 人月
-**Web RD**,Macro Data,"2,390",3.6%,1.2 人月
-**Web RD**,AI Advisor,"1,550",2.3%,0.8 人月
-**總計**,,"**66,885**",**100.0%**,**33.4 人月**
+﻿產品,角色,施工價值 (點),維運價值 (點),佔總價值比例,換算工時
+AI Advisor,**QA**,"3,400",223,5.1%,1.7 人月
+AI Advisor,**PDM**,"1,560",24,2.3%,0.8 人月
+AI Advisor,**Web RD**,"1,550",56,2.3%,0.8 人月
+AI Advisor,**AI Engineer**,"1,100",55,1.6%,0.6 人月
+AI Advisor,**PJM**,930,14,1.4%,0.5 人月
+AI Advisor,**UI Designer**,486,21,0.7%,0.2 人月
+AI Advisor,**Backend RD**,480,24,0.7%,0.2 人月
+AI Advisor,**UX Designer**,324,12,0.5%,0.2 人月
+Macro Data,**AI Engineer**,"4,600",440,6.9%,2.3 人月
+Macro Data,**PDM**,"2,530",88,3.8%,1.3 人月
+Macro Data,**Web RD**,"2,390",120,3.6%,1.2 人月
+Macro Data,**Data Engineer**,"1,850",585,2.8%,0.9 人月
+Macro Data,**QA**,"1,600",0,2.4%,0.8 人月
+Macro Data,**UI Designer**,"1,600",68,2.4%,0.8 人月
+Macro Data,**PJM**,"1,510",52,2.3%,0.8 人月
+Macro Data,**Backend RD**,960,88,1.4%,0.5 人月
+Macro Data,**UX Designer**,600,46,0.9%,0.3 人月
+Web Console,**UI Designer**,"2,650",128,4.0%,1.3 人月
+Web Console,**Web RD**,"2,600",100,3.9%,1.3 人月
+Web Console,**PDM**,"2,220",53,3.3%,1.1 人月
+Web Console,**Backend RD**,"1,960",96,2.9%,1.0 人月
+Web Console,**UX Designer**,"1,600",84,2.4%,0.8 人月
+Web Console,**PJM**,"1,310",32,2.0%,0.7 人月
+Web Console,**QA**,"1,100",0,1.6%,0.6 人月
+記帳 App,**App RD**,"7,375",147,11.0%,3.7 人月
+記帳 App,**UI Designer**,"4,484",119,6.7%,2.2 人月
+記帳 App,**PDM**,"4,290",75,6.4%,2.1 人月
+記帳 App,**UX Designer**,"3,856",80,5.8%,1.9 人月
+記帳 App,**PJM**,"2,590",46,3.9%,1.3 人月
+記帳 App,**QA**,"2,000",0,3.0%,1.0 人月
+記帳 App,**Backend RD**,"1,380",118,2.1%,0.7 人月
+**總計**,,"**66,885**","**4,584**",**100.0%**,**33.4 人月**

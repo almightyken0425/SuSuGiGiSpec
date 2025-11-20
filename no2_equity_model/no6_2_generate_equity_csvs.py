@@ -5,7 +5,7 @@ import os
 # Configuration: File Paths
 # ==========================================
 # Input File (Source of Truth)
-INPUT_FILE = 'no6_2_module_role_points.csv'
+INPUT_FILE = 'no6_1_module_role_points.csv'
 
 # Output Files
 OUTPUT_FILE_ROLE_SUMMARY = 'no7_1_equity_summary_by_role.csv'
@@ -88,11 +88,11 @@ def main():
     print("Generating no7_1_equity_summary_by_role.csv...")
     
     # Group by Role and Product
-    role_product_summary = df.groupby(['Role', 'Product'])['Construction Points'].sum().reset_index()
+    role_product_summary = df.groupby(['Product', 'Role'])[['Construction Points', 'Operation Points']].sum().reset_index()
     
     # Sort by Role then Points (descending) or just Points? 
     # Usually grouping by Role is primary.
-    role_product_summary = role_product_summary.sort_values(['Role', 'Construction Points'], ascending=[True, False])
+    role_product_summary = role_product_summary.sort_values(['Product', 'Construction Points'], ascending=[True, False])
     
     # Calculate percentages and man-months
     if total_construction_points == 0:
@@ -102,24 +102,27 @@ def main():
     role_product_summary['Man Months'] = (role_product_summary['Construction Points'] / 2000).map('{:.1f} 人月'.format)
     
     output_rows_role_summary = []
-    output_rows_role_summary.append(['角色', '產品', '施工價值 (點)', '佔總價值比例', '換算工時'])
+    output_rows_role_summary.append(['產品', '角色', '施工價值 (點)', '維運價值 (點)', '佔總價值比例', '換算工時'])
     
     for _, row in role_product_summary.iterrows():
         if row['Construction Points'] == 0: continue
         output_rows_role_summary.append([
-            f"**{row['Role']}**",
             row['Product'],
+            f"**{row['Role']}**",
             f"{row['Construction Points']:,}",
+            f"{row['Operation Points']:,}",
             row['Percentage'],
             row['Man Months']
         ])
         
     # Total Row
     total_mm = total_construction_points / 2000
+    total_ops_points = df['Operation Points'].sum()
     output_rows_role_summary.append([
         "**總計**",
         "",
         f"**{total_construction_points:,}**",
+        f"**{total_ops_points:,}**",
         "**100.0%**",
         f"**{total_mm:.1f} 人月**"
     ])
