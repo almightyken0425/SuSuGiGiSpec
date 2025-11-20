@@ -110,10 +110,11 @@ def main():
         total_construction_points = 1
     role_product_summary['Percentage'] = (role_product_summary['Construction Points'] / total_construction_points * 100).map('{:.1f}%'.format)
     role_product_summary['Man Months'] = (role_product_summary['Construction Points'] / 2000).map('{:.1f} 人月'.format)
+    role_product_summary['Op Hours'] = (role_product_summary['Operation Points'] / 200).map('{:.1f}h'.format)
     
     # Build output rows
     output_rows_role_summary = []
-    output_rows_role_summary.append(['產品', '角色', '施工價值pt', '維運價值pt', '產品施工%', '產品維護%', '換算工時'])
+    output_rows_role_summary.append(['產品', '角色', '施工價值pt', '維運價值pt', '產品施工%', '產品維護%', '施工工時/次', '維護工時/月'])
 
     for _, row in role_product_summary.iterrows():
         output_rows_role_summary.append([
@@ -123,12 +124,14 @@ def main():
             f"{row['Operation Points']:,}",
             row['Construction_%_by_Product'],
             row['Operation_%_by_Product'],
-            row['Man Months']
+            row['Man Months'],
+            row['Op Hours']
         ])
         
     # Total Row
     total_mm = total_construction_points / 2000
     total_ops_points = df['Operation Points'].sum()
+    total_op_hours = total_ops_points / 200
     output_rows_role_summary.append([
         "**總計**",
         "",
@@ -136,7 +139,8 @@ def main():
         f"**{total_ops_points:,}**",
         "",
         "",
-        f"**{total_mm:.1f} 人月**"
+        f"**{total_mm:.1f} 人月**",
+        f"**{total_op_hours:.1f}h**"
     ])
     
     pd.DataFrame(output_rows_role_summary).to_csv(output_path_role_summary, index=False, header=False, encoding='utf-8-sig')
