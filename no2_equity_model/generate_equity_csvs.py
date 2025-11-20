@@ -88,8 +88,8 @@ def main():
             const_points = row.get(f'{role}_Construction', 0)
             ops_points = row.get(f'{role}_Operation', 0)
             
-            if const_points == 0 and ops_points == 0:
-                continue
+            # if const_points == 0 and ops_points == 0:
+            #    continue
             
             display_role = role_display_map.get(role, role)
             
