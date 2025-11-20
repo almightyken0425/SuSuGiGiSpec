@@ -90,8 +90,8 @@ def main():
     # Group by Role and Product
     role_product_summary = df.groupby(['Product', 'Role'])[['Construction Points', 'Operation Points']].sum().reset_index()
     
-    # Sort by Product then Construction Points descending
-    role_product_summary = role_product_summary.sort_values(['Product', 'Construction Points'], ascending=[True, False])
+    # Sort by Product, then Construction Points descending, then Operation Points descending
+    role_product_summary = role_product_summary.sort_values(['Product', 'Construction Points', 'Operation Points'], ascending=[True, False, False])
     
     # Calculate per-product totals for percentages
     role_product_summary['Construction_Total_By_Product'] = role_product_summary.groupby('Product')['Construction Points'].transform('sum')
