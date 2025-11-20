@@ -2,14 +2,14 @@
 
 ## 核心產品矩陣
 
-1.  **記帳 App + Firestore, Accounting App**
-2.  **Web 複雜報表, Web Console**
-3.  **AI 個人化建議, AI Advisor**
-4.  **總經分析報表與 API, Macro Data Service**
+-  **記帳 App + Firestore, Accounting App**
+-  **Web 複雜報表, Web Console**
+-  **AI 個人化建議, AI Advisor**
+-  **總經分析報表與 API, Macro Data Service**
 
 ---
 
-## 1. 記帳 App + Firestore, Accounting App
+## 記帳 App + Firestore, Accounting App
 
 **定位:** 核心基礎設施，提供極速記帳與雲端同步服務。
 **價值:** 工具價值, Utility, 安全價值, Security
@@ -38,6 +38,9 @@
 - **首頁儀表板, Home Dashboard:** 作為使用者，我想要在首頁查看當月收支摘要與列表，以便快速掌握財務狀況。
 - **搜尋功能, Local Search:** 作為使用者，我想要透過關鍵字搜尋備註欄位，以便找到特定的歷史交易。
 - **多語言支援, i18n:** 作為使用者，我想要切換 App 語言, 如繁中、英文，以便使用我熟悉的介面。
+- **配色主題系統, Theme System:** 作為開發團隊，我想要建立設計代幣與變數架構，以便 App 可支援多套配色主題。
+- **主題切換介面, Theme Switcher:** 作為使用者，我想要在設定中切換不同的配色主題，以便客製化我的介面外觀。
+- **新增配色主題, New Theme:** 作為設計團隊，我想要為系統新增一套完整的配色組合，以便提供使用者更多選擇。
 
 #### 共用帳本, Shared Ledger
 - **預設帳本, Default Book:** 作為使用者，我擁有一本預設的帳本，所有的交易都記錄在其中。
@@ -47,7 +50,7 @@
 
 ---
 
-## 2. Web 複雜報表, Web Console
+## Web 複雜報表, Web Console
 
 **定位:** 進階管理工具，提供桌面級的大螢幕操作與複雜邏輯處理。
 **價值:** 管理價值, Management, 效率價值, Efficiency
@@ -68,7 +71,7 @@
 
 ---
 
-## 3. AI 個人化建議, AI Advisor
+## AI 個人化建議, AI Advisor
 
 **定位:** 智慧顧問，提供主動式的財務洞察與預測。
 **價值:** 預知價值, Foresight, 顧問價值, Consultancy
@@ -83,7 +86,7 @@
 
 ---
 
-## 4. 總經分析報表與 API, Macro Data Service
+## 總經分析報表與 API, Macro Data Service
 
 **定位:** B 端數據服務，提供市場洞察與總體經濟指標。
 **價值:** 情報價值, Intelligence, 決策價值, Decision
