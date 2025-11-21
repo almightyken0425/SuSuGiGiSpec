@@ -23,7 +23,7 @@
   - 優點: 節省資源，僅處理活躍用戶。
   - 缺點: 不活躍用戶的資料庫狀態可能過時。
 
-- [ ] **決定策略**: 建議採用 **混合模式 (Hybrid)**。
+- [x] **決定策略**: 採用 **混合模式 (Hybrid)**。
   - 主要依賴 **App/API 觸發** 確保用戶體驗與權限正確。
   - 輔以 **每日排程** 清理過期很久的帳號狀態 (Data Consistency)。
 
@@ -36,14 +36,13 @@
 - [ ] **情境 2: 升級 (Upgrade)**
   - 條件: `Current Tier < Target Tier`
   - 邏輯: 
-    - 方案 A: 直接覆蓋，原剩餘時間失效 (簡單)。
-    - 方案 B: 原剩餘時間依比例轉換為新 Tier 時間 (複雜)。
-    - 建議 MVP 採方案 A 或方案 B (依商業決策)。
+    - 方案 A: 直接覆蓋，原剩餘時間失效 (簡單)。 **(已選定)**
 - [ ] **情境 3: 降級/低階序號 (Downgrade)**
   - 條件: `Current Tier > Target Tier`
-  - 邏輯: 通常禁止兌換，或存為「待用券」(Voucher) 待目前會籍結束後使用。
+  - 邏輯: 禁止兌換。 **(已選定)**
 
 ## 4. 執行計畫
 - [ ] 更新 `no1_data_models.md`
 - [ ] 撰寫 `no3_logics/no3_membership_lifecycle.md` (定義上述邏輯)
 - [ ] 更新 `no3_logics/no2_redeem_code_validation.md` (加入衝突處理邏輯)
+- [ ] 更新 `no2_screens/no13_preference_screen.md` (新增訂閱狀態顯示區塊)
