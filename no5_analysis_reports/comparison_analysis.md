@@ -7,7 +7,7 @@
 ### 關鍵發現
 
 - ✅ **大部分 User Stories 已有對應規格**：核心功能 CRUD、資料同步、儀表板等均已覆蓋
-- ⚠️ **部分 User Stories 缺少明確對應**：共用帳本、主題系統、序號兌換等功能在模組規格中尚不完整
+- ⚠️ **部分 User Stories 缺少明確對應**：主題系統、序號兌換等功能在模組規格中尚不完整
 - 📊 **規格更詳細**：模組規格提供了比產品定義更精細的 UI/UX 和互動邏輯
 
 ---
@@ -49,26 +49,6 @@
 | 搜尋功能 (Local Search) | ✓ | `no14_search_screen.md` | ✅ 完整 |
 | 多語言支援 (i18n) | ✓ | `no13_preference_screen.md` (語系設定) | ✅ 完整 |
 | 配色主題系統 (Theme System) | ✓ | ❌ 無對應規格 | ⚠️ **缺少** |
-| 主題切換介面 (Theme Switcher) | ✓ | ❌ 無對應規格 | ⚠️ **缺少** |
-| 新增配色主題 (New Theme) | ✓ | ❌ 無對應規格 | ⚠️ **缺少** |
-| 序號驗證系統 (Redeem System) | ✓ | ❌ 無對應規格 | ⚠️ **缺少** |
-| 序號兌換介面 (Redeem UI) | ✓ | ❌ 無對應規格 | ⚠️ **缺少** |
-| 序號管理工具 (Redeem Management) | ✓ | ❌ 無對應規格 | ⚠️ **缺少** |
-
-### 共用帳本 (Shared Ledger)
-
-| User Story | 產品定義 | 模組規格對應 | 狀態 |
-|-----------|--------|------------|------|
-| 預設帳本 (Default Book) | ✓ | `no4_data_models/no1_data_models.md` (Books 資料結構定義) | ⚠️ **部分覆蓋** |
-| 帳本切換 (Book Switcher) | ✓ | ❌ 無UI規格 | ⚠️ **缺少** |
-| 成員邀請 (Member Invitation) | ✓ | `no4_data_models/no1_data_models.md` (BookMembers 資料結構定義) | ⚠️ **僅資料模型** |
-| 協作權限 (Collaboration) | ✓ | ❌ 無明確規格 | ⚠️ **缺少** |
-
----
-
-## 詳細差異分析
-
-### 1. 已完整覆蓋的功能
 
 以下 User Stories 在模組規格中有完整且詳細的對應：
 
@@ -137,27 +117,6 @@
 
 **備註：** 雖然 [`no16_paywall_screen.md`](file:///c:/Users/ken.chio/OneDrive%20-%20%E5%8B%9D%E5%92%8C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/%E6%96%87%E4%BB%B6/Repository/SuSuGiGiSpec/no3_module_specs/no1_accounting_app/no2_screens/no16_paywall_screen.md) 存在，但該畫面通常用於付費訂閱導購，與序號兌換機制不同。
 
-#### 2.3 共用帳本 (Shared Ledger)
-
-> [!IMPORTANT]
-> **資料模型已定義，但缺少 UI/UX 規格和協作邏輯**
-
-產品定義中提到：
-- **預設帳本 (Default Book)**：使用者擁有預設帳本
-- **帳本切換 (Book Switcher)**：切換不同帳本（如個人、家庭）
-- **成員邀請 (Member Invitation)**：邀請其他使用者加入帳本
-- **協作權限 (Collaboration)**：共用帳本中新增交易並即時同步
-
-**已存在：**
-- ✅ `Books` 資料結構（包含 `ownerId`, `defaultCurrencyId`）
-- ✅ `BookMembers` 資料結構（包含 `role`, `joinedOn`）
-- ✅ 所有交易資料表都有 `bookId` 欄位
-
-**缺少內容：**
-- ❌ 無帳本切換的 UI 規格（如首頁的帳本選擇器）
-- ❌ 無成員邀請的畫面規格
-- ❌ 無協作權限管理的規格（例如 owner/editor/viewer 的權限差異）
-- ❌ 無即時同步的協作邏輯規格
 
 ---
 
@@ -222,16 +181,6 @@
 - 序號兌換 UI 規格
 - 序號驗證邏輯（包含 Tier 映射）
 
-#### 共用帳本功能
-建議新增以下文件：
-- `no3_module_specs/no1_accounting_app/no2_screens/noXX_book_switcher_screen.md`
-- `no3_module_specs/no1_accounting_app/no2_screens/noXX_book_members_screen.md`
-- `no3_module_specs/no1_accounting_app/no3_background_logics/noXX_book_collaboration_logic.md`
-
-應包含：
-- 帳本切換器 UI（可能在首頁 Header）
-- 成員邀請流程（邀請碼或 email）
-- 權限管理邏輯（owner/editor/viewer 差異）
 
 ### 優先級 2: 保持一致性
 
@@ -261,13 +210,11 @@
 | 資產管理 | 5 | 0 | 0 |
 | 資料與同步 | 3 | 0 | 0 |
 | 儀表板與體驗 | 3 | 0 | 6 |
-| 共用帳本 | 0 | 2 | 2 |
-| **總計** | **15** | **2** | **8** |
+| **總計** | **18** | **0** | **6** |
 
 **覆蓋率統計：**
-- 完整覆蓋：60%（15/25）
-- 部分覆蓋：8%（2/25）
-- 缺少規格：32%（8/25）
+- 完整覆蓋：75%（18/24）
+- 缺少規格：25%（6/24）
 
 **結論：**
-`no1_accounting_app` 模組規格對核心功能（CRUD、資產管理、資料同步）有非常完整且詳細的定義，甚至超越了產品定義的描述深度。然而，在進階功能（主題系統、序號兌換、共用帳本協作）方面存在明顯缺口。建議優先補充這些缺失的規格文件，以確保產品定義與實作規格的完整對應。
+`no1_accounting_app` 模組規格對核心功能（CRUD、資產管理、資料同步）有非常完整且詳細的定義，甚至超越了產品定義的描述深度。然而，在進階功能（主題系統、序號兌換）方面存在明顯缺口。建議優先補充這些缺失的規格文件，以確保產品定義與實作規格的完整對應。

@@ -15,7 +15,7 @@
 | Tier | 層級名稱 | 行銷名稱 | 定價 | 所屬模組 | 功能範圍 |
 |------|---------|---------|------|---------|---------|
 | **Tier 0** | Local | Free | $0 / 月 | Accounting App | 本機記帳、無雲端同步 |
-| **Tier 1** | Cloud | Standard | $30 / 月 | Accounting App | + 雲端同步、自動備份、共用帳本 |
+| **Tier 1** | Cloud | Standard | $30 / 月 | Accounting App | + 雲端同步、自動備份 |
 | **Tier 2** | Management | Pro | $90 / 月 | **Web Console** | + Web 控制台、進階篩選、客製化報表 |
 | **Tier 3** | Intelligence | Ultra | $140 / 月 | **AI Advisor** | + 現金流預測、AI 問答、財務健康診斷 |
 | **Tier B** | Enterprise | - | $500+ / 月 | **Macro Data Service** | B2B 數據服務、API |
@@ -197,7 +197,6 @@ no3_module_specs/
 ### 功能權限映射
 
 - **雲端同步:** `userTier >= 1`
-- **共用帳本:** `userTier >= 1`
 - **多幣別:** `userTier >= 1`
 - **定期交易:** `userTier >= 1`
 - **Web Console:** `userTier >= 2`
@@ -320,7 +319,7 @@ function hasFeatureAccess(feature: Feature, userTier: number | 'B'): boolean {
 | **Accounting App** |
 | 本機記帳 CRUD | ✅ | ✅ | ✅ | ✅ | ❌ |
 | 雲端同步 | ❌ | ✅ | ✅ | ✅ | ❌ |
-| 共用帳本 | ❌ | ✅ | ✅ | ✅ | ❌ |
+
 | 多幣別 | ❌ | ✅ | ✅ | ✅ | ❌ |
 | 定期交易 | ❌ | ✅ | ✅ | ✅ | ❌ |
 | 無限帳戶/類別 | ❌ | ✅ | ✅ | ✅ | ❌ |

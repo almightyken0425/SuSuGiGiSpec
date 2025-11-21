@@ -25,61 +25,6 @@
     - `createdOn`: Number, Unix Timestamp ms - Not Null, 資料建立的系統時間
         
     - `updatedOn`: Number, Unix Timestamp ms - Not Null, 資料最後更新時間, 同步依據
-        
-    - `disabledOn`: Number | Null, Unix Timestamp ms - Nullable
-        
-    - `deletedOn`: Number | Null, Unix Timestamp ms - Nullable, Index, 用於軟刪除
-        
-
-### 類別 Categories
-
-- **欄位:**
-    
-    - `id`: String, UUID/GUID - Primary Key
-        
-    - `userId`: String, Auth UID - Foreign Key to Users, Not Null, Index, 資料擁有者
-        
-    - `name`: String - Not Null
-        
-    - `icon`: Number - Foreign Key to IconDefinitions
-        
-    - `categoryType`: Number - Not Null, 0 代表收入, 1 代表支出
-        
-    - `standardCategoryId`: Number | Null - Foreign Key to StandardCategory, Nullable, 關聯到標準類別
-        
-    - `sortOrder`: Number - Not Null, Default 0, 用於使用者自訂排序
-        
-    - `createdOn`: Number, Unix Timestamp ms - Not Null
-        
-    - `updatedOn`: Number, Unix Timestamp ms - Not Null, 資料最後更新時間, 同步依據
-        
-    - `disabledOn`: Number | Null, Unix Timestamp ms - Nullable
-        
-    - `deletedOn`: Number | Null, Unix Timestamp ms - Nullable, Index
-                
-
-### 交易紀錄 Transactions
-
-- **欄位:**
-    
-    - `id`: String, UUID/GUID - Primary Key
-        
-    - `userId`: String, Auth UID - Foreign Key to Users, Not Null, Index, 資料擁有者
-        
-    - `categoryId`: String - Foreign Key to Categories, Not Null
-        
-    - `accountId`: String - Foreign Key to Accounts, Not Null
-        
-    - `amountCents`: BigInt - Not Null, 支出為正值, 收入也為正值, 由 categoryType 決定收支
-        
-    - `transactionDate`: Number, Unix Timestamp ms - Not Null, 交易發生日, 由使用者選擇, 用於報表統計
-        
-    - `createdOn`: Number, Unix Timestamp ms - Not Null, 資料建立的系統時間
-        
-    - `updatedOn`: Number, Unix Timestamp ms - Not Null, 資料最後更新時間, 同步依據
-        
-    - `note`: String | Null - Nullable, 用於搜尋
-        
     - `scheduleId`: String | Null - Foreign Key to Schedules, Nullable, 標記此筆為定期交易產生
         
     - `scheduleInstanceDate`: Number | Null, Unix Timestamp ms - Nullable, 標記此筆交易對應的排程日期錨點, 此欄位永不應被使用者修改, 僅供系統檢查重複用
@@ -175,22 +120,9 @@
         
     - `createdOn`: Number, Unix Timestamp ms - Not Null
         
-    - `updatedOn`: Number, Unix Timestamp ms - Not Null, 資料最後更新時間, 同步依據
-        
-    - `deletedOn`: Number | Null, Unix Timestamp ms - Nullable, Index
-        
-
-### 使用者設定 Settings
-
-- **說明:** 用於儲存使用者特定的偏好設定，採用 Key-Value 結構。
-    
-- **欄位:**
-    
-    - `id`: String, UUID/GUID - Primary Key
-        
     - `userId`: String, Auth UID - Foreign Key to Users, Not Null
         
-    - `settingKey`: String - Not Null, 例如 baseCurrencyId, timeZone, language, isPremiumUser, lastRecurringCheckDate
+    - `settingKey`: String - Not Null, 例如 baseCurrencyId, timeZone, language, userTier, subscriptionStatus, currentThemeId, lastRecurringCheckDate
         
     - `settingValue`: String - Not Null (儲存 JSON 字串或簡單值)
         
@@ -219,18 +151,6 @@
 - **說明:** 定義帳戶的金融本質分類, 例如支付, 投資, 貸款, 其他
 - **檔案:** `assets/definitions/StandardAccountType.json`
 - **欄位:**
-    - `id`: `Number`
-    - `translationKey`: `String`
-    - `defaultName`: `String`
-    
-
-### 圖標定義 IconDefinition
-
-- **說明:** 定義 App 內預選的 Feather 圖標及其適用場景, 例如 expense, income, account, general, ui。使用者資料中只儲存 `id`
-- **檔案:** `assets/definitions/IconDefinition.json`
-- **欄位:**
-    - `id`: `Number`
-    - `featherName`: `String`
     - `types`: `Array<String>`
     - `tags`: `Array<String> | Null`, 選填
     
