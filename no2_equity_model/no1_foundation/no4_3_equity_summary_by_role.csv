@@ -1,4 +1,4 @@
-﻿產品,角色,施工價值pt,維運價值pt,產品施工%,產品維護%,施工工時/次,維護工時/月
+﻿產品模組,角色,施工價值pt,維運價值pt,模組施工%,模組維護%,施工工時/次,維護工時/月
 Web Console,**UI Designer**,"2,650",128,19.7%,14.1%,1.3 人月,0.6h
 Web Console,**Web RD**,"2,600",100,19.3%,11.0%,1.3 人月,0.5h
 Web Console,**PDM**,"2,220",53,16.5%,5.8%,1.1 人月,0.3h
@@ -23,18 +23,18 @@ Macro Data,**UX Designer**,600,46,3.4%,2.2%,0.3 人月,0.2h
 Macro Data,**Marketing**,0,315,0.0%,15.1%,0.0 人月,1.6h
 Macro Data,**Operations**,0,250,0.0%,12.0%,0.0 人月,1.2h
 Macro Data,**App RD**,0,0,0.0%,0.0%,0.0 人月,0.0h
-Accounting App,**App RD**,"7,375",147,28.4%,18.4%,3.7 人月,0.7h
-Accounting App,**UI Designer**,"4,484",119,17.3%,14.9%,2.2 人月,0.6h
-Accounting App,**PDM**,"4,290",75,16.5%,9.4%,2.1 人月,0.4h
-Accounting App,**UX Designer**,"3,856",80,14.8%,10.0%,1.9 人月,0.4h
-Accounting App,**PJM**,"2,590",46,10.0%,5.8%,1.3 人月,0.2h
-Accounting App,**QA**,"2,000",26,7.7%,3.3%,1.0 人月,0.1h
-Accounting App,**Backend RD**,"1,380",60,5.3%,7.5%,0.7 人月,0.3h
-Accounting App,**Marketing**,0,149,0.0%,18.7%,0.0 人月,0.7h
-Accounting App,**Operations**,0,95,0.0%,11.9%,0.0 人月,0.5h
+Accounting App,**App RD**,"8,105",147,27.2%,16.6%,4.1 人月,0.7h
+Accounting App,**UI Designer**,"5,314",124,17.8%,14.0%,2.7 人月,0.6h
+Accounting App,**PDM**,"4,720",81,15.8%,9.1%,2.4 人月,0.4h
+Accounting App,**UX Designer**,"4,316",83,14.5%,9.3%,2.2 人月,0.4h
+Accounting App,**PJM**,"2,850",50,9.6%,5.6%,1.4 人月,0.2h
+Accounting App,**QA**,"2,500",30,8.4%,3.4%,1.2 人月,0.1h
+Accounting App,**Backend RD**,"1,880",77,6.3%,8.7%,0.9 人月,0.4h
+Accounting App,**Web RD**,150,3,0.5%,0.3%,0.1 人月,0.0h
+Accounting App,**Marketing**,0,170,0.0%,19.1%,0.0 人月,0.8h
+Accounting App,**Operations**,0,123,0.0%,13.9%,0.0 人月,0.6h
 Accounting App,**AI Engineer**,0,0,0.0%,0.0%,0.0 人月,0.0h
 Accounting App,**Data Engineer**,0,0,0.0%,0.0%,0.0 人月,0.0h
-Accounting App,**Web RD**,0,0,0.0%,0.0%,0.0 人月,0.0h
 AI Advisor,**QA**,"3,400",223,34.6%,27.6%,1.7 人月,1.1h
 AI Advisor,**PDM**,"1,560",24,15.9%,3.0%,0.8 人月,0.1h
 AI Advisor,**Web RD**,"1,550",56,15.8%,6.9%,0.8 人月,0.3h
@@ -47,4 +47,4 @@ AI Advisor,**Data Engineer**,0,270,0.0%,33.5%,0.0 人月,1.4h
 AI Advisor,**Marketing**,0,108,0.0%,13.4%,0.0 人月,0.5h
 AI Advisor,**App RD**,0,0,0.0%,0.0%,0.0 人月,0.0h
 AI Advisor,**Operations**,0,0,0.0%,0.0%,0.0 人月,0.0h
-**總計**,,"**66,885**","**4,604**",,,**33.4 人月**,**23.0h**
+**總計**,,"**70,745**","**4,695**",,,**35.4 人月**,**23.5h**

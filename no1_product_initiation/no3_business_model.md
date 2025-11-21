@@ -12,7 +12,7 @@
 
 ---
 
-## 1. 記帳 App + Firestore, Accounting App
+## 記帳 App + Firestore, Accounting App
 
 **策略:** Freemium, 免費增值
 **目標:** 獲取, Acquisition & 留存, Retention
@@ -37,7 +37,7 @@
 
 ---
 
-## 2. Web 複雜報表, Web Console
+## Web 複雜報表, Web Console
 
 **策略:** Value-Based Pricing, 價值導向定價
 **目標:** 提升 ARPU, Average Revenue Per User
@@ -55,7 +55,7 @@
 
 ---
 
-## 3. AI 個人化建議, AI Advisor
+## AI 個人化建議, AI Advisor
 
 **策略:** High-End Tier, 頂級訂閱
 **目標:** 增加黏著度與提供高階價值
@@ -72,7 +72,7 @@
 
 ---
 
-## 4. 總經分析報表與 API, Macro Data Service
+## 總經分析報表與 API, Macro Data Service
 
 **策略:** B2B 訂閱與流量計費
 **目標:** 數據變現, Data Monetization

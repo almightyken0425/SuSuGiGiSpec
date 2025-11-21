@@ -1,4 +1,4 @@
-﻿Product,Module,User Story,Role,Construction Points,Operation Points
+﻿Module,Sub-Module,User Story,Role,Construction Points,Operation Points
 Accounting App,交易與自動化,支出管理,AI Engineer,0,0
 Accounting App,交易與自動化,支出管理,App RD,180,3
 Accounting App,交易與自動化,支出管理,Backend RD,30,1
@@ -215,6 +215,42 @@ Accounting App,儀表板與體驗,新增配色主題,QA,40,0
 Accounting App,儀表板與體驗,新增配色主題,UI Designer,80,0
 Accounting App,儀表板與體驗,新增配色主題,UX Designer,0,0
 Accounting App,儀表板與體驗,新增配色主題,Web RD,0,0
+Accounting App,儀表板與體驗,序號驗證,AI Engineer,0,0
+Accounting App,儀表板與體驗,序號驗證,App RD,200,0
+Accounting App,儀表板與體驗,序號驗證,Backend RD,300,10
+Accounting App,儀表板與體驗,序號驗證,Data Engineer,0,0
+Accounting App,儀表板與體驗,序號驗證,Marketing,0,5
+Accounting App,儀表板與體驗,序號驗證,Operations,0,10
+Accounting App,儀表板與體驗,序號驗證,PDM,150,3
+Accounting App,儀表板與體驗,序號驗證,PJM,90,2
+Accounting App,儀表板與體驗,序號驗證,QA,150,2
+Accounting App,儀表板與體驗,序號驗證,UI Designer,0,0
+Accounting App,儀表板與體驗,序號驗證,UX Designer,80,0
+Accounting App,儀表板與體驗,序號驗證,Web RD,0,0
+Accounting App,儀表板與體驗,序號兌換,AI Engineer,0,0
+Accounting App,儀表板與體驗,序號兌換,App RD,150,0
+Accounting App,儀表板與體驗,序號兌換,Backend RD,50,2
+Accounting App,儀表板與體驗,序號兌換,Data Engineer,0,0
+Accounting App,儀表板與體驗,序號兌換,Marketing,0,8
+Accounting App,儀表板與體驗,序號兌換,Operations,0,3
+Accounting App,儀表板與體驗,序號兌換,PDM,80,0
+Accounting App,儀表板與體驗,序號兌換,PJM,50,0
+Accounting App,儀表板與體驗,序號兌換,QA,80,1
+Accounting App,儀表板與體驗,序號兌換,UI Designer,200,3
+Accounting App,儀表板與體驗,序號兌換,UX Designer,120,2
+Accounting App,儀表板與體驗,序號兌換,Web RD,0,0
+Accounting App,儀表板與體驗,序號管理,AI Engineer,0,0
+Accounting App,儀表板與體驗,序號管理,App RD,0,0
+Accounting App,儀表板與體驗,序號管理,Backend RD,150,5
+Accounting App,儀表板與體驗,序號管理,Data Engineer,0,0
+Accounting App,儀表板與體驗,序號管理,Marketing,0,8
+Accounting App,儀表板與體驗,序號管理,Operations,0,15
+Accounting App,儀表板與體驗,序號管理,PDM,100,3
+Accounting App,儀表板與體驗,序號管理,PJM,60,2
+Accounting App,儀表板與體驗,序號管理,QA,80,1
+Accounting App,儀表板與體驗,序號管理,UI Designer,100,2
+Accounting App,儀表板與體驗,序號管理,UX Designer,60,1
+Accounting App,儀表板與體驗,序號管理,Web RD,150,3
 Accounting App,共用帳本,預設帳本,AI Engineer,0,0
 Accounting App,共用帳本,預設帳本,App RD,200,10
 Accounting App,共用帳本,預設帳本,Backend RD,50,3

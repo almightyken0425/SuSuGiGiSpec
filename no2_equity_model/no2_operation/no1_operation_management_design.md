@@ -49,8 +49,8 @@
 | 欄位名稱 | 資料型別 | 說明 | 範例 |
 |:---|:---|:---|:---|
 | launch_id | string | 上線ID，主鍵 | LAUNCH_20250120_001 |
-| product | string | 產品名稱 | 記帳 App |
-| module | string | 模組名稱 | 交易與自動化 |
+| module | string | 產品模組名稱 | Accounting App |
+| sub_module | string | 子模組名稱 | 交易與自動化 |
 | user_story | string | User Story名稱 | 支出管理 |
 | launch_date | date | 上線日期 | 2025-01-20 |
 | pdm_owner | string | PDM負責人 | 張三 |
@@ -72,8 +72,8 @@
 | 欄位名稱 | 資料型別 | 說明 | 範例 |
 |:---|:---|:---|:---|
 | module_id | string | 模組ID，主鍵 | MOD_記帳_001 |
-| product | string | 產品名稱 | 記帳 App |
-| module | string | 模組名稱 | 交易與自動化 |
+| module | string | 產品模組名稱 | Accounting App |
+| sub_module | string | 子模組名稱 | 交易與自動化 |
 | total_construction_points | integer | 累積施工點數 | 3,450 |
 | total_operation_points_monthly | integer | 每月維運點數 | 85 |
 | feature_count | integer | 已上線功能數 | 5 |
@@ -90,8 +90,8 @@
 | distribution_id | string | 發放ID，主鍵 | DIST_20250120_001 |
 | distribution_date | date | 發放日期 | 2025-01-20 |
 | distribution_type | string | 類型：construction/operation | construction |
-| product | string | 產品名稱 | 記帳 App |
-| module | string | 模組名稱 | 交易與自動化 |
+| module | string | 產品模組名稱 | Accounting App |
+| sub_module | string | 子模組名稱 | 交易與自動化 |
 | user_story | string | User Story名稱 | 支出管理 |
 | role_name | string | 角色名稱 | PDM |
 | owner_name | string | 獲得者姓名 | 張三 |
@@ -149,8 +149,8 @@
 |:---|:---|:---|:---|
 | record_id | string | 紀錄ID，主鍵 | REV_202501_001 |
 | month | string | 月份 | 2025-01 |
-| product | string | 產品名稱 | 記帳 App |
-| module | string | 模組名稱 | 交易與自動化 |
+| module | string | 產品模組名稱 | Accounting App |
+| sub_module | string | 子模組名稱 | 交易與自動化 |
 | revenue | decimal | 該模組營收 USD | 5,000.00 |
 | module_specific_cost | decimal | 模組專屬費用 USD | 200.00 |
 | shared_cost_allocated | decimal | 分攤的共用費用 USD | 150.00 |
@@ -169,8 +169,8 @@
 |:---|:---|:---|:---|
 | distribution_id | string | 發放ID，主鍵 | PROF_202501_001 |
 | month | string | 發放月份 | 2025-01 |
-| product | string | 產品名稱 | 記帳 App |
-| module | string | 模組名稱 | 交易與自動化 |
+| module | string | 產品模組名稱 | Accounting App |
+| sub_module | string | 子模組名稱 | 交易與自動化 |
 | module_gross_profit | decimal | 該模組毛利 USD | 4,650.00 |
 | owner_name | string | 獲得者姓名 | 張三 |
 | owner_points_in_module | integer | 該owner在此模組點數 | 450 |
