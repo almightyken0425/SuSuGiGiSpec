@@ -32,34 +32,34 @@
 
 ```mermaid
 graph TB
-    subgraph "客戶端"
+    subgraph client["客戶端"]
         App[App]
     end
     
-    subgraph "權限來源 (Inputs)"
-        Store[App Store / Google Play]
-        Serial[序號系統 (Cloud Function)]
+    subgraph sources["權限來源 (Inputs)"]
+        Store["App Store / Google Play"]
+        Serial["序號系統 (Cloud Function)"]
     end
     
-    subgraph "核心中台 (Hub)"
-        RC[RevenueCat Server]
+    subgraph hub["核心中台 (Hub)"]
+        RC["RevenueCat Server"]
     end
     
-    subgraph "狀態儲存 (Output)"
-        DB[Firestore]
+    subgraph storage["狀態儲存 (Output)"]
+        DB["Firestore"]
     end
     
     %% IAP 流程
-    App -->|1. 購買| Store
-    Store -->|2. 收據| RC
+    App -->|"1. 購買"| Store
+    Store -->|"2. 收據"| RC
     
     %% 序號流程
-    App -->|1. 輸入序號| Serial
-    Serial -->|2. 驗證 & Grant API| RC
+    App -->|"1. 輸入序號"| Serial
+    Serial -->|"2. 驗證 & Grant API"| RC
     
     %% 統一輸出
-    RC ==>|3. Auto Sync (Firebase Integration)| DB
-    DB -.->|4. 監聽狀態| App
+    RC ==>|"3. Auto Sync (Firebase Integration)"| DB
+    DB -.->|"4. 監聽狀態"| App
 ```
 
 ---
