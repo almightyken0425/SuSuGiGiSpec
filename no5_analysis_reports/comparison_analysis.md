@@ -2,13 +2,14 @@
 
 ## 執行摘要
 
-本文件比較 [`no1_product_initiation/no2_product_definition.md`](file:///c:/Users/ken.chio/OneDrive%20-%20%E5%8B%9D%E5%92%8C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/%E6%96%87%E4%BB%B6/Repository/SuSuGiGiSpec/no1_product_initiation/no2_product_definition.md) 中定義的 Accounting App User Stories 與 [`no3_module_specs/no1_accounting_app`](file:///c:/Users/ken.chio/OneDrive%20-%20%E5%8B%9D%E5%92%8C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/%E6%96%87%E4%BB%B6/Repository/SuSuGiGiSpec/no3_module_specs/no1_accounting_app) 中的實際規格文件。
+本文件比較 [`no1_product_initiation/no2_product_definition.md`](../../no1_product_initiation/no2_product_definition.md) 中定義的 Accounting App User Stories 與 [`no3_module_specs`](../../no3_module_specs) 中的實際規格文件。
 
-### 關鍵發現
+### 關鍵發現 (2025-11-24 更新)
 
-- ✅ **大部分 User Stories 已有對應規格**：核心功能 CRUD、資料同步、儀表板等均已覆蓋
-- ⚠️ **部分 User Stories 缺少明確對應**：主題系統、序號兌換等功能在模組規格中尚不完整
-- 📊 **規格更詳細**：模組規格提供了比產品定義更精細的 UI/UX 和互動邏輯
+- ✅ **核心功能完整覆蓋**：CRUD、資料同步、儀表板等均已具備詳細規格。
+- ✅ **主題系統已定義**：新增了設計系統與代幣定義，並在使用者偏好中支援主題切換。
+- ✅ **會員與序號架構已確立**：採用 RevenueCat 統一管理架構，序號功能雖延後至 MVP 後，但架構與整合方式已在分析報告中明確定義。
+- 📊 **規格深度足夠**：模組規格提供了比產品定義更精細的 UI/UX 和互動邏輯。
 
 ---
 
@@ -31,7 +32,7 @@
 | 類別管理 (Category CRUD) | ✓ | `no6_category_list_screen.md` + `no7_category_editor_screen.md` | ✅ 完整 |
 | 預設資料初始化 (Onboarding Data) | ✓ | `no3_background_logics/no2_post_auth_logic.md` | ✅ 完整 |
 | 多幣別支援 (Multi-Currency) | ✓ (付費功能) | `no11_currency_rate_list_screen.md` + `no12_currency_rate_editor_screen.md` + `no4_data_models/no1_data_models.md` | ✅ 完整 |
-| 解除限制 (Unlimited Access) | ✓ (付費功能) | 散布於多個畫面的權限檢查邏輯 | ✅ 完整 |
+| 解除限制 (Unlimited Access) | ✓ (付費功能) | 散布於多個畫面的權限檢查邏輯 (參考 `iap_subscription_flow.md`) | ✅ 完整 |
 
 ### 資料與同步 (Data & Sync)
 
@@ -47,75 +48,54 @@
 |-----------|--------|------------|------|
 | 首頁儀表板 (Home Dashboard) | ✓ | `no2_home_screen.md` | ✅ 完整 |
 | 搜尋功能 (Local Search) | ✓ | `no14_search_screen.md` | ✅ 完整 |
-| 多語言支援 (i18n) | ✓ | `no13_preference_screen.md` (語系設定) | ✅ 完整 |
-| 配色主題系統 (Theme System) | ✓ | ❌ 無對應規格 | ⚠️ **缺少** |
+| 多語言支援 (i18n) | ✓ | `no1_user_management/no3_apis/update_preferences_api.md` (語系設定) | ✅ 完整 |
+| 配色主題系統 (Theme System) | ✓ | `no2_accounting_app/no5_design_system/` + `update_preferences_api.md` | ✅ 完整 |
 
-以下 User Stories 在模組規格中有完整且詳細的對應：
+### 會員與序號系統 (Membership & Redeem)
 
-#### 1.1 核心 CRUD 功能
-- **支出/收入管理**：[`no3_transaction_editor_screen.md`](file:///c:/Users/ken.chio/OneDrive%20-%20%E5%8B%9D%E5%92%8C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/%E6%96%87%E4%BB%B6/Repository/SuSuGiGiSpec/no3_module_specs/no1_accounting_app/no2_screens/no3_transaction_editor_screen.md) 提供了非常詳細的介面規格，包含：
-  - UI 佈局（Modal 形式、日期選擇、金額輸入）
-  - 權限邏輯（付費/免費版差異）
-  - 定期交易整合
-  - 編輯/刪除邏輯
-
-#### 1.2 資產管理
-- **帳戶管理**：[`no8_account_list_screen.md`](file:///c:/Users/ken.chio/OneDrive%20-%20%E5%8B%9D%E5%92%8C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/%E6%96%87%E4%BB%B6/Repository/SuSuGiGiSpec/no3_module_specs/no1_accounting_app/no2_screens/no8_account_list_screen.md) + [`no9_account_editor_screen.md`](file:///c:/Users/ken.chio/OneDrive%20-%20%E5%8B%9D%E5%92%8C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/%E6%96%87%E4%BB%B6/Repository/SuSuGiGiSpec/no3_module_specs/no1_accounting_app/no2_screens/no9_account_editor_screen.md)
-- **類別管理**：[`no6_category_list_screen.md`](file:///c:/Users/ken.chio/OneDrive%20-%20%E5%8B%9D%E5%92%8C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/%E6%96%87%E4%BB%B6/Repository/SuSuGiGiSpec/no3_module_specs/no1_accounting_app/no2_screens/no6_category_list_screen.md) + [`no7_category_editor_screen.md`](file:///c:/Users/ken.chio/OneDrive%20-%20%E5%8B%9D%E5%92%8C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/%E6%96%87%E4%BB%B6/Repository/SuSuGiGiSpec/no3_module_specs/no1_accounting_app/no2_screens/no7_category_editor_screen.md)
-- 兩者都包含圖標選擇器整合 ([`no10_icon_picker_screen.md`](file:///c:/Users/ken.chio/OneDrive%20-%20%E5%8B%9D%E5%92%8C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/%E6%96%87%E4%BB%B6/Repository/SuSuGiGiSpec/no3_module_specs/no1_accounting_app/no2_screens/no10_icon_picker_screen.md))
-
-#### 1.3 背景邏輯與同步
-- **定期交易**：[`no4_recurring_transactions_spec.md`](file:///c:/Users/ken.chio/OneDrive%20-%20%E5%8B%9D%E5%92%8C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/%E6%96%87%E4%BB%B6/Repository/SuSuGiGiSpec/no3_module_specs/no1_accounting_app/no3_background_logics/no4_recurring_transactions_spec.md) 詳細定義了：
-  - 建立邏輯
-  - 補產生邏輯（App 啟動時）
-  - 編輯/刪除邏輯（僅此一筆 vs. 此筆及未來所有）
-  
-- **雲端同步**：[`no3_batch_sync_spec.md`](file:///c:/Users/ken.chio/OneDrive%20-%20%E5%8B%9D%E5%92%8C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/%E6%96%87%E4%BB%B6/Repository/SuSuGiGiSpec/no3_module_specs/no1_accounting_app/no3_background_logics/no3_batch_sync_spec.md)
-
-#### 1.4 資料模型
-- [`no1_data_models.md`](file:///c:/Users/ken.chio/OneDrive%20-%20%E5%8B%9D%E5%92%8C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/%E6%96%87%E4%BB%B6/Repository/SuSuGiGiSpec/no3_module_specs/no1_accounting_app/no4_data_models/no1_data_models.md) 完整定義了：
-  - 使用者自訂資料結構（Books, Accounts, Categories, Transactions, Transfers, CurrencyRates, Schedules, Settings）
-  - App 標準定義資料（StandardCategory, StandardAccountType, IconDefinition, Currencies）
-  - 時間格式標準
+| User Story | 產品定義 | 模組規格對應 | 狀態 |
+|-----------|--------|------------|------|
+| 會員權限管理 (Tier System) | ✓ | `iap_subscription_flow.md` + `no1_user_management/no1_data_models/users_schema.md` | ✅ 完整 |
+| 序號兌換 (Redeem System) | ✓ | `iap_subscription_flow.md` (定義架構) + `no1_user_management/README.md` (定義範圍) | ⏸️ 延後 (MVP後) |
 
 ---
 
-### 2. 缺少或不完整的功能
+## 詳細分析更新
 
-以下 User Stories 在模組規格中缺少明確對應或僅有部分覆蓋：
+### 1. 主題系統 (Theme System) - ✅ 已解決
 
-#### 2.1 主題系統 (Theme System)
+**現況**：
+- **設計代幣**：已在 `no2_accounting_app/no5_design_system/no1_design_tokens.md` 中完整定義。
+- **資料模型**：`users_schema.md` 中已包含 `preferences.theme` 欄位。
+- **切換邏輯**：`update_preferences_api.md` 已定義如何透過 Firestore SDK 更新主題設定。
 
-> [!WARNING]
-> **產品定義包含三個相關 User Stories，但模組規格中完全沒有對應**
+### 2. 序號兌換系統 (Redeem System) - ⏸️ 架構已定，實作延後
 
-產品定義中提到：
-- **配色主題系統 (Theme System)**：建立設計代幣與變數架構
-- **主題切換介面 (Theme Switcher)**：使用者可在設定中切換配色主題
-- **新增配色主題 (New Theme)**：設計團隊新增配色組合
+**現況**：
+- **架構決策**：採用 RevenueCat 統一管理架構，序號系統簡化為 Cloud Function + RevenueCat API。
+- **規格狀態**：
+  - `iap_subscription_flow.md` 詳細定義了 IAP 與序號的混合架構與資料流。
+  - `no1_user_management/README.md` 明確將序號功能列為 MVP 之後的迭代項目。
+  - 舊有的複雜序號規格已歸檔，避免混淆。
 
-**缺少內容：**
-- ❌ 無主題系統的資料模型定義
-- ❌ 無主題切換的 UI 規格
-- ❌ 無設計代幣 (Design Tokens) 定義文件
+### 3. 會員權限管理 (Tier System) - ✅ 已解決
 
-#### 2.2 序號兌換系統 (Redeem System)
+**現況**：
+- **權限來源**：由 RevenueCat 統一管理 (`rc_entitlements`)。
+- **資料同步**：透過 RevenueCat Firebase Integration 自動寫入 Firestore `users/{uid}`。
+- **App 端檢查**：App 僅需監聽 Firestore 文件即可判斷權限，無需複雜的本地邏輯。
 
-> [!WARNING]
-> **產品定義包含三個相關 User Stories，但模組規格中完全沒有對應**
+---
 
-產品定義中提到：
-- **序號驗證系統 (Redeem System)**：後端序號生成與驗證系統
-- **序號兌換介面 (Redeem UI)**：使用者在設定中輸入序號
-- **序號管理工具 (Redeem Management)**：營運團隊生成和管理序號
+## 結論
 
-**缺少內容：**
-- ❌ 無序號兌換的 UI 畫面規格
-- ❌ 無序號資料模型定義（如 RedeemCodes 表）
-- ❌ 無序號驗證邏輯規格
-- ❌ 無序號管理工具規格
+目前的規格文件已經與產品定義高度一致。原先缺失的「主題系統」與「序號系統」已經透過新增規格文件或明確的架構決策補齊。
 
-**備註：** 雖然 [`no16_paywall_screen.md`](file:///c:/Users/ken.chio/OneDrive%20-%20%E5%8B%9D%E5%92%8C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/%E6%96%87%E4%BB%B6/Repository/SuSuGiGiSpec/no3_module_specs/no1_accounting_app/no2_screens/no16_paywall_screen.md) 存在，但該畫面通常用於付費訂閱導購，與序號兌換機制不同。
+- **MVP 範圍明確**：User Management 模組已精簡為 MVP 版本。
+- **技術架構清晰**：RevenueCat 整合方案解決了複雜的會員與序號管理問題。
+- **設計系統就位**：Design Tokens 為主題系統打下基礎。
+
+建議持續保持此狀態，隨時更新規格以反映實作細節的變更。
 
 
 ---
