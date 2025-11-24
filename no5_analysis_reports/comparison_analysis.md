@@ -139,38 +139,24 @@
 
 ## 建議行動
 
-### 優先級 1: 補充缺失規格
+### 優先級 1: 補充缺失規格 (已完成)
 
 #### 主題系統
-建議新增以下文件：
-- `no3_module_specs/no1_accounting_app/no2_screens/noXX_theme_settings_screen.md`
-- `no3_module_specs/no1_accounting_app/no5_design_system/no1_theme_tokens.md`
-
-應包含：
-- 主題資料模型（Themes 表或 JSON 定義）
-- 主題切換 UI（在 PreferenceScreen 或 SettingsScreen 中）
-- 設計代幣定義（顏色、字型、間距等）
+已新增以下文件：
+- `no3_module_specs/no2_accounting_app/no2_screens/no18_theme_settings_screen.md`
+- `no3_module_specs/no2_accounting_app/no3_background_logics/no5_theme_management.md`
+- `no3_module_specs/no2_accounting_app/no5_design_system/no1_theme_tokens.md`
 
 #### 序號兌換系統
-建議新增以下文件：
-- `no3_module_specs/no1_accounting_app/no2_screens/noXX_redeem_code_screen.md`
-- `no3_module_specs/no1_accounting_app/no3_background_logics/noXX_redeem_code_validation.md`
-
-應包含：
-- RedeemCodes 資料模型
-- 序號兌換 UI 規格
-- 序號驗證邏輯（包含 Tier 映射）
-
+已新增以下文件：
+- `no3_module_specs/no2_accounting_app/no2_screens/no17_redeem_code_screen.md`
+- 架構定義於 `iap_subscription_flow.md`
 
 ### 優先級 2: 保持一致性
 
 #### 同步產品定義與模組規格
 - 當產品定義修改時，應同步更新對應的模組規格
 - 當新增 User Story 時，應規劃對應的模組規格文件
-
-#### 建立對應關係文件
-建議在 `no3_module_specs/no1_accounting_app/` 下新增：
-- `no0_user_story_mapping.md`：明確列出每個 User Story 與對應規格的映射
 
 ### 優先級 3: 驗證實作覆蓋度
 
