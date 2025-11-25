@@ -1,10 +1,4 @@
-# 首次登入流程 (First Login Flow)
-
-> **目的**: 新使用者首次登入時，在 Firestore 建立使用者文件  
-> **執行時機**: 使用者透過 Google 登入後  
-> **執行位置**: App 端（React Native）
-
----
+# 首次登入流程
 
 ## 流程圖
 
@@ -17,12 +11,12 @@ sequenceDiagram
 
     U->>App: 點擊「Google 登入」
     App->>Auth: signInWithGoogle()
-    Auth->>App: 返回 User (uid, email, etc.)
+    Auth->>App: 返回 User
     App->>DB: 查詢 users/{uid}
     
     alt 使用者文件不存在
         DB->>App: 文件不存在
-        App->>DB: 建立使用者文件（預設資料）
+        App->>DB: 建立使用者文件
         DB->>App: 建立成功
         App->>U: 導航至主畫面
     else 使用者文件已存在
@@ -31,14 +25,14 @@ sequenceDiagram
     end
 ```
 
----
-
 ## 實作邏輯
 
-### Step 1: 使用者登入
+### 使用者登入
+
+React Native App 端使用 Firebase Auth 進行 Google 登入。取得 `idToken` 後建立憑證並登入 Firebase，取得使用者物件。
 
 ```typescript
-// App 端 (React Native)
+// React Native App 端
 import auth from '@react-native-firebase/auth';
 
 async function handleGoogleLogin() {
@@ -65,9 +59,9 @@ async function handleGoogleLogin() {
 }
 ```
 
----
+### 檢查並建立使用者文件
 
-### Step 2: 檢查並建立使用者文件
+使用 Firestore SDK 檢查 `users` 集合中是否已存在該 UID 的文件。若不存在則建立新文件，並寫入預設偏好設定。
 
 ```typescript
 import firestore from '@react-native-firebase/firestore';
@@ -91,9 +85,9 @@ async function ensureUserDocument(user: FirebaseAuthTypes.User) {
       provider: 'google.com',
       
       preferences: {
-        language: getDeviceLanguage(), // 'zh-TW' or 'en'
+        language: getDeviceLanguage(), // zh-TW or en
         currency: 'TWD',
-        timezone: getDeviceTimezone(), // 'Asia/Taipei'
+        timezone: getDeviceTimezone(), // Asia/Taipei
         theme: 'system'
       },
       
@@ -107,7 +101,7 @@ async function ensureUserDocument(user: FirebaseAuthTypes.User) {
     
     console.log('User document created successfully');
   } else {
-    // 文件已存在，更新登入時間（可選）
+    // 文件已存在，更新登入時間
     await userRef.update({
       updatedAt: firestore.FieldValue.serverTimestamp()
     });
@@ -117,9 +111,9 @@ async function ensureUserDocument(user: FirebaseAuthTypes.User) {
 }
 ```
 
----
+### 輔助函式
 
-### Step 3: 輔助函式
+用於取得裝置目前的語言與時區設定，作為預設值。
 
 ```typescript
 /**
@@ -148,11 +142,11 @@ function getDeviceTimezone(): string {
 }
 ```
 
----
-
 ## 錯誤處理
 
 ### 網路錯誤
+
+若遇到 `firestore/unavailable` 錯誤，表示目前無網路連線。在此情況下，App 應採用 Local-First 架構繼續運行，待網路恢復後再同步。
 
 ```typescript
 try {
@@ -161,7 +155,7 @@ try {
   if (error.code === 'firestore/unavailable') {
     // 網路問題，使用本地快取繼續
     console.warn('Firestore unavailable, using cache');
-    // App 可正常運行（Local-First 架構）
+    // App 可正常運行
   } else {
     // 其他錯誤
     console.error('Failed to create user document', error);
@@ -172,15 +166,11 @@ try {
 
 ### 並發問題
 
-如果多個裝置同時首次登入（極少見），Firestore 的 `set()` 會確保冪等性：
-- 第一個 `set()` 建立文件
-- 後續 `set()` 覆寫（但資料相同，無影響）
-
----
+如果多個裝置同時首次登入，Firestore 的 `set()` 操作具有冪等性，重複執行不會造成資料錯誤。
 
 ## RevenueCat 初始化
 
-在建立使用者文件後，初始化 RevenueCat SDK：
+在建立使用者文件後，使用 Firebase UID 初始化 RevenueCat SDK。此步驟會觸發 RevenueCat 與 Firebase 的整合同步。
 
 ```typescript
 import Purchases from 'react-native-purchases';
@@ -194,13 +184,11 @@ async function initializeRevenueCat(user: FirebaseAuthTypes.User) {
   
   console.log('RevenueCat initialized with user:', user.uid);
   
-  // 獲取最新訂閱狀態（會觸發 Firebase Integration 同步）
+  // 獲取最新訂閱狀態
   const customerInfo = await Purchases.getCustomerInfo();
   console.log('Customer info:', customerInfo);
 }
 ```
-
----
 
 ## 測試場景
 
@@ -210,31 +198,25 @@ async function initializeRevenueCat(user: FirebaseAuthTypes.User) {
 3. RevenueCat 建立新 subscriber
 4. 文件包含預設偏好設定
 
-### 場景 2: 既有使用者（換裝置）
+### 場景 2: 既有使用者
 1. 使用者在新裝置登入
 2. Firestore 返回既有文件
-3. RevenueCat 恢復訂閱狀態（使用相同 appUserID）
+3. RevenueCat 恢復訂閱狀態
 4. App 顯示既有偏好設定
 
 ### 場景 3: 離線首次登入
-1. 使用者在無網路環境登入（不太可能，因登入需網路）
+1. 使用者在無網路環境登入
 2. 若發生，延後建立文件至恢復網路時
 3. App 使用本地預設值運行
-
----
 
 ## 注意事項
 
 ### ✅ 最佳實踐
 - 使用 `serverTimestamp()` 而非客戶端時間
-- 確保冪等性（重複執行不會出錯）
+- 確保冪等性
 - 優雅處理網路錯誤
 
 ### ⚠️ 避免
 - 不要在建立文件時執行複雜邏輯
-- 不要阻塞 UI（使用 async/await）
+- 不要阻塞 UI
 - 不要假設 Firestore 操作一定成功
-
----
-
-**文件結束**

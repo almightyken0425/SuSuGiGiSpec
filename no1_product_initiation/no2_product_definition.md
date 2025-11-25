@@ -14,10 +14,32 @@
 
 ## 核心產品矩陣
 
+-  **會員管理系統, User Management**
 -  **記帳 App + Firestore, Accounting App**
 -  **Web 複雜報表, Web Console**
 -  **AI 個人化建議, AI Advisor**
 -  **總經分析報表與 API, Macro Data Service**
+
+---
+
+
+
+## 會員管理系統, User Management
+
+**定位:** 跨平台共用的使用者身分與偏好管理中心。
+**價值:** 基礎設施, Infrastructure, 個人化, Personalization
+
+### User Stories
+
+#### 身分驗證, Authentication
+- **登入, Login:** 作為使用者，我想要透過 Google 帳號登入，以便存取我的雲端資料。
+- **登出, Logout:** 作為使用者，我想要登出目前的帳號，以便保護我的隱私。
+- **首次登入初始化, First Login:** 作為新使用者，我想要在第一次登入時自動建立預設的偏好設定與資料結構，以便立即開始使用。
+
+#### 偏好設定, User Preferences
+- **多語言設定, Language:** 作為使用者，我想要切換 App 介面語言 (繁中/英文)，以便使用我熟悉的語言。
+- **多幣別設定, Currency:** 作為使用者，我想要設定主要貨幣，以便報表顯示正確的幣別單位。
+- **主題切換, Theme:** 作為使用者，我想要切換深色/淺色主題，以便調整視覺體驗。
 
 ---
 

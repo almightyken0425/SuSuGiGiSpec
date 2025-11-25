@@ -1,4 +1,76 @@
 ﻿Module,Sub-Module,User Story,Role,Construction Points,Operation Points
+User Management,身分驗證,登入,AI Engineer,0,0
+User Management,身分驗證,登入,App RD,0,0
+User Management,身分驗證,登入,Backend RD,50,2
+User Management,身分驗證,登入,Data Engineer,0,0
+User Management,身分驗證,登入,Marketing,0,0
+User Management,身分驗證,登入,Operations,0,0
+User Management,身分驗證,登入,PDM,30,1
+User Management,身分驗證,登入,PJM,20,1
+User Management,身分驗證,登入,QA,30,1
+User Management,身分驗證,登入,UI Designer,0,0
+User Management,身分驗證,登入,UX Designer,0,0
+User Management,身分驗證,登入,Web RD,0,0
+User Management,身分驗證,登出,AI Engineer,0,0
+User Management,身分驗證,登出,App RD,0,0
+User Management,身分驗證,登出,Backend RD,20,1
+User Management,身分驗證,登出,Data Engineer,0,0
+User Management,身分驗證,登出,Marketing,0,0
+User Management,身分驗證,登出,Operations,0,0
+User Management,身分驗證,登出,PDM,10,0
+User Management,身分驗證,登出,PJM,10,0
+User Management,身分驗證,登出,QA,10,0
+User Management,身分驗證,登出,UI Designer,0,0
+User Management,身分驗證,登出,UX Designer,0,0
+User Management,身分驗證,登出,Web RD,0,0
+User Management,身分驗證,首次登入初始化,AI Engineer,0,0
+User Management,身分驗證,首次登入初始化,App RD,0,0
+User Management,身分驗證,首次登入初始化,Backend RD,80,3
+User Management,身分驗證,首次登入初始化,Data Engineer,0,0
+User Management,身分驗證,首次登入初始化,Marketing,0,0
+User Management,身分驗證,首次登入初始化,Operations,0,0
+User Management,身分驗證,首次登入初始化,PDM,40,2
+User Management,身分驗證,首次登入初始化,PJM,20,1
+User Management,身分驗證,首次登入初始化,QA,40,2
+User Management,身分驗證,首次登入初始化,UI Designer,0,0
+User Management,身分驗證,首次登入初始化,UX Designer,0,0
+User Management,身分驗證,首次登入初始化,Web RD,0,0
+User Management,偏好設定,多語言,AI Engineer,0,0
+User Management,偏好設定,多語言,App RD,0,0
+User Management,偏好設定,多語言,Backend RD,30,1
+User Management,偏好設定,多語言,Data Engineer,0,0
+User Management,偏好設定,多語言,Marketing,0,0
+User Management,偏好設定,多語言,Operations,0,0
+User Management,偏好設定,多語言,PDM,20,1
+User Management,偏好設定,多語言,PJM,10,0
+User Management,偏好設定,多語言,QA,20,1
+User Management,偏好設定,多語言,UI Designer,0,0
+User Management,偏好設定,多語言,UX Designer,0,0
+User Management,偏好設定,多語言,Web RD,0,0
+User Management,偏好設定,多幣別,AI Engineer,0,0
+User Management,偏好設定,多幣別,App RD,0,0
+User Management,偏好設定,多幣別,Backend RD,30,1
+User Management,偏好設定,多幣別,Data Engineer,0,0
+User Management,偏好設定,多幣別,Marketing,0,0
+User Management,偏好設定,多幣別,Operations,0,0
+User Management,偏好設定,多幣別,PDM,20,1
+User Management,偏好設定,多幣別,PJM,10,0
+User Management,偏好設定,多幣別,QA,20,1
+User Management,偏好設定,多幣別,UI Designer,0,0
+User Management,偏好設定,多幣別,UX Designer,0,0
+User Management,偏好設定,多幣別,Web RD,0,0
+User Management,偏好設定,主題切換,AI Engineer,0,0
+User Management,偏好設定,主題切換,App RD,0,0
+User Management,偏好設定,主題切換,Backend RD,30,1
+User Management,偏好設定,主題切換,Data Engineer,0,0
+User Management,偏好設定,主題切換,Marketing,0,0
+User Management,偏好設定,主題切換,Operations,0,0
+User Management,偏好設定,主題切換,PDM,20,1
+User Management,偏好設定,主題切換,PJM,10,0
+User Management,偏好設定,主題切換,QA,20,1
+User Management,偏好設定,主題切換,UI Designer,0,0
+User Management,偏好設定,主題切換,UX Designer,0,0
+User Management,偏好設定,主題切換,Web RD,0,0
 Accounting App,交易與自動化,支出管理,AI Engineer,0,0
 Accounting App,交易與自動化,支出管理,App RD,180,3
 Accounting App,交易與自動化,支出管理,Backend RD,30,1

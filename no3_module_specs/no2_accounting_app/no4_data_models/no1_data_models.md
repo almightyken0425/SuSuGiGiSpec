@@ -120,16 +120,7 @@
         
     - `createdOn`: Number, Unix Timestamp ms - Not Null
         
-    - `userId`: String, Auth UID - Foreign Key to Users, Not Null
-        
-    - `settingKey`: String - Not Null, 例如 baseCurrencyId, timeZone, language, userTier, subscriptionStatus, currentThemeId, lastRecurringCheckDate
-        
-    - `settingValue`: String - Not Null (儲存 JSON 字串或簡單值)
-        
-    - `createdOn`: Number, Unix Timestamp ms - Not Null
-        
-    - `updatedOn`: Number, Unix Timestamp ms - Not Null, 資料最後更新時間, 同步依據
-        
+
 
 ## App 標準定義資料
 
