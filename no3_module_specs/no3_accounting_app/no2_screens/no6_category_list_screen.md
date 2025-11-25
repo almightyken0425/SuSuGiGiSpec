@@ -59,6 +59,8 @@
                 - **條件:** `disabledOn` 非 null
                 - **UI:** 灰色文字 或 已停用 標籤
 
+---
+
 ## 核心邏輯
 
 - **資料載入:**
@@ -88,11 +90,15 @@
     - **ELSE:**
         - **導航:** CategoryEditorScreen
 
+---
+
 ## 狀態管理
 
 - **本地狀態:**
     - `expenseCategories`
     - `incomeCategories`
+
+---
 
 ## 導航
 

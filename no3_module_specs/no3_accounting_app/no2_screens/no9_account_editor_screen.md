@@ -43,6 +43,8 @@
     - **UI:** 紅色 刪除此帳戶 按鈕
     - **可見性:** 僅 編輯模式 顯示
 
+---
+
 ## 核心邏輯
 
 - **模式判斷:**
@@ -99,6 +101,8 @@
         - **欄位:** 必須設定 `deletedOn` 並更新 `updatedOn`
         - **導航:** 關閉畫面, 返回 AccountListScreen
 
+---
+
 ## 狀態管理
 
 - **本地狀態:**
@@ -108,6 +112,8 @@
     - `initialBalanceCents`
     - `standardAccountTypeId`
     - `isDisabled`
+
+---
 
 ## 導航
 

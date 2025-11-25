@@ -49,6 +49,8 @@
 | `color.status.success` | 成功狀態 | `success` | `success` |
 | `color.status.error` | 錯誤狀態 | `error` | `error` |
 
+---
+
 ## 2. 字型系統 (Typography System)
 
 ### 2.1 字型家族 (Font Family)
@@ -69,6 +71,8 @@
 - `font-medium`: 500
 - `font-bold`: 700
 
+---
+
 ## 3. 間距系統 (Spacing System)
 基於 4px 的網格系統。
 
@@ -81,11 +85,15 @@
 - `space-12`: 48px
 - `space-16`: 64px
 
+---
+
 ## 4. 圓角系統 (Radius System)
 - `radius-sm`: 4px
 - `radius-md`: 8px
 - `radius-lg`: 12px
 - `radius-full`: 9999px
+
+---
 
 ## 5. 陰影系統 (Shadow System)
 - `shadow-sm`: 0 1px 2px 0 rgba(0, 0, 0, 0.05)

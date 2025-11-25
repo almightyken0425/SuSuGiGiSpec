@@ -27,6 +27,8 @@ sequenceDiagram
     end
 ```
 
+---
+
 ## 偏好設定更新流程, Update Preferences Flow
 
 > **情境**: 使用者修改語言、貨幣、主題時。
@@ -47,6 +49,8 @@ sequenceDiagram
         App->>App: 標記 Dirty, 待 Sync
     end
 ```
+
+---
 
 ## 訂閱狀態監聽流程, Subscription Listener Flow
 

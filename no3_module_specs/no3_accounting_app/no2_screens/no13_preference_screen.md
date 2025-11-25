@@ -81,12 +81,16 @@
         - **目標:** AuthContext 認證狀態變化
         - **行為:** AppNavigator 自動切換回 LoginScreen
 
+---
+
 ## 狀態管理
 
 - **本地狀態:**
     - `baseCurrencyId`
     - `timeZone`
     - `language`
+
+---
 
 ## 導航
 

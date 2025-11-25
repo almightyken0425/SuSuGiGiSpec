@@ -120,6 +120,8 @@ function getDeviceTimezone(): string {
 }
 ```
 
+---
+
 ## 錯誤處理
 
 ### 網路錯誤
@@ -146,6 +148,8 @@ try {
 
 如果多個裝置同時首次登入，Firestore 的 `set()` 操作具有冪等性，重複執行不會造成資料錯誤。
 
+---
+
 ## RevenueCat 初始化
 
 在建立使用者文件後，使用 Firebase UID 初始化 RevenueCat SDK。此步驟會觸發 RevenueCat 與 Firebase 的整合同步。
@@ -168,6 +172,8 @@ async function initializeRevenueCat(user: FirebaseAuthTypes.User) {
 }
 ```
 
+---
+
 ## 測試場景
 
 ### 場景 1: 全新使用者
@@ -186,6 +192,8 @@ async function initializeRevenueCat(user: FirebaseAuthTypes.User) {
 1. 使用者在無網路環境登入
 2. 若發生，延後建立文件至恢復網路時
 3. App 使用本地預設值運行
+
+---
 
 ## 注意事項
 

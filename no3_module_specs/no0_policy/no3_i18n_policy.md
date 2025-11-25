@@ -13,6 +13,8 @@
     - **行為:** `en` 英文為預設語系
     - **備註:** 所有新 `key` 必須先加入 `en.json`
 
+---
+
 ## 檔案結構
 
 - **位置:** `src/locales/`
@@ -20,6 +22,8 @@
     - `i18n.ts`
     - `en.json`
     - `zh-TW.json`
+
+---
 
 ## `i18n.ts` 設定檔
 
@@ -30,6 +34,8 @@
     - 設定 `fallbackLng` 為 `en`
     - 偵測使用者裝置偏好語言
     - **備註:** 需整合 `PreferenceScreen` 的語系切換邏輯
+
+---
 
 ## `en.json` 範例結構
 
@@ -63,6 +69,8 @@
 
 ```
 
+---
+
 ## 程式碼實作
 
 - **掛鉤:**
@@ -75,6 +83,8 @@
     - **行為:** 使用插值 `interpolation` 傳入動態值
     - **JSON:** `"welcome": "Welcome, {{name}}"`
     - **程式碼:** `t('welcome', { name: userName })`
+
+---
 
 ## 測試要求
 

@@ -3,8 +3,6 @@
 > **實作方式**: 直接使用 Firestore SDK（**不需要** Cloud Function）  
 > **原因**: 偏好設定更新是簡單的寫入操作，不涉及複雜邏輯
 
----
-
 ## 為什麼不需要 API？
 
 MVP 階段的偏好設定更新**不需要獨立的 Cloud Function API**，原因：
@@ -13,8 +11,6 @@ MVP 階段的偏好設定更新**不需要獨立的 Cloud Function API**，原�
 2. ✅ **權限控制**: Firestore Security Rules 已足夠
 3. ✅ **即時性**: 直接操作比 API 更快
 4. ✅ **離線支援**: Firestore SDK 支援離線快取
-
----
 
 ## Firestore Security Rules
 
@@ -43,8 +39,6 @@ service cloud.firestore {
   }
 }
 ```
-
----
 
 ## App 端實作
 
@@ -84,8 +78,6 @@ async function updateCurrencyPreference(userId: string, currency: string) {
 }
 ```
 
----
-
 ### 批次更新多個偏好
 
 ```typescript
@@ -122,8 +114,6 @@ async function updateMultiplePreferences(
   console.log('Preferences updated:', preferences);
 }
 ```
-
----
 
 ## UI 整合範例
 

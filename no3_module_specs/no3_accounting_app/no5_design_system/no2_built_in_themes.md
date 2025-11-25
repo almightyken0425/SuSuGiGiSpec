@@ -11,6 +11,8 @@
 | `theme_ocean_blue` | 海洋藍 (Ocean) | 以深藍色為主調的沈穩風格 | Light |
 | `theme_forest_green` | 森林綠 (Forest) | 以綠色為主調的自然風格 | Dark |
 
+---
+
 ## 2. 主題 Token 映射
 
 ### 2.1 預設淺色 (theme_light_default)
@@ -38,6 +40,8 @@
   - `color.bg.base`: #1B5E20
   - `color.bg.surface`: #2E7D32
   - `color.primary.main`: #81C784
+
+---
 
 ## 3. JSON 結構範例
 

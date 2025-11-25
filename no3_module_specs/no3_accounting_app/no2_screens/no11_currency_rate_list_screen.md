@@ -32,6 +32,8 @@
     - **導航:** CurrencyRateEditorScreen
     - **模式:** 新增
 
+---
+
 ## 核心邏輯
 
 - **資料載入:**
@@ -53,10 +55,14 @@
     - **IF** False 免費版:
         - **導航:** PaywallScreen
 
+---
+
 ## 狀態管理
 
 - **本地狀態:**
     - `latestRates`
+
+---
 
 ## 導航
 

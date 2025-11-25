@@ -13,6 +13,8 @@
     - **禁止:** 顯示等待雲端同步的載入狀態
     - **備註:** 僅在手動觸發同步時顯示載入指示器
 
+---
+
 ## 顏色
 
 - **來源:** `src/constants/theme.ts`
@@ -26,6 +28,8 @@
     - `THEME_COLORS.accentGreen`
 - **禁止:** 在 `StyleSheet` 中寫死色碼
 
+---
+
 ## 字體排版
 
 - **來源:** `src/constants/theme.ts`
@@ -35,6 +39,8 @@
     - `TYPOGRAPHY.body`
     - `TYPOGRAPHY.caption`
 - **禁止:** 在 `StyleSheet` 中寫死 `fontSize` 或 `fontWeight`
+
+---
 
 ## 間距與佈局
 
@@ -47,6 +53,8 @@
 - **行為:**
     - 所有元件的 `margin` `padding` 必須使用 `SPACING` 常數
 
+---
+
 ## 元件
 
 - **通用元件:**
@@ -57,6 +65,8 @@
     - **工具:** `StyleSheet.create`
     - **禁止:** 行內樣式
 
+---
+
 ## 圖標 Icons
 
 - **來源:** `IconDefinition.json`
@@ -64,6 +74,8 @@
 - **行為:**
     - **輔助:** 使用 `iconHelper.ts` 處理圖標名稱映射
     - **禁止:** 使用 `IconDefinition.json` 以外的圖標集
+
+---
 
 ## 全域設計原則
 

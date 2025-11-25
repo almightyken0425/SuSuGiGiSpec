@@ -26,6 +26,8 @@ graph TD
     AutoSync -- < 24hr --> End
 ```
 
+---
+
 ## 批次同步流程, Batch Sync Flow
 
 > **來源**: 參考 `no3_accounting_app/no3_background_logics/no3_batch_sync_spec.md`

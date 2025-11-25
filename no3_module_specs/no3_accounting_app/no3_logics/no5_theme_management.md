@@ -5,6 +5,8 @@
 - **名稱:** ThemeManagement
 - **目的:** 負責 App 的主題初始化、切換、持久化以及系統主題跟隨。
 
+---
+
 ## 狀態管理
 
 - **Context / Store:**
@@ -18,6 +20,8 @@
         - **型別:** Boolean
         - **說明:** 是否跟隨系統 (預留未來擴充)
 
+---
+
 ## 初始化邏輯
 
 - **觸發:** App 啟動
@@ -28,6 +32,8 @@
 - **行為:** 根據 ID 從 `BuiltInThemes` 查找對應的主題物件
 - **行為:** 將主題物件注入 App 的 Theme Provider
     - **範例:** React Context 或 Styled Components ThemeProvider
+
+---
 
 ## 切換邏輯
 
@@ -42,6 +48,8 @@
     - **Key:** `currentThemeId`
     - **Value:** `themeId`
 - **行為:** 發送 Analytics 事件 (Optional)
+
+---
 
 ## 擴充性設計
 
