@@ -8,30 +8,6 @@
   - **偏好設定管理:** 定義語言、貨幣、時區等偏好設定的資料結構與更新 API。
   - **RevenueCat 整合:** 為訂閱權限資料預留欄位結構。
 
-> [!NOTE]
-> 本模組專注於 **後端規格, Backend Specs**，包含 Schema、邏輯流程與 API 定義。
-> 前端 UI 實作, 如登入畫面、設定畫面 的規格文件保留於 **Accounting App** 模組中。
-
----
-
-## 實作重點
-
-- **Firestore Users Collection:**
-  - **單一真理來源:** 所有使用者偏好如 Language, Currency, TimeZone 皆以此 Collection 為準。
-  - **RevenueCat 同步:** 自動寫入訂閱狀態，不需手動維護。
-
-- **首次登入邏輯:**
-  - **冪等性:** 確保重複觸發也不會破壞現有資料。
-  - **預設值:** 新用戶自動帶入預設偏好如 zh-TW, TWD, Asia/Taipei。
-
-- **偏好設定更新:**
-  - **API:** 提供簡單的介面供前端更新偏好。
-
----
-
-## 系統與 Firestore 互動時機
-
-App 與 Firestore 的互動分為兩大類：**User Management, 即時互動** 與 **Accounting Data, 批次同步**。
 
 ### User Management, 即時與文件導向
 > **範圍**: 身分、偏好設定、訂閱權限, `users/{uid}`

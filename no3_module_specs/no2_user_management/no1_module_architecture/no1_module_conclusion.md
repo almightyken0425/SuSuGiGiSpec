@@ -1,0 +1,25 @@
+# 核心功能原則
+
+- **單一真理原則, Single Source of Truth**
+    - **核心:** Firestore Users Collection
+    - **理由:** 確保跨平台與跨裝置的使用者體驗一致性
+    - **流程:**
+        - 所有使用者偏好 (語言, 幣別, 時區, 主題) 皆以 `users/{uid}` 為準
+        - App 本地僅作為快取 (Cache)，需與雲端保持雙向同步
+- **即時性原則, Real-time Updates**
+    - **核心:** 偏好設定即時寫入
+    - **理由:** 偏好設定變更頻率低，但期望立即生效
+    - **流程:**
+        - 使用者修改偏好 -> 立即寫入 Firestore
+        - 若離線則標記 Dirty，待連線後立即同步
+- **被動監聽原則, Passive Listening**
+    - **核心:** 訂閱狀態由 Server 端寫入
+    - **理由:** 安全性與準確性
+    - **流程:**
+        - App **不** 直接修改 `rc_entitlements`
+        - App 僅監聽 Firestore 文件變更，由 RevenueCat Server 透過 Webhook 更新 Firestore
+- **冪等性原則, Idempotency**
+    - **核心:** 首次登入流程可重複執行
+    - **理由:** 網路不穩定或重複安裝 App 時，不應破壞現有資料
+    - **流程:**
+        - 初始化檢查時，若文件已存在則僅更新 `updatedAt`，不覆蓋 `preferences`
