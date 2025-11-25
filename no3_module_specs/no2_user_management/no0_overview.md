@@ -48,7 +48,7 @@ App 與 Firestore 的互動分為兩大類：**User Management, 即時互動** �
 
 ### Accounting Data, 批次同步與集合導向
 > **範圍**: 交易、帳戶、類別等記帳資料
-> **詳見**: `no2_accounting_app/no3_background_logics/no3_batch_sync_spec.md`
+> **詳見**: `no3_accounting_app/no3_background_logics/no3_batch_sync_spec.md`
 
 - **每日自動同步, Daily Auto Sync**
   - **時機:** App 啟動, Bootstrap 時，若距離上次檢查超過 24 小時。
@@ -65,28 +65,7 @@ App 與 Firestore 的互動分為兩大類：**User Management, 即時互動** �
 
 ## 互動流程圖
 
-```mermaid
-graph TB
-    subgraph client["App Client"]
-        Bootstrap[App Launch / Bootstrap]
-        UserAction[User Settings Action]
-        SyncEngine[Sync Engine (Background)]
-    end
-
-    subgraph firestore["Firestore DB"]
-        UserDoc[User Doc (users/{uid})]
-        DataColl[Data Collections (transactions, etc.)]
-    end
-
-    %% User Management Interactions
-    Bootstrap -->|"1. Check/Create (Real-time)"| UserDoc
-    UserAction -->|"2. Update Prefs (Real-time)"| UserDoc
-    UserDoc -.->|"3. Listen Subscription"| Bootstrap
-
-    %% Accounting Data Interactions
-    Bootstrap -.->|"4. Trigger Auto Sync (Daily)"| SyncEngine
-    UserAction -.->|"5. Trigger Manual Sync"| SyncEngine
-    
-    SyncEngine ==>|"6. Batch Upload (Delta)"| DataColl
-    DataColl ==>|"7. Batch Download (Delta)"| SyncEngine
-```
+> [!NOTE]
+> 詳細互動流程圖請參閱:
+> - **User Management:** `no1_interaction_flows/no1_user_management_flows.md`
+> - **Accounting App:** `no1_interaction_flows/no2_accounting_flows.md`

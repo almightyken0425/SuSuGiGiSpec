@@ -2,6 +2,9 @@
 
 ## 流程
 
+> [!NOTE]
+> 完整流程圖請參閱: `no1_interaction_flows/no2_accounting_flows.md`
+
 - **觸發:** 使用者開啟 App
 - **行為:** 顯示 Splash 啟動畫面
 - **行為:** 檢查 本機儲存的 Auth State 認證狀態

@@ -1,29 +1,7 @@
 # 首次登入流程
 
-## 流程圖
-
-```mermaid
-sequenceDiagram
-    participant U as 使用者
-    participant App as App
-    participant Auth as Firebase Auth
-    participant DB as Firestore
-
-    U->>App: 點擊「Google 登入」
-    App->>Auth: signInWithGoogle()
-    Auth->>App: 返回 User
-    App->>DB: 查詢 users/{uid}
-    
-    alt 使用者文件不存在
-        DB->>App: 文件不存在
-        App->>DB: 建立使用者文件
-        DB->>App: 建立成功
-        App->>U: 導航至主畫面
-    else 使用者文件已存在
-        DB->>App: 返回現有資料
-        App->>U: 導航至主畫面
-    end
-```
+> [!NOTE]
+> 完整互動流程圖請參閱: `no1_interaction_flows/no1_user_management_flows.md`
 
 ## 實作邏輯
 
