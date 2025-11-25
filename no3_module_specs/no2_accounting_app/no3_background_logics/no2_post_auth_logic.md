@@ -1,28 +1,34 @@
 # 登入認證後邏輯
 
 - **觸發:** 認證成功時，由 LoginScreen.md 觸發
-- **IF** 新用戶:
-    - **行為:** 執行 建立預設資料 至 本機 DB
-    - **主要幣別 Primary Currency:**
-        - **來源:** 嘗試從 裝置 的 Locale 設定中 取得 幣別代碼 Currency Code
-        - **設定:**
-            - **IF** 成功取得 幣別代碼
-                - **行為:** 用戶 主要幣別 設為 取得的幣別代碼
-            - **ELSE** 無法從 Locale 取得
-                - **行為:** 用戶 主要幣別 設為 系統預設幣別 (例如 TWD)
-    - **資料建立:**
-        - **帳戶:** 現金
-        - **類別:** 食, 衣, 住, 行
-    - **語系:** 讀取裝置 Device 的 Locale 語言設定
-        - **IF** 裝置語言 存在於 App 支援列表
-            - **行為:** App 語言 設為 裝置語言
-        - **ELSE** App 支援裝置的語言
-            - **行為:** App 語言 設為 系統預設語言
-    - **時區 Timezone:**
-        - **來源:** 讀取 裝置 的 時區設定
-        - **設定:** App 預設時區 設為 裝置時區
-    - **行為:** 不執行任何雲端上傳或同步
-- **IF** 免費舊用戶:
-    - **行為:** 不執行任何操作
-- **IF** 付費舊用戶:
+- **讀取 User Profile:**
+    - **行為:** 嘗試讀取 Firestore `users/{uid}`
+- **IF** 讀取成功, 舊用戶:
+    - **行為:** 解析 Firestore 回傳的 `preferences`
+        - language, currency, timezone
+    - **行為:** **覆蓋寫入** 本機 DB `Settings` 表
+        - `language` = `preferences.language`
+        - `baseCurrencyId` = `preferences.currency`, 需轉換 ISO code to ID
+        - `timeZone` = `preferences.timezone`
+        - `theme` = `preferences.theme`
+        - `updatedOn` = Current Timestamp
     - **行為:** 觸發同步與定期交易
+- **IF** 讀取失敗或文件不存在, 新用戶:
+    - **行為:** 執行 **初始化流程**
+    - **決定預設值:**
+        - **主要幣別:** 嘗試從裝置 Locale 取得，若無則預設 TWD (需轉換為 ISO Code)
+        - **語系:** 嘗試從裝置 Locale 取得，若無則預設系統語言
+        - **時區:** 讀取裝置時區
+        - **主題:** 預設 system
+    - **寫入本機 (App Onboarding):**
+        - **行為:** 建立本機 DB `Settings` 表資料 (需將 ISO Code 轉為 Currency ID)
+        - **行為:** 建立預設資料
+            - 帳戶: 現金 (使用主要幣別)
+            - 類別: 食衣住行標準類別
+    - **寫入雲端 (User Management Onboarding):**
+        - **行為:** 建立 Firestore `users/{uid}` 文件
+        - **內容:**
+            - `uid`, `email`, `provider`
+            - `preferences`: { language, currency, timezone, theme } (儲存 ISO Code)
+            - `createdAt`: Server Timestamp
+    - **行為:** 不執行 Batch Sync, 因無資料需下載

@@ -1,80 +1,16 @@
 # User Management Module
 
-> **模組版本**: V1
-> **最後更新**: 2025-11-25
-> **範圍**: 包含使用者身分驗證、個人資料與偏好設定的後端邏輯與資料結構。
-
----
-
 ## 模組目的
 
 - **User Management 模組負責:**
-  - **使用者資料儲存:** 在 Firestore 中維護使用者個人資料 (Users Collection)。
+  - **使用者資料儲存:** 在 Firestore 中維護使用者個人資料, Users Collection。
   - **身分驗證邏輯:** 定義首次登入與帳號建立流程。
   - **偏好設定管理:** 定義語言、貨幣、時區等偏好設定的資料結構與更新 API。
   - **RevenueCat 整合:** 為訂閱權限資料預留欄位結構。
 
 > [!NOTE]
-> 本模組專注於 **後端規格 (Backend Specs)**，包含 Schema、邏輯流程與 API 定義。
-> 前端 UI 實作 (如登入畫面、設定畫面) 的規格文件保留於 **Accounting App** 模組中。
-
----
-
-## 模組結構
-
-本模組採用扁平結構，不另設子資料夾：
-
-```
-no1_user_management/
-├── no0_overview.md                    # 本文件
-├── no1_users_schema.md                # Firestore Users collection 定義 (含偏好設定)
-├── no2_first_login_flow.md            # 首次登入建立使用者邏輯
-└── no3_update_preferences_api.md      # 更新使用者偏好設定 API
-```
-
----
-
-## 相關文件
-# User Management Module
-
-> **模組版本**: V1
-> **最後更新**: 2025-11-25
-> **範圍**: 包含使用者身分驗證、個人資料與偏好設定的後端邏輯與資料結構。
-
----
-
-## 模組目的
-
-- **User Management 模組負責:**
-  - **使用者資料儲存:** 在 Firestore 中維護使用者個人資料 (Users Collection)。
-  - **身分驗證邏輯:** 定義首次登入與帳號建立流程。
-  - **偏好設定管理:** 定義語言、貨幣、時區等偏好設定的資料結構與更新 API。
-  - **RevenueCat 整合:** 為訂閱權限資料預留欄位結構。
-
-> [!NOTE]
-> 本模組專注於 **後端規格 (Backend Specs)**，包含 Schema、邏輯流程與 API 定義。
-> 前端 UI 實作 (如登入畫面、設定畫面) 的規格文件保留於 **Accounting App** 模組中。
-
----
-
-## 模組結構
-
-本模組採用扁平結構，不另設子資料夾：
-
-```
-no1_user_management/
-├── no0_overview.md                    # 本文件
-├── no1_users_schema.md                # Firestore Users collection 定義 (含偏好設定)
-├── no2_first_login_flow.md            # 首次登入建立使用者邏輯
-└── no3_update_preferences_api.md      # 更新使用者偏好設定 API
-```
-
----
-
-## 相關文件
-
-- **Accounting App Module**: 包含 LoginScreen 與 PreferenceScreen 的 UI 規格。
-- **RevenueCat 整合**: 參見 IAP 訂閱系統完整流程。
+> 本模組專注於 **後端規格, Backend Specs**，包含 Schema、邏輯流程與 API 定義。
+> 前端 UI 實作, 如登入畫面、設定畫面 的規格文件保留於 **Accounting App** 模組中。
 
 ---
 
@@ -93,41 +29,64 @@ no1_user_management/
 
 ---
 
-## 系統互動流程
+## 系統與 Firestore 互動時機
 
-Accounting App 在以下情境需要與 Firestore 互動：
+App 與 Firestore 的互動分為兩大類：**User Management, 即時互動** 與 **Accounting Data, 批次同步**。
 
-1.  **首次開啟 App (Onboarding)**: 檢查並建立使用者文件。
-2.  **訂閱狀態變更**: 監聽 RevenueCat 同步至 Firestore 的權限欄位。
-3.  **偏好設定變更**: 使用者在 App 修改設定時，即時更新 Firestore。
+### User Management, 即時與文件導向
+> **範圍**: 身分、偏好設定、訂閱權限, `users/{uid}`
+
+- **登入與初始化, Login & Init**
+  - **時機:** App 啟動或登入時。
+  - **行為:** 讀取 `users/{uid}`。若為新用戶，則建立預設文件, Onboarding。
+- **偏好設定更新, Update Preferences**
+  - **時機:** 使用者修改語言、幣別、主題時。
+  - **行為:** 即時寫入 `users/{uid}`。
+- **訂閱狀態監聽, Subscription Listener**
+  - **時機:** App 運作期間持續監聽。
+  - **行為:** 監聽 `users/{uid}` 的 `rc_entitlements` 欄位變更, 由 RevenueCat Server 同步寫入。
+
+### Accounting Data, 批次同步與集合導向
+> **範圍**: 交易、帳戶、類別等記帳資料
+> **詳見**: `no2_accounting_app/no3_background_logics/no3_batch_sync_spec.md`
+
+- **每日自動同步, Daily Auto Sync**
+  - **時機:** App 啟動, Bootstrap 時，若距離上次檢查超過 24 小時。
+  - **條件:** 僅限付費會員, Premium。
+  - **行為:** 觸發背景批次同步, Delta Sync。
+- **手動同步, Manual Sync**
+  - **時機:** 使用者在設定頁面點擊「立即同步」。
+  - **行為:** 立即觸發批次同步。
+- **跨裝置與重裝同步, First Sync**
+  - **時機:** 付費會員在全新裝置登入後。
+  - **行為:** 下載雲端所有資料至本機。
+
+---
+
+## 互動流程圖
 
 ```mermaid
 graph TB
-    subgraph client["客戶端"]
-        App[Accounting App]
+    subgraph client["App Client"]
+        Bootstrap[App Launch / Bootstrap]
+        UserAction[User Settings Action]
+        SyncEngine[Sync Engine (Background)]
     end
-    
-    subgraph auth["身分驗證"]
-        Auth[Firebase Auth]
+
+    subgraph firestore["Firestore DB"]
+        UserDoc[User Doc (users/{uid})]
+        DataColl[Data Collections (transactions, etc.)]
     end
+
+    %% User Management Interactions
+    Bootstrap -->|"1. Check/Create (Real-time)"| UserDoc
+    UserAction -->|"2. Update Prefs (Real-time)"| UserDoc
+    UserDoc -.->|"3. Listen Subscription"| Bootstrap
+
+    %% Accounting Data Interactions
+    Bootstrap -.->|"4. Trigger Auto Sync (Daily)"| SyncEngine
+    UserAction -.->|"5. Trigger Manual Sync"| SyncEngine
     
-    subgraph hub["核心中台"]
-        RC[RevenueCat Server]
-    end
-    
-    subgraph storage["資料儲存"]
-        DB[Firestore Users Collection]
-    end
-    
-    %% 登入流程
-    App -->|"1. Google Sign-In"| Auth
-    Auth -->|"2. Return User"| App
-    
-    %% 資料建立流程
-    App -->|"3. Check/Create User Doc"| DB
-    
-    %% 訂閱流程
-    App -.->|"4. Purchase/Restore"| RC
-    RC ==>|"5. Auto Sync (Webhook)"| DB
-    DB -.->|"6. Listen for Changes"| App
+    SyncEngine ==>|"6. Batch Upload (Delta)"| DataColl
+    DataColl ==>|"7. Batch Download (Delta)"| SyncEngine
 ```

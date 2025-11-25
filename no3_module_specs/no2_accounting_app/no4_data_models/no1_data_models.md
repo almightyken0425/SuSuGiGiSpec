@@ -2,6 +2,33 @@
 
 ## 使用者自訂資料結構
 
+### 設定 Settings
+
+- **欄位:**
+    
+    - `id`: String, UUID/GUID - Primary Key, 通常只有一筆記錄, Single Row
+        
+    - `userId`: String, Auth UID - Foreign Key to Users, Not Null, Index
+        
+    - `language`: String - Not Null, 介面語言代碼, 例如 zh-TW, en
+        
+    - `baseCurrencyId`: Number - Foreign Key to Currencies, Not Null, 主要貨幣
+        
+    - `timeZone`: String - Not Null, IANA Timezone ID, 例如 Asia/Taipei
+        
+    - `theme`: String - Not Null, 主題設定, 例如 light, dark, system
+        
+    - `createdOn`: Number, Unix Timestamp ms - Not Null
+        
+    - `updatedOn`: Number, Unix Timestamp ms - Not Null, 資料最後更新時間, 同步依據
+    
+    > [!NOTE]
+    > **與 User Management 的關係**: 此表為 `users/{uid}/preferences` 的本地快取。
+    > - `language`, `timeZone`, `theme` 直接對應。
+    > - `baseCurrencyId` 對應 `preferences.currency` (需進行 ID <-> ISO Code 轉換)。
+    > - 需保持雙向同步。
+        
+
 ### 帳戶 Accounts
 
 - **欄位:**
