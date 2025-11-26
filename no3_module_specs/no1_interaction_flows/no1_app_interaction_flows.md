@@ -18,14 +18,26 @@ sequenceDiagram
     Auth->>App: 返回 User
     App->>DB: 查詢 users/{uid}
     
-    alt 使用者文件不存在
-        DB->>App: 文件不存在
-        App->>DB: 建立使用者文件
-        DB->>App: 建立成功
-        App->>U: 導航至主畫面
-    else 使用者文件已存在
+    alt 使用者文件已存在
         DB->>App: 返回現有資料
         App->>U: 導航至主畫面
+    else 使用者文件不存在 (Empty)
+        loop Max 3 Times
+            App->>DB: 嘗試建立使用者文件
+            alt 建立成功
+                App->>DB: 再次查詢 (Re-fetch)
+                DB->>App: 返回新建立資料
+                App->>U: 導航至主畫面
+                Note right of App: 成功跳出迴圈
+            else 建立失敗
+                App->>App: 等待後重試 (Exponential Backoff)
+            end
+        end
+        
+        opt 3次皆失敗
+            App->>U: 顯示錯誤提示 (請稍後再試)
+            App->>Auth: 登出 (清除無效狀態)
+        end
     end
 ```
 
@@ -246,10 +258,23 @@ sequenceDiagram
     App->>Auth: signInWithGoogle()
     Auth-->>App: 返回 User Token
     App->>Cloud: 查詢 User Profile
-    alt Profile 不存在
-        App->>Cloud: 建立 User Profile
-    else Profile 已存在
+    alt Profile 已存在
         Cloud-->>App: 返回現有資料
+    else Profile 不存在 (Empty)
+        loop Max 3 Times
+            App->>Cloud: 嘗試建立 User Profile
+            alt 建立成功
+                App->>Cloud: 再次查詢 (Re-fetch)
+                Cloud-->>App: 返回新建立資料
+                Note right of App: 成功跳出迴圈
+            else 建立失敗
+                App->>App: 等待後重試
+            end
+        end
+        
+        opt 3次皆失敗
+            App->>U: 顯示錯誤 & 自動登出
+        end
     end
     App->>U: 導航至 Home
 
