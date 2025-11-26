@@ -65,5 +65,12 @@ sequenceDiagram
     RC->>DB: Webhook 更新 rc_entitlements
     DB->>App: onSnapshot (users/{uid})
     App->>App: 更新 PremiumContext
-    App->>App: 解鎖/鎖定 功能
+    
+    alt 權限升級 (Tier 0 -> 1)
+        App->>App: 解鎖 Premium 功能
+        App->>App: 觸發 Initial Batch Sync (上傳本地 -> 下載雲端)
+    else 權限降級 (Tier 1 -> 0)
+        App->>App: 鎖定 Premium 功能
+        App->>App: 停止 Sync Engine (Stop & Freeze)
+    end
 ```
