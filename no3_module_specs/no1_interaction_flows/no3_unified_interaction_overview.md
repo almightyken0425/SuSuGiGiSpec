@@ -66,8 +66,6 @@ sequenceDiagram
     and 背景邏輯處理 (Background Thread)
         %% 1. 本地快速檢查 (Local Check)
         App->>Auth: 檢查 Auth State (Local Cache)
-        App->>App: 讀取 Local PremiumContext
-        App->>App: 更新 UI 功能鎖定狀態 (Immediate)
         
         %% 2. 雲端同步與調和 (Remote Sync)
         alt 已登入 (Logged In)
