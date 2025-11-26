@@ -74,3 +74,77 @@ sequenceDiagram
         App->>App: 停止 Sync Engine (Stop & Freeze)
     end
 ```
+
+---
+
+## App 生命週期與資料同步行為, App Lifecycle & Sync Behavior
+
+> **目的**: 確保在 App 各種啟動狀態下，使用者權限與資料狀態能維持最終一致性。
+
+### 1. 冷啟動, Cold Start
+
+> **情境**: App 被完全關閉後重新開啟。
+
+```mermaid
+sequenceDiagram
+    participant U as 使用者
+    participant App as App
+    participant SDK as Firestore SDK
+    participant Cloud as Firestore Cloud
+
+    U->>App: 開啟 App
+    App->>SDK: 初始化 & 註冊 onSnapshot
+    
+    rect rgb(240, 248, 255)
+        note right of SDK: 連線建立階段
+        SDK->>Cloud: 建立連線 (Handshake)
+        Cloud-->>SDK: 連線成功
+    end
+
+    rect rgb(255, 250, 240)
+        note right of SDK: 資料同步階段
+        Cloud->>SDK: 推送最新 Snapshot (含 rc_entitlements)
+        SDK->>App: 觸發 onSnapshot Callback
+        App->>App: 更新 PremiumContext
+        App->>App: 執行 升級/降級 邏輯
+    end
+```
+
+### 2. 熱啟動, Warm Start (Background to Foreground)
+
+> **情境**: App 在背景執行 (Suspended) 後回到前景。
+
+```mermaid
+sequenceDiagram
+    participant U as 使用者
+    participant App as App
+    participant SDK as Firestore SDK
+    participant Cloud as Firestore Cloud
+
+    note over App, Cloud: App 在背景 (連線可能中斷)
+    
+    U->>App: 切換回 App (Foreground)
+    App->>SDK: App 狀態變為 Active
+    
+    alt 連線已斷開
+        SDK->>Cloud: 自動重連
+        Cloud-->>SDK: 連線恢復
+        Cloud->>SDK: 推送背景期間的變更
+    else 連線仍存活
+        SDK->>Cloud: 心跳檢查 / Sync 請求
+        Cloud->>SDK: 推送最新狀態
+    end
+
+    SDK->>App: 觸發 onSnapshot Callback
+    App->>App: 更新 PremiumContext (修正背景期間的狀態差異)
+```
+
+### 3. 離線啟動, Offline Launch
+
+> **情境**: 無網路環境下開啟 App。
+
+- **行為**:
+    1.  **讀取快照**: SDK 無法連線，直接回傳 **本地快照 (Local Cache)** 給 App。
+    2.  **暫時狀態**: App 使用舊的權限狀態運作 (若上次是 Premium，則暫時維持 Premium)。
+    3.  **恢復連線**: 當網路恢復時，SDK 自動背景連線並同步。
+    4.  **最終一致**: 收到最新 Snapshot 後，App 立即更新 Context 並執行對應的鎖定或解鎖邏輯。
