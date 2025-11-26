@@ -1,6 +1,8 @@
-# User Management Interaction Flows
+# App Interaction Flows
 
-## 首次登入流程, First Login Flow
+## 1. 使用者管理流程, User Management Flows
+
+### 首次登入流程, First Login Flow
 
 > **來源**: 移自 `no2_user_management/no2_first_login_flow.md`
 
@@ -27,9 +29,7 @@ sequenceDiagram
     end
 ```
 
----
-
-## 偏好設定更新流程, Update Preferences Flow
+### 偏好設定更新流程, Update Preferences Flow
 
 > **情境**: 使用者修改語言、貨幣、主題時。
 
@@ -50,9 +50,7 @@ sequenceDiagram
     end
 ```
 
----
-
-## 訂閱狀態監聽流程, Subscription Listener Flow
+### 訂閱狀態監聽流程, Subscription Listener Flow
 
 > **情境**: App 運作期間持續監聽權限變更。
 
@@ -77,11 +75,76 @@ sequenceDiagram
 
 ---
 
-## App 生命週期與資料同步行為, App Lifecycle & Sync Behavior
+## 2. 記帳與同步流程, Accounting & Sync Flows
+
+### App 啟動流程, App Bootstrap Flow
+
+> **來源**: 參考 `no3_accounting_app/no3_background_logics/no1_app_bootstrap_flow.md`
+
+```mermaid
+graph TD
+    Start[使用者開啟 App] --> Splash[顯示 Splash]
+    Splash --> CheckAuth{檢查 Auth State}
+    
+    CheckAuth -- 未登入 --> Login[導航: LoginScreen]
+    CheckAuth -- 已登入 --> Home[導航: HomeScreen]
+    
+    Home --> LoadDB[讀取本機 DB 顯示 UI]
+    LoadDB --> CheckPremium{檢查 Premium}
+    
+    CheckPremium -- No --> End[結束]
+    CheckPremium -- Yes --> Recurring{檢查定期交易}
+    
+    Recurring -- 需補產生 --> GenRecurring[執行補產生邏輯]
+    GenRecurring --> AutoSync{檢查自動同步}
+    Recurring -- 無需 --> AutoSync
+    
+    AutoSync -- > 24hr --> TriggerSync[觸發批次同步]
+    AutoSync -- < 24hr --> End
+```
+
+### 批次同步流程, Batch Sync Flow
+
+> **來源**: 參考 `no3_accounting_app/no3_background_logics/no3_batch_sync_spec.md`
+
+```mermaid
+sequenceDiagram
+    participant App as App
+    participant LocalDB as Local DB
+    participant Cloud as Firestore
+
+    Note over App: 觸發同步 (手動/自動)
+    
+    rect rgb(200, 220, 240)
+        Note right of App: 上傳階段 (Upload)
+        App->>LocalDB: 查詢 updatedOn > lastSyncTimestamp
+        LocalDB-->>App: 回傳變更資料
+        App->>Cloud: 批次寫入 (Batch Write)
+    end
+    
+    rect rgb(220, 240, 200)
+        Note right of App: 下載階段 (Download)
+        App->>Cloud: 查詢 updatedOn > lastSyncTimestamp
+        Cloud-->>App: 回傳雲端變更
+        App->>LocalDB: 批次 Upsert (LWW 策略)
+    end
+    
+    rect rgb(240, 220, 220)
+        Note right of App: 完成階段 (Finalize)
+        App->>LocalDB: 更新 lastSyncTimestamp
+        App->>App: 更新 UI 狀態
+    end
+```
+
+---
+
+## 3. 系統行為, System Behaviors
+
+### App 生命週期與資料同步行為, App Lifecycle & Sync Behavior
 
 > **目的**: 確保在 App 各種啟動狀態下，使用者權限與資料狀態能維持最終一致性。
 
-### 1. 冷啟動, Cold Start
+#### 冷啟動, Cold Start
 
 > **情境**: App 被完全關閉後重新開啟。
 
@@ -110,7 +173,7 @@ sequenceDiagram
     end
 ```
 
-### 2. 熱啟動, Warm Start (Background to Foreground)
+#### 熱啟動, Warm Start (Background to Foreground)
 
 > **情境**: App 在背景執行 (Suspended) 後回到前景。
 
@@ -139,7 +202,7 @@ sequenceDiagram
     App->>App: 更新 PremiumContext (修正背景期間的狀態差異)
 ```
 
-### 3. 離線啟動, Offline Launch
+#### 離線啟動, Offline Launch
 
 > **情境**: 無網路環境下開啟 App。
 
