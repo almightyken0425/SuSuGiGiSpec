@@ -44,26 +44,36 @@ sequenceDiagram
     note over U, Cloud: 1. App 啟動 (Bootstrap)
     
     U->>App: 開啟 App
-    App->>App: 顯示 Splash -> Home (立即進入)
     
-    opt 首次啟動 (First Launch)
-        App->>Local: 檢查 Local Flag (isInitialized)
-        Local-->>App: False (未初始化)
-        App->>Local: 寫入預設資料 (Seeding)
-        App->>Local: 設定 Flag isInitialized = True
+    alt 冷啟動 (Cold Start)
+        App->>App: 顯示 Splash Screen
+        
+        opt 首次啟動 (First Launch)
+            App->>Local: 檢查 Flag (isInitialized)
+            Local-->>App: False
+            App->>Local: 執行資料 Seeding (預設分類/帳戶)
+            App->>Local: 設定 isInitialized = True
+        end
+        
+        App->>Local: 讀取本地資料 (Load Data)
+        App->>App: 渲染 Home UI (Render)
+        
+    else 熱啟動 (Warm Start)
+        App->>App: 恢復前景 (Resume)
+        Note right of App: UI 與資料已存在記憶體中，直接顯示
     end
-    
-    App->>Local: 讀取資料 & 顯示 UI
-    
-    par 背景權限檢查
-        App->>App: 讀取 Local PremiumContext
-        App->>App: 根據本地狀態決定功能啟用/鎖定
-    and 背景身分檢查
+
+    %% --- 背景非同步任務 (Background Tasks) ---
+    par 權限檢查 (Local)
+        App->>App: 讀取 PremiumContext
+        App->>App: 更新 UI 功能鎖定狀態
+    and 身分與連線檢查 (Remote)
         App->>Auth: 檢查 Auth State
         
         alt 已登入 (Logged In)
-            App->>Cloud: 建立連線 & 註冊 onSnapshot
-            Cloud-->>App: 推送最新 Snapshot (User/Entitlements)
+            App->>Cloud: 建立連線 (Handshake)
+            App->>Cloud: 註冊 onSnapshot (User/Entitlements)
+            Cloud-->>App: 推送最新 Snapshot
             App->>App: 更新 PremiumContext
             
             opt isPremium == True
@@ -71,11 +81,10 @@ sequenceDiagram
             end
             
         else 未登入 (Guest)
-            alt 是冷啟動 (Cold Start)
+            opt 是冷啟動 (Cold Start)
                 App->>App: 自動彈出 Login Modal (引導登入)
-            else 是熱啟動 (Warm Start)
-                App->>App: 維持訪客模式 (不打擾)
             end
+            Note right of App: 熱啟動則維持訪客模式，不打擾使用者
         end
     end
 
