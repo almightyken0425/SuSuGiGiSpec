@@ -45,57 +45,58 @@ sequenceDiagram
     
     U->>App: 開啟 App
     
-    alt 冷啟動 (Cold Start)
-        App->>App: 顯示 Splash Screen
-        
-        opt 首次啟動 (First Launch)
-            App->>Local: 檢查 Flag (isInitialized)
-            Local-->>App: False
-            App->>Local: 執行資料 Seeding (預設分類/帳戶)
-            App->>Local: 設定 isInitialized = True
+    par 前景 UI 渲染 (Main Thread)
+        alt 冷啟動 (Cold Start)
+            App->>App: 顯示 Splash Screen
+            
+            opt 首次啟動 (First Launch)
+                App->>Local: 檢查 Flag (isInitialized)
+                Local-->>App: False
+                App->>Local: 執行資料 Seeding (預設分類/帳戶)
+                App->>Local: 設定 isInitialized = True
+            end
+            
+            App->>Local: 讀取本地資料 (Load Data)
+            App->>App: 渲染 Home UI (Render)
+            
+        else 熱啟動 (Warm Start)
+            App->>App: 恢復前景 (Resume)
+            Note right of App: UI 與資料已存在記憶體中，直接顯示
         end
-        
-        App->>Local: 讀取本地資料 (Load Data)
-        App->>App: 渲染 Home UI (Render)
-        
-    else 熱啟動 (Warm Start)
-        App->>App: 恢復前景 (Resume)
-        Note right of App: UI 與資料已存在記憶體中，直接顯示
-    end
-
-    %% --- 背景非同步任務 (Background Tasks) ---
-    par 權限檢查 (Local)
-        App->>App: 讀取 PremiumContext
-        App->>App: 更新 UI 功能鎖定狀態
-    and 身分與連線檢查 (Remote)
-        App->>Auth: 檢查 Auth State
-        
-        alt 已登入 (Logged In)
-            App->>Cloud: 建立連線 (Handshake)
-            App->>Cloud: 註冊 onSnapshot (User/Entitlements)
-            Cloud-->>App: 推送最新 Snapshot
+    and 背景邏輯處理 (Background Thread)
+        par 權限檢查 (Local)
+            App->>App: 讀取 PremiumContext
+            App->>App: 更新 UI 功能鎖定狀態
+        and 身分與連線檢查 (Remote)
+            App->>Auth: 檢查 Auth State
             
-            App->>App: 比較新舊 PremiumContext
-            alt 狀態改變 (State Changed)
-                App->>App: 更新 PremiumContext
-                App->>App: 觸發 UI 重繪 (Re-render)
-                App->>App: 執行 升級/降級 邏輯 (如觸發 Sync)
-            else 狀態未變 (No Change)
-                App->>App: 維持現有狀態
-                Note right of App: 無需重繪，節省資源
+            alt 已登入 (Logged In)
+                App->>Cloud: 建立連線 (Handshake)
+                App->>Cloud: 註冊 onSnapshot (User/Entitlements)
+                Cloud-->>App: 推送最新 Snapshot
+                
+                App->>App: 比較新舊 PremiumContext
+                alt 狀態改變 (State Changed)
+                    App->>App: 更新 PremiumContext
+                    App->>App: 觸發 UI 重繪 (Re-render)
+                    App->>App: 執行 升級/降級 邏輯 (如觸發 Sync)
+                else 狀態未變 (No Change)
+                    App->>App: 維持現有狀態
+                    Note right of App: 無需重繪，節省資源
+                end
+                
+                opt isPremium == True (Routine Checks)
+                    Note right of App: 確保使用最新權限狀態執行
+                    App->>App: 檢查定期交易 (Recurring)
+                    App->>App: 檢查自動同步 (AutoSync)
+                end
+                
+            else 未登入 (Guest)
+                opt 是冷啟動 (Cold Start)
+                    App->>App: 自動彈出 Login Modal (引導登入)
+                end
+                Note right of App: 熱啟動則維持訪客模式，不打擾使用者
             end
-            
-            opt isPremium == True (Routine Checks)
-                Note right of App: 確保使用最新權限狀態執行
-                App->>App: 檢查定期交易 (Recurring)
-                App->>App: 檢查自動同步 (AutoSync)
-            end
-            
-        else 未登入 (Guest)
-            opt 是冷啟動 (Cold Start)
-                App->>App: 自動彈出 Login Modal (引導登入)
-            end
-            Note right of App: 熱啟動則維持訪客模式，不打擾使用者
         end
     end
 
