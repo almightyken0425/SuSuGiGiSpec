@@ -211,3 +211,100 @@ sequenceDiagram
     2.  **暫時狀態**: App 使用舊的權限狀態運作 (若上次是 Premium，則暫時維持 Premium)。
     3.  **恢復連線**: 當網路恢復時，SDK 自動背景連線並同步。
     4.  **最終一致**: 收到最新 Snapshot 後，App 立即更新 Context 並執行對應的鎖定或解鎖邏輯。
+
+---
+
+## 4. 全域互動總覽, Unified Interaction Overview
+
+> **說明**: 將上述所有流程整合為單一視圖，展示各角色在不同情境下的互動關係。
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant U as User
+    participant App as App (Client)
+    participant Local as Local DB
+    participant Auth as Firebase Auth
+    participant Cloud as Firestore
+    participant RC as RevenueCat
+
+    box "Client Side" #f9f9f9
+        participant U
+        participant App
+        participant Local
+    end
+    
+    box "Server Side" #ececec
+        participant Auth
+        participant Cloud
+        participant RC
+    end
+
+    %% --- 1. First Login Flow ---
+    note over U, Cloud: 1. 首次登入與初始化 (First Login)
+    U->>App: 點擊 Google 登入
+    App->>Auth: signInWithGoogle()
+    Auth-->>App: 返回 User Token
+    App->>Cloud: 查詢 User Profile
+    alt Profile 不存在
+        App->>Cloud: 建立 User Profile
+    else Profile 已存在
+        Cloud-->>App: 返回現有資料
+    end
+    App->>U: 導航至 Home
+
+    %% --- 2. App Bootstrap & Lifecycle ---
+    note over U, Cloud: 2. App 啟動與生命週期 (Bootstrap & Lifecycle)
+    U->>App: 開啟 App (Cold/Warm Start)
+    App->>Auth: 檢查 Auth State
+    
+    opt 未登入
+        App->>U: 導航至 Login
+    end
+    
+    App->>Local: 讀取資料 & 顯示 UI
+    
+    rect rgb(240, 248, 255)
+        note right of App: 背景初始化任務
+        App->>Cloud: 註冊 onSnapshot (User/Entitlements)
+        Cloud-->>App: 推送最新 Snapshot
+        App->>App: 更新 PremiumContext
+        
+        opt isPremium == True
+            App->>App: 檢查定期交易 (Recurring)
+            App->>App: 檢查自動同步 (AutoSync)
+            opt 需同步
+                App->>App: 觸發 Batch Sync
+            end
+        end
+    end
+
+    %% --- 3. User Interactions ---
+    note over U, Cloud: 3. 使用者互動 (User Actions)
+    
+    par 修改偏好設定 (Update Preferences)
+        U->>App: 修改語言/貨幣
+        App->>Local: 更新 Local State
+        App->>Cloud: 寫入 users/{uid}/preferences
+    and 手動同步 (Manual Sync)
+        U->>App: 點擊「立即同步」
+        App->>Local: 查詢變更 (Upload)
+        Local-->>App: 回傳 Delta
+        App->>Cloud: 批次寫入
+        App->>Cloud: 查詢變更 (Download)
+        Cloud-->>App: 回傳 Delta
+        App->>Local: 寫入 Local DB
+    end
+
+    %% --- 4. External Events ---
+    note over U, RC: 4. 外部事件 (External Events)
+    RC->>Cloud: Webhook: 訂閱狀態變更
+    Cloud->>App: onSnapshot 通知 (Real-time)
+    App->>App: 更新 PremiumContext
+    alt 升級 (Upgrade)
+        App->>App: 解鎖功能 & 觸發 Initial Sync
+    else 降級 (Downgrade)
+        App->>App: 鎖定功能 & 停止 Sync
+    end
+```
+
