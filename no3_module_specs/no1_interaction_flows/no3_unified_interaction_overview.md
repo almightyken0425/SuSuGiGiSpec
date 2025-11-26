@@ -64,39 +64,38 @@ sequenceDiagram
             Note right of App: UI 與資料已存在記憶體中，直接顯示
         end
     and 背景邏輯處理 (Background Thread)
-        par 權限檢查 (Local)
-            App->>App: 讀取 PremiumContext
-            App->>App: 更新 UI 功能鎖定狀態
-        and 身分與連線檢查 (Remote)
-            App->>Auth: 檢查 Auth State
+        %% 1. 本地快速檢查 (Local Check)
+        App->>Auth: 檢查 Auth State (Local Cache)
+        App->>App: 讀取 Local PremiumContext
+        App->>App: 更新 UI 功能鎖定狀態 (Immediate)
+        
+        %% 2. 雲端同步與調和 (Remote Sync)
+        alt 已登入 (Logged In)
+            App->>Cloud: 建立連線 (Handshake)
+            App->>Cloud: 註冊 onSnapshot (User/Entitlements)
+            Cloud-->>App: 推送最新 Snapshot
             
-            alt 已登入 (Logged In)
-                App->>Cloud: 建立連線 (Handshake)
-                App->>Cloud: 註冊 onSnapshot (User/Entitlements)
-                Cloud-->>App: 推送最新 Snapshot
-                
-                App->>App: 比較新舊 PremiumContext
-                alt 狀態改變 (State Changed)
-                    App->>App: 更新 PremiumContext
-                    App->>App: 觸發 UI 重繪 (Re-render)
-                    App->>App: 執行 升級/降級 邏輯 (如觸發 Sync)
-                else 狀態未變 (No Change)
-                    App->>App: 維持現有狀態
-                    Note right of App: 無需重繪，節省資源
-                end
-                
-                opt isPremium == True (Routine Checks)
-                    Note right of App: 確保使用最新權限狀態執行
-                    App->>App: 檢查定期交易 (Recurring)
-                    App->>App: 檢查自動同步 (AutoSync)
-                end
-                
-            else 未登入 (Guest)
-                opt 是冷啟動 (Cold Start)
-                    App->>App: 自動彈出 Login Modal (引導登入)
-                end
-                Note right of App: 熱啟動則維持訪客模式，不打擾使用者
+            App->>App: 比較新舊 PremiumContext
+            alt 狀態改變 (State Changed)
+                App->>App: 更新 PremiumContext
+                App->>App: 觸發 UI 重繪 (Re-render)
+                App->>App: 執行 升級/降級 邏輯 (如觸發 Sync)
+            else 狀態未變 (No Change)
+                App->>App: 維持現有狀態
+                Note right of App: 無需重繪，節省資源
             end
+            
+            opt isPremium == True (Routine Checks)
+                Note right of App: 確保使用最新權限狀態執行
+                App->>App: 檢查定期交易 (Recurring)
+                App->>App: 檢查自動同步 (AutoSync)
+            end
+            
+        else 未登入 (Guest)
+            opt 是冷啟動 (Cold Start)
+                App->>App: 自動彈出 Login Modal (引導登入)
+            end
+            Note right of App: 熱啟動則維持訪客模式，不打擾使用者
         end
     end
 
