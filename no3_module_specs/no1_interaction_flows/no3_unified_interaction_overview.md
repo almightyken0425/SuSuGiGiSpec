@@ -74,10 +74,21 @@ sequenceDiagram
             App->>Cloud: 建立連線 (Handshake)
             App->>Cloud: 註冊 onSnapshot (User/Entitlements)
             Cloud-->>App: 推送最新 Snapshot
-            App->>App: 更新 PremiumContext
             
-            opt isPremium == True
-                App->>App: 檢查定期交易 & 自動同步
+            App->>App: 比較新舊 PremiumContext
+            alt 狀態改變 (State Changed)
+                App->>App: 更新 PremiumContext
+                App->>App: 觸發 UI 重繪 (Re-render)
+                App->>App: 執行 升級/降級 邏輯 (如觸發 Sync)
+            else 狀態未變 (No Change)
+                App->>App: 維持現有狀態
+                Note right of App: 無需重繪，節省資源
+            end
+            
+            opt isPremium == True (Routine Checks)
+                Note right of App: 確保使用最新權限狀態執行
+                App->>App: 檢查定期交易 (Recurring)
+                App->>App: 檢查自動同步 (AutoSync)
             end
             
         else 未登入 (Guest)
