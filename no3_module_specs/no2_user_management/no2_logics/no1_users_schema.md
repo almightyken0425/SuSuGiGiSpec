@@ -37,6 +37,13 @@
 | `rc_entitlements` | Object | RevenueCat 權限物件，自動同步 |
 | `rc_active_subscriptions` | Array | 啟用中的訂閱 Product IDs |
 
+#### 權限映射 Entitlement Mapping
+
+| App Tier | RevenueCat Entitlement ID | 說明 | 功能權限 |
+| :--- | :--- | :--- | :--- |
+| **Tier 0 Free** | 無 | 免費版使用者 | 僅本地資料庫，無雲端同步 |
+| **Tier 1 Premium** | `premium` | 付費訂閱者 | 啟用 Sync Engine，支援雲端備份與跨裝置同步 |
+
 **範例資料**：
 ```json
 {
@@ -129,10 +136,10 @@ useEffect(() => {
 
 ## 索引建議
 
-**單欄位索引**：
+**單欄位索引:**
 - `email`：用於查詢，但通常直接用 UID 查詢
 
-**複合索引**：
+**複合索引:**
 - 無需複合索引，MVP 階段
 
 ---
@@ -148,5 +155,3 @@ useEffect(() => {
 - **不要手動修改** `rc_entitlements` 或 `rc_active_subscriptions`，由 RevenueCat 管理
 - 不要在 Firestore 中儲存敏感資訊，如密碼、信用卡資料
 - 不要手動管理訂閱狀態，交給 RevenueCat
-
----

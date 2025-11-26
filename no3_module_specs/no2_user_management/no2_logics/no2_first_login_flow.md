@@ -3,33 +3,102 @@
 > [!NOTE]
 > 完整互動流程圖請參閱: `no1_interaction_flows/no1_user_management_flows.md`
 
-## 實作邏輯
+## 實作邏輯 Local-First
 
-### 使用者登入
+### 核心原則
 
-React Native App 端使用 Firebase Auth 進行 Google 登入。取得 `idToken` 後建立憑證並登入 Firebase，取得使用者物件。
+- **本地優先:** 登入後立即寫入/讀取本地資料庫 WatermelonDB。
+- **雲端為輔:** 僅在使用者擁有付費權限 Tier 1+ 時，才啟動 Sync Engine 連線 Firestore。
+- **無縫體驗:** Tier 0 使用者完全無感於雲端存在，確保離線可用。
+
+### 使用者登入流程
+
+```mermaid
+sequenceDiagram
+    participant UI as Login Screen
+    participant Auth as Firebase Auth
+    participant RC as RevenueCat
+    participant LocalDB as WatermelonDB
+    participant Sync as Sync Engine
+    
+    UI->>Auth: Google Sign-In
+    Auth-->>UI: User Credential
+    
+    UI->>RC: Configure & Identify (UID)
+    RC-->>UI: CustomerInfo (Entitlements)
+    
+    UI->>LocalDB: Ensure Local User (Upsert)
+    LocalDB-->>UI: User Record
+    
+    alt Has Entitlements (Tier 1+)
+        UI->>Sync: Start Sync Engine
+        Sync->>Firestore: Pull Cloud Data
+    else Free User (Tier 0)
+        UI->>Sync: Stop/Disable Sync Engine
+    end
+    
+    UI->>UI: Navigate to Home
+```
+
+### 程式碼範例
 
 ```typescript
 // React Native App 端
 import auth from '@react-native-firebase/auth';
+import Purchases from 'react-native-purchases';
+import { database } from '../database'; // WatermelonDB instance
 
 async function handleGoogleLogin() {
   try {
-    // Google 登入
+    // 1. Google & Firebase 登入
     const googleUser = await GoogleSignin.signIn();
-    const googleCredential = auth.GoogleAuthProvider.credential(
-      googleUser.idToken
-    );
-    
-    // Firebase Auth 登入
+    const googleCredential = auth.GoogleAuthProvider.credential(googleUser.idToken);
     const userCredential = await auth().signInWithCredential(googleCredential);
     const user = userCredential.user;
     
-    // 檢查並建立使用者文件
-    await ensureUserDocument(user);
+    // 2. RevenueCat 初始化與識別
+    await Purchases.configure({ apiKey: API_KEY, appUserID: user.uid });
+    const customerInfo = await Purchases.getCustomerInfo();
+    const isPremium = typeof customerInfo.entitlements.active['premium'] !== 'undefined';
     
-    // 導航至主畫面
+    // 3. 確保本地使用者存在 (WatermelonDB)
+    await database.write(async () => {
+      const usersCollection = database.get('users');
+      try {
+        const localUser = await usersCollection.find(user.uid);
+        // 更新登入時間
+        await localUser.update(u => {
+            u.lastLoginAt = Date.now();
+        });
+      } catch (e) {
+        // 建立新使用者
+        await usersCollection.create(u => {
+          u._id = user.uid;
+          u.email = user.email;
+          u.displayName = user.displayName;
+          u.photoURL = user.photoURL;
+          u.preferences = {
+             language: getDeviceLanguage(),
+             currency: 'TWD',
+             theme: 'system'
+          };
+          u.createdAt = Date.now();
+        });
+      }
+    });
+    
+    // 4. 根據權限決定是否啟動同步
+    if (isPremium) {
+        console.log('Premium user detected, starting Sync Engine...');
+        SyncEngine.start(); // 觸發與 Firestore 同步
+    } else {
+        console.log('Free user, staying offline.');
+        SyncEngine.stop();
+    }
+    
+    // 5. 導航
     navigation.navigate('Home');
+    
   } catch (error) {
     console.error('Login failed', error);
     showErrorDialog('登入失敗，請稍後再試');
@@ -37,88 +106,30 @@ async function handleGoogleLogin() {
 }
 ```
 
-### 檢查並建立使用者文件
+---
 
-使用 Firestore SDK 檢查 `users` 集合中是否已存在該 UID 的文件。若不存在則建立新文件，並寫入預設偏好設定。
+## 關鍵差異說明
 
-```typescript
-import firestore from '@react-native-firebase/firestore';
-import { FirebaseAuthTypes } from '@react-native-firebase/auth';
+### 移除直接 Firestore 寫入
 
-async function ensureUserDocument(user: FirebaseAuthTypes.User) {
-  const userRef = firestore().collection('users').doc(user.uid);
-  
-  // 使用 get() 檢查文件是否存在
-  const userDoc = await userRef.get();
-  
-  if (!userDoc.exists) {
-    // 文件不存在，建立新使用者
-    console.log('New user detected, creating user document...');
-    
-    await userRef.set({
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName || '',
-      photoURL: user.photoURL || '',
-      provider: 'google.com',
-      
-      preferences: {
-        language: getDeviceLanguage(), // zh-TW or en
-        currency: 'TWD',
-        timezone: getDeviceTimezone(), // Asia/Taipei
-        theme: 'system'
-      },
-      
-      // RevenueCat 欄位初始為空
-      rc_entitlements: {},
-      rc_active_subscriptions: [],
-      
-      createdAt: firestore.FieldValue.serverTimestamp(),
-      updatedAt: firestore.FieldValue.serverTimestamp()
-    });
-    
-    console.log('User document created successfully');
-  } else {
-    // 文件已存在，更新登入時間
-    await userRef.update({
-      updatedAt: firestore.FieldValue.serverTimestamp()
-    });
-    
-    console.log('Existing user logged in');
-  }
-}
-```
+舊版流程在登入時會直接 `firestore().collection('users').doc(uid).set(...)`。
+**新版流程** 改為操作 WatermelonDB。這避免了：
+- 免費用戶消耗 Firestore 寫入額度。
+- 網路不穩導致登入流程卡住 Local DB 操作總是成功。
 
-### 輔助函式
+### RevenueCat 驅動同步
 
-用於取得裝置目前的語言與時區設定，作為預設值。
+同步功能的開關完全由 RevenueCat 的 `entitlements` 決定。
+- **Tier 0:** `SyncEngine` 保持關閉。App 行為如同純單機 App。
+- **Tier 1:** `SyncEngine` 啟動，負責將本地資料備份至雲端，或從雲端拉取舊資料。
 
-```typescript
-/**
- * 取得裝置語言設定
- */
-function getDeviceLanguage(): string {
-  const deviceLang = NativeModules.I18nManager.localeIdentifier || 'zh-TW';
-  
-  // 支援的語言列表
-  const supportedLanguages = ['zh-TW', 'en'];
-  
-  // 檢查裝置語言是否支援
-  if (supportedLanguages.includes(deviceLang)) {
-    return deviceLang;
-  }
-  
-  // 預設值
-  return 'zh-TW';
-}
+### 資料衝突處理 首次登入
 
-/**
- * 取得裝置時區
- */
-function getDeviceTimezone(): string {
-  return RNLocalize.getTimeZone() || 'Asia/Taipei';
-}
-```
+若使用者是 Tier 1 且在全新裝置登入：
+- `ensureUserDocument` 會先建立一個「本地空使用者」。
+- `SyncEngine` 啟動後，從 Firestore 拉取「雲端使用者資料」。
+- `SyncEngine` 執行 LWW Last Write Wins 合併，雲端資料 通常較舊或較新 會覆蓋或合併本地初始資料。
+- **備註:** 由於是全新裝置，本地初始資料僅包含預設值，被雲端覆蓋是預期行為。
 
 ---
 
@@ -126,83 +137,13 @@ function getDeviceTimezone(): string {
 
 ### 網路錯誤
 
-若遇到 `firestore/unavailable` 錯誤，表示目前無網路連線。在此情況下，App 應採用 Local-First 架構繼續運行，待網路恢復後再同步。
+- **Auth 階段:** 必須有網路才能進行 Google/Firebase 登入。若無網路，應提示使用者檢查連線。
+- **RevenueCat:** 若無法連線，預設視為無權限 Tier 0，確保使用者能進入 App 使用基本功能。
+- **Sync:** 若 Sync Engine 無法連線，僅影響備份，不影響 App 操作。
 
-```typescript
-try {
-  await ensureUserDocument(user);
-} catch (error) {
-  if (error.code === 'firestore/unavailable') {
-    // 網路問題，使用本地快取繼續
-    console.warn('Firestore unavailable, using cache');
-    // App 可正常運行
-  } else {
-    // 其他錯誤
-    console.error('Failed to create user document', error);
-    throw error;
-  }
-}
-```
+### 本地資料庫錯誤
 
-### 並發問題
-
-如果多個裝置同時首次登入，Firestore 的 `set()` 操作具有冪等性，重複執行不會造成資料錯誤。
+- WatermelonDB 寫入失敗極為罕見 通常是磁碟滿。若發生，應顯示嚴重錯誤並阻擋進入，因為 App 無法在無 DB 狀態下運作。
 
 ---
-
-## RevenueCat 初始化
-
-在建立使用者文件後，使用 Firebase UID 初始化 RevenueCat SDK。此步驟會觸發 RevenueCat 與 Firebase 的整合同步。
-
-```typescript
-import Purchases from 'react-native-purchases';
-
-async function initializeRevenueCat(user: FirebaseAuthTypes.User) {
-  // 配置 RevenueCat
-  await Purchases.configure({
-    apiKey: Platform.OS === 'ios' ? IOS_API_KEY : ANDROID_API_KEY,
-    appUserID: user.uid // 關鍵：使用 Firebase UID
-  });
-  
-  console.log('RevenueCat initialized with user:', user.uid);
-  
-  // 獲取最新訂閱狀態
-  const customerInfo = await Purchases.getCustomerInfo();
-  console.log('Customer info:', customerInfo);
-}
-```
-
----
-
-## 測試場景
-
-### 場景 1: 全新使用者
-1. 使用者首次使用 Google 登入
-2. Firestore 建立新文件
-3. RevenueCat 建立新 subscriber
-4. 文件包含預設偏好設定
-
-### 場景 2: 既有使用者
-1. 使用者在新裝置登入
-2. Firestore 返回既有文件
-3. RevenueCat 恢復訂閱狀態
-4. App 顯示既有偏好設定
-
-### 場景 3: 離線首次登入
-1. 使用者在無網路環境登入
-2. 若發生，延後建立文件至恢復網路時
-3. App 使用本地預設值運行
-
----
-
-## 注意事項
-
-### ✅ 最佳實踐
-- 使用 `serverTimestamp()` 而非客戶端時間
-- 確保冪等性
-- 優雅處理網路錯誤
-
-### ⚠️ 避免
-- 不要在建立文件時執行複雜邏輯
-- 不要阻塞 UI
-- 不要假設 Firestore 操作一定成功
+**文件結束**

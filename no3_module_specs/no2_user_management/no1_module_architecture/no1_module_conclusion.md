@@ -1,25 +1,63 @@
-# 核心功能原則
+# User Management 模組架構結論
 
-- **單一真理原則, Single Source of Truth**
-    - **核心:** Firestore Users Collection
-    - **理由:** 確保跨平台與跨裝置的使用者體驗一致性
-    - **流程:**
-        - 所有使用者偏好 (語言, 幣別, 時區, 主題) 皆以 `users/{uid}` 為準
-        - App 本地僅作為快取 (Cache)，需與雲端保持雙向同步
-- **即時性原則, Real-time Updates**
-    - **核心:** 偏好設定即時寫入
-    - **理由:** 偏好設定變更頻率低，但期望立即生效
-    - **流程:**
-        - 使用者修改偏好 -> 立即寫入 Firestore
-        - 若離線則標記 Dirty，待連線後立即同步
-- **被動監聽原則, Passive Listening**
-    - **核心:** 訂閱狀態由 Server 端寫入
-    - **理由:** 安全性與準確性
-    - **流程:**
-        - App **不** 直接修改 `rc_entitlements`
-        - App 僅監聽 Firestore 文件變更，由 RevenueCat Server 透過 Webhook 更新 Firestore
-- **冪等性原則, Idempotency**
-    - **核心:** 首次登入流程可重複執行
-    - **理由:** 網路不穩定或重複安裝 App 時，不應破壞現有資料
-    - **流程:**
-        - 初始化檢查時，若文件已存在則僅更新 `updatedAt`，不覆蓋 `preferences`
+## 核心架構原則
+
+本模組採用 **Local-First** 架構，確保 App 在無網路環境下仍能完整運作，並將雲端同步定位為加值服務。
+
+### Local-First 本地優先
+
+- **單一信任來源:** App UI 一律讀取 **本地資料庫**。
+- **寫入策略:** 所有使用者資料變更，如偏好設定、個人資料，**必須** 先寫入本地資料庫。
+- **離線能力:** Tier 0 免費版使用者完全依賴本地資料庫，不應受網路狀態影響。
+
+### Cloud-Sync 雲端同步
+
+- **角色:** Firestore 僅作為 Tier 1+ 付費版使用者的 **備份與同步中心**。
+- **寫入限制:** App **嚴禁** 直接讀寫 Firestore 來驅動 UI，除了 Auth 流程中的必要檢查。
+- **同步機制:** 透過 **Sync Engine** 負責本地與雲端資料的雙向同步。
+
+### Sync Engine Gating 同步引擎閘道
+
+- **啟動條件:** Sync Engine 僅在偵測到使用者擁有 **有效權限** 時啟動。
+- **Tier 0 行為:** Sync Engine **停用**。資料僅存在於本地。
+- **Tier 1 行為:** Sync Engine **啟用**。背景自動同步資料。
+
+---
+
+## 模組邊界與職責
+
+### User Management Module
+
+- **負責:**
+    - 身份認證
+    - 使用者基本資料
+    - 偏好設定
+    - 權限管理
+- **互動:**
+    - 提供 `CurrentContext` 供其他模組讀取當前使用者狀態與權限。
+    - 登入成功後，通知 Accounting App 模組進行資料初始化或同步。
+
+### 與 Accounting App 的關係
+
+- **Accounting App** 依賴 **User Management** 提供的 `userId` 來隔離本地資料。
+- **Accounting App** 依賴 **User Management** 提供的 `isPremium` 狀態來決定是否啟用進階功能，如同步。
+
+---
+
+## 關鍵流程變更
+
+| 流程 | Cloud-First 舊 | Local-First 新 |
+| :--- | :--- | :--- |
+| **首次登入** | 檢查 Firestore -> 寫入 Firestore -> UI 讀取 Firestore | 檢查 Firestore 僅 Auth -> **寫入 WatermelonDB** -> UI 讀取 WatermelonDB |
+| **偏好設定變更** | 直接寫入 Firestore -> 監聽更新 UI | **寫入 WatermelonDB** -> UI 自動更新 -> 若有權限 Sync Engine 上傳 Firestore |
+| **資料讀取** | 讀取 Firestore | **讀取 WatermelonDB** |
+
+---
+
+## 權限與資料同步策略
+
+- **Upgrade 升級:** 偵測到權限新增 -> 觸發 **Initial Sync** 將本地資料完整上傳至雲端。
+- **Downgrade 降級:** 偵測到權限過期 -> **停止 Sync Engine** -> 保留本地資料 -> 可選凍結雲端資料。
+
+---
+**文件結束**
