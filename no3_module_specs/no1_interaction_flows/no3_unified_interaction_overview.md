@@ -6,6 +6,14 @@
 > 3.  **強健性 (Robustness)**: 登入時確保使用者資料完整建立 (Retry & Re-fetch)。
 > 4.  **最終一致 (Eventual Consistency)**: 權限與資料狀態透過背景同步達成一致，UI 始終依賴本地狀態 (`PremiumContext`)。
 
+## 圖表語法說明 (Diagram Legend)
+
+| 關鍵字 | 意義 | 程式邏輯類比 | 說明 |
+| :--- | :--- | :--- | :--- |
+| **opt** | **Optional (可選)** | `if (condition) { ... }` | 只有當條件成立時，才會執行此區塊內的動作。 |
+| **par** | **Parallel (平行)** | `Thread 1: ...` <br> `Thread 2: ...` | 區塊內的動作是 **同時發生** 的，不分先後順序。 |
+| **alt** | **Alternative (分支)** | `if (...) { ... } else { ... }` | 條件分支，只會執行其中一條路徑。 |
+
 ## 互動時序圖, Interaction Sequence Diagram
 
 ```mermaid
