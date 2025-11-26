@@ -1,0 +1,136 @@
+# 全域互動總覽, Unified Interaction Overview
+
+> **核心設計哲學**: **Local-First & Unobtrusive**
+> 1.  **不阻擋 (Non-blocking)**: App 啟動後立即進入首頁，不強制登入。
+> 2.  **情境感知 (Context-Aware)**: 僅在「冷啟動」且「未登入」時主動提示登入；「熱啟動」則不打擾。
+> 3.  **強健性 (Robustness)**: 登入時確保使用者資料完整建立 (Retry & Re-fetch)。
+> 4.  **最終一致 (Eventual Consistency)**: 權限與資料狀態透過背景同步達成一致，UI 始終依賴本地狀態 (`PremiumContext`)。
+
+## 互動時序圖, Interaction Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant U as User
+    participant App as App (Client)
+    participant Local as Local DB
+    participant Auth as Firebase Auth
+    participant Cloud as Firestore
+    participant RC as RevenueCat
+
+    box "Client Side" #f9f9f9
+        participant U
+        participant App
+        participant Local
+    end
+    
+    box "Server Side" #ececec
+        participant Auth
+        participant Cloud
+        participant RC
+    end
+
+    %% ==========================================
+    %% 1. App 啟動與生命週期 (Bootstrap & Lifecycle)
+    %% ==========================================
+    note over U, Cloud: 1. App 啟動 (Bootstrap)
+    
+    U->>App: 開啟 App
+    App->>App: 顯示 Splash -> Home (立即進入)
+    App->>Local: 讀取資料 & 顯示 UI
+    
+    par 背景權限檢查
+        App->>App: 讀取 Local PremiumContext
+        App->>App: 根據本地狀態決定功能啟用/鎖定
+    and 背景身分檢查
+        App->>Auth: 檢查 Auth State
+        
+        alt 已登入 (Logged In)
+            App->>Cloud: 建立連線 & 註冊 onSnapshot
+            Cloud-->>App: 推送最新 Snapshot (User/Entitlements)
+            App->>App: 更新 PremiumContext
+            
+            opt isPremium == True
+                App->>App: 檢查定期交易 & 自動同步
+            end
+            
+        else 未登入 (Guest)
+            alt 是冷啟動 (Cold Start)
+                App->>App: 自動彈出 Login Modal (引導登入)
+            else 是熱啟動 (Warm Start)
+                App->>App: 維持訪客模式 (不打擾)
+            end
+        end
+    end
+
+    %% ==========================================
+    %% 2. 登入互動 (Login Interaction)
+    %% ==========================================
+    note over U, Cloud: 2. 登入流程 (Login Modal)
+    
+    Note right of U: 觸發點: 冷啟動自動彈出 或 使用者點擊 (設定/付費/同步)
+    
+    U->>App: 進行 Google 登入
+    App->>Auth: signInWithGoogle()
+    Auth-->>App: 返回 User Token
+    
+    rect rgb(240, 248, 255)
+        note right of App: 強健資料建立流程 (Robust Creation)
+        App->>Cloud: 查詢 User Profile
+        
+        alt Profile 已存在
+            Cloud-->>App: 返回現有資料
+        else Profile 不存在 (Empty)
+            loop Max 3 Times (Retry Loop)
+                App->>Cloud: 嘗試建立 User Profile
+                alt 建立成功
+                    App->>Cloud: 再次查詢 (Re-fetch Check)
+                    Cloud-->>App: 返回新建立資料
+                    Note right of App: 成功跳出迴圈
+                else 建立失敗
+                    App->>App: 等待後重試 (Backoff)
+                end
+            end
+            
+            opt 3次皆失敗
+                App->>U: 顯示錯誤 & 自動登出 (避免異常狀態)
+            end
+        end
+    end
+    
+    App->>App: 關閉 Login Modal
+    App->>App: 綁定 Local Data to User
+    App->>Cloud: 註冊 onSnapshot (啟動同步監聽)
+
+    %% ==========================================
+    %% 3. 日常操作與同步 (Operations & Sync)
+    %% ==========================================
+    note over U, Cloud: 3. 日常操作 (Operations)
+    
+    par 修改偏好設定
+        U->>App: 修改語言/貨幣
+        App->>Local: 更新 Local State
+        App->>Cloud: 寫入 users/{uid}/preferences
+    and 手動同步 (需 Premium)
+        U->>App: 點擊「立即同步」
+        App->>Local: 查詢變更 (Upload)
+        App->>Cloud: 批次寫入
+        App->>Cloud: 查詢變更 (Download)
+        App->>Local: 批次更新 (LWW)
+    end
+
+    %% ==========================================
+    %% 4. 外部事件 (External Events)
+    %% ==========================================
+    note over U, RC: 4. 權限變更 (Entitlement Updates)
+    
+    RC->>Cloud: Webhook: 訂閱狀態改變
+    Cloud->>App: onSnapshot 通知 (Real-time)
+    App->>App: 更新 PremiumContext
+    
+    alt 升級 (Upgrade)
+        App->>App: 解鎖功能 & 觸發 Initial Sync
+    else 降級 (Downgrade)
+        App->>App: 鎖定功能 & 停止 Sync
+    end
+```
