@@ -66,33 +66,6 @@ sequenceDiagram
 
 > **情境**: App 運作期間持續監聽權限變更。
 
-```mermaid
-sequenceDiagram
-    participant RC as RevenueCat Server
-    participant DB as Firestore
-    participant App as App
-
-    RC->>DB: Webhook 更新 rc_entitlements
-    DB->>App: onSnapshot (users/{uid})
-    App->>App: 更新 PremiumContext
-    
-    alt 權限升級 (Tier 0 -> 1)
-        App->>App: 解鎖 Premium 功能
-        App->>App: 觸發 Initial Batch Sync (上傳本地 -> 下載雲端)
-    else 權限降級 (Tier 1 -> 0)
-        App->>App: 鎖定 Premium 功能
-        App->>App: 停止 Sync Engine (Stop & Freeze)
-    end
-```
-
----
-
-## 2. 記帳與同步流程, Accounting & Sync Flows
-    GenRecurring --> AutoSync{檢查自動同步}
-    Recurring -- 無需 --> AutoSync
-    
-    AutoSync -- > 24hr --> TriggerSync[觸發批次同步]
-    AutoSync -- < 24hr --> End
 ```
 
 ### 批次同步流程, Batch Sync Flow
@@ -234,26 +207,40 @@ sequenceDiagram
 
     %% --- 1. App Bootstrap & Lifecycle (Local-First) ---
     note over U, Cloud: 1. App 啟動與生命週期 (Bootstrap & Lifecycle)
-    U->>App: 開啟 App (Cold/Warm Start)
-    App->>App: 顯示 Splash (Logo)
-    App->>Local: 讀取資料 & 顯示 UI (Home)
     
-    App->>Auth: 背景檢查 Auth State
+    alt 冷啟動 (Cold Start)
+        U->>App: 開啟 App
+        App->>App: 顯示 Splash -> Home
+        App->>Local: 讀取資料 & 顯示 UI
+        App->>Auth: 檢查 Auth State
+        
+        alt 未登入
+            App->>App: 自動彈出 Login Modal
+        else 已登入
+            App->>Cloud: 註冊 onSnapshot
+        end
+        
+    else 熱啟動 (Warm Start)
+        U->>App: 切換回 App
+        App->>Auth: 檢查 Auth State (Silent)
+    end
+    
+    par 權限與功能檢查 (任何狀態)
+        App->>App: 讀取 Local PremiumContext
+        App->>App: 決定功能啟用/鎖定 (不論登入狀態)
+    end
     
     alt 已登入 (Logged In)
-        App->>Cloud: 註冊 onSnapshot (User/Entitlements)
         Cloud-->>App: 推送最新 Snapshot
         App->>App: 更新 PremiumContext
         
         opt isPremium == True
             App->>App: 檢查定期交易 & 自動同步
         end
-    else 未登入 (Guest)
-        App->>App: 維持訪客模式 (僅本地功能)
     end
 
     %% --- 2. Login Interaction (Modal) ---
-    note over U, Cloud: 2. 登入互動 (Login Modal)
+    note over U, Cloud: 2. 登入互動 (Login Modal) - 從訪客模式觸發
     
     U->>App: 觸發登入 (Settings/Paywall/Sync)
     App->>App: 顯示 Login Modal
