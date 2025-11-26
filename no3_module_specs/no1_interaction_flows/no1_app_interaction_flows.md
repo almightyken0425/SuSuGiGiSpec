@@ -88,26 +88,6 @@ sequenceDiagram
 ---
 
 ## 2. 記帳與同步流程, Accounting & Sync Flows
-
-### App 啟動流程, App Bootstrap Flow
-
-> **來源**: 參考 `no3_accounting_app/no3_background_logics/no1_app_bootstrap_flow.md`
-
-```mermaid
-graph TD
-    Start[使用者開啟 App] --> Splash[顯示 Splash]
-    Splash --> CheckAuth{檢查 Auth State}
-    
-    CheckAuth -- 未登入 --> Login[導航: LoginScreen]
-    CheckAuth -- 已登入 --> Home[導航: HomeScreen]
-    
-    Home --> LoadDB[讀取本機 DB 顯示 UI]
-    LoadDB --> CheckPremium{檢查 Premium}
-    
-    CheckPremium -- No --> End[結束]
-    CheckPremium -- Yes --> Recurring{檢查定期交易}
-    
-    Recurring -- 需補產生 --> GenRecurring[執行補產生邏輯]
     GenRecurring --> AutoSync{檢查自動同步}
     Recurring -- 無需 --> AutoSync
     
@@ -252,11 +232,35 @@ sequenceDiagram
         participant RC
     end
 
-    %% --- 1. First Login Flow ---
-    note over U, Cloud: 1. 首次登入與初始化 (First Login)
+    %% --- 1. App Bootstrap & Lifecycle (Local-First) ---
+    note over U, Cloud: 1. App 啟動與生命週期 (Bootstrap & Lifecycle)
+    U->>App: 開啟 App (Cold/Warm Start)
+    App->>App: 顯示 Splash (Logo)
+    App->>Local: 讀取資料 & 顯示 UI (Home)
+    
+    App->>Auth: 背景檢查 Auth State
+    
+    alt 已登入 (Logged In)
+        App->>Cloud: 註冊 onSnapshot (User/Entitlements)
+        Cloud-->>App: 推送最新 Snapshot
+        App->>App: 更新 PremiumContext
+        
+        opt isPremium == True
+            App->>App: 檢查定期交易 & 自動同步
+        end
+    else 未登入 (Guest)
+        App->>App: 維持訪客模式 (僅本地功能)
+    end
+
+    %% --- 2. Login Interaction (Modal) ---
+    note over U, Cloud: 2. 登入互動 (Login Modal)
+    
+    U->>App: 觸發登入 (Settings/Paywall/Sync)
+    App->>App: 顯示 Login Modal
     U->>App: 點擊 Google 登入
     App->>Auth: signInWithGoogle()
     Auth-->>App: 返回 User Token
+    
     App->>Cloud: 查詢 User Profile
     alt Profile 已存在
         Cloud-->>App: 返回現有資料
@@ -276,33 +280,10 @@ sequenceDiagram
             App->>U: 顯示錯誤 & 自動登出
         end
     end
-    App->>U: 導航至 Home
-
-    %% --- 2. App Bootstrap & Lifecycle ---
-    note over U, Cloud: 2. App 啟動與生命週期 (Bootstrap & Lifecycle)
-    U->>App: 開啟 App (Cold/Warm Start)
-    App->>Auth: 檢查 Auth State
     
-    opt 未登入
-        App->>U: 導航至 Login
-    end
-    
-    App->>Local: 讀取資料 & 顯示 UI
-    
-    rect rgb(240, 248, 255)
-        note right of App: 背景初始化任務
-        App->>Cloud: 註冊 onSnapshot (User/Entitlements)
-        Cloud-->>App: 推送最新 Snapshot
-        App->>App: 更新 PremiumContext
-        
-        opt isPremium == True
-            App->>App: 檢查定期交易 (Recurring)
-            App->>App: 檢查自動同步 (AutoSync)
-            opt 需同步
-                App->>App: 觸發 Batch Sync
-            end
-        end
-    end
+    App->>App: 關閉 Login Modal
+    App->>App: 綁定 Local Data to User (若需)
+    App->>App: 觸發 Initial Sync (若為 Premium)
 
     %% --- 3. User Interactions ---
     note over U, Cloud: 3. 使用者互動 (User Actions)
