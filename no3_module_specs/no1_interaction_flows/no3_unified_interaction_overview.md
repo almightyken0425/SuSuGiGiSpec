@@ -37,6 +37,13 @@ sequenceDiagram
     
     U->>App: 開啟 App
     App->>App: 顯示 Splash -> Home (立即進入)
+    
+    opt 首次啟動 (First Launch)
+        App->>Local: 檢查是否已初始化
+        Local-->>App: 未初始化 (Empty)
+        App->>Local: 寫入預設資料 (Seeding)
+    end
+    
     App->>Local: 讀取資料 & 顯示 UI
     
     par 背景權限檢查
