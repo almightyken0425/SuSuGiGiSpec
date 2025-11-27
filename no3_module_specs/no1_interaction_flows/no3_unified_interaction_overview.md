@@ -65,7 +65,8 @@ sequenceDiagram
         end
     and 背景邏輯處理
         %% 本地快速檢查
-        App->>Auth: 檢查 Auth State
+        App->>Auth: 註冊 onAuthStateChanged (SDK)
+        Auth-->>App: 回調 User 狀態 (Callback)
         
         %% 雲端同步與調和
         alt 已登入
