@@ -144,6 +144,3 @@ async function handleGoogleLogin() {
 ### 本地資料庫錯誤
 
 - WatermelonDB 寫入失敗極為罕見 通常是磁碟滿。若發生，應顯示嚴重錯誤並阻擋進入，因為 App 無法在無 DB 狀態下運作。
-
----
-**文件結束**

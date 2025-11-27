@@ -44,20 +44,7 @@
 
 ---
 
-## 關鍵流程變更
-
-| 流程 | Cloud-First 舊 | Local-First 新 |
-| :--- | :--- | :--- |
-| **首次登入** | 檢查 Firestore -> 寫入 Firestore -> UI 讀取 Firestore | 檢查 Firestore 僅 Auth -> **寫入 WatermelonDB** -> UI 讀取 WatermelonDB |
-| **偏好設定變更** | 直接寫入 Firestore -> 監聽更新 UI | **寫入 WatermelonDB** -> UI 自動更新 -> 若有權限 Sync Engine 上傳 Firestore |
-| **資料讀取** | 讀取 Firestore | **讀取 WatermelonDB** |
-
----
-
 ## 權限與資料同步策略
 
 - **Upgrade 升級:** 偵測到權限新增 -> 觸發 **Initial Sync** 將本地資料完整上傳至雲端。
 - **Downgrade 降級:** 偵測到權限過期 -> **停止 Sync Engine** -> 保留本地資料 -> 可選凍結雲端資料。
-
----
-**文件結束**
