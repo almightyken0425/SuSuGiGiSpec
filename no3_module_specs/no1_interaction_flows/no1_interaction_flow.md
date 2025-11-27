@@ -64,37 +64,44 @@ sequenceDiagram
             Note right of App: UI 與資料已存在記憶體中，直接顯示
         end
     and 背景邏輯處理
-        %% 本地快速檢查
-        App->>Auth: 註冊 onAuthStateChanged (SDK)
-        Auth-->>App: 回調 User 狀態 (Callback)
-        
-        %% 雲端同步與調和
-        alt 已登入
-            App->>Cloud: 建立連線
-            App->>Cloud: 註冊 onSnapshot
-            Cloud-->>App: 推送最新 Snapshot
-            
-            App->>App: 比較新舊 PremiumContext
-            alt 狀態改變
-                App->>App: 更新 PremiumContext
-                App->>App: 觸發 UI 重繪
-                App->>App: 執行 升級/降級 邏輯
-            else 狀態未變
-                App->>App: 維持現有狀態
-                Note right of App: 無需重繪，節省資源
-            end
-            
+        par 定期交易 (Local)
+            App->>Local: 讀取 PremiumContext
             opt isPremium == True
-                Note right of App: 確保使用最新權限狀態執行
-                App->>App: 檢查定期交易
-                App->>App: 檢查自動同步
+                App->>Local: 檢查定期交易 (Schedules)
+                Note right of App: 依賴本地資料，無網也可執行
             end
+        and 身份驗證與同步 (Network)
+            %% 本地快速檢查
+            App->>Auth: 註冊 onAuthStateChanged (SDK)
+            Auth-->>App: 回調 User 狀態 (Callback)
             
-        else 未登入
-            opt 是冷啟動
-                App->>App: 自動彈出 Login Modal
+            %% 雲端同步與調和
+            alt 已登入
+                App->>Cloud: 建立連線
+                App->>Cloud: 註冊 onSnapshot
+                Cloud-->>App: 推送最新 Snapshot
+                
+                App->>App: 比較新舊 PremiumContext
+                alt 狀態改變
+                    App->>App: 更新 PremiumContext
+                    App->>App: 觸發 UI 重繪
+                    App->>App: 執行 升級/降級 邏輯
+                else 狀態未變
+                    App->>App: 維持現有狀態
+                    Note right of App: 無需重繪，節省資源
+                end
+                
+                opt isPremium == True
+                    Note right of App: 確保使用最新權限狀態執行
+                    App->>App: 檢查自動同步
+                end
+                
+            else 未登入
+                opt 是冷啟動
+                    App->>App: 自動彈出 Login Modal
+                end
+                Note right of App: 熱啟動則維持訪客模式，不打擾使用者
             end
-            Note right of App: 熱啟動則維持訪客模式，不打擾使用者
         end
     end
 

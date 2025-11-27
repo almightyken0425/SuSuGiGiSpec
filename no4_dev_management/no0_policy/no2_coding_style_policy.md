@@ -81,6 +81,16 @@
     - **路徑:**
         - **偏好:** 絕對路徑
         - **備註:** 應設定 `tsconfig.json` 的 `baseUrl` 與 `paths`
+- **副作用與資源管理**
+    - **要求:** 所有建立監聽 (Listener/Observer) 或計時器 (Timer) 的副作用，**必須** 在 `useEffect` 的 cleanup function 中清除。
+    - **禁止:** 遺漏 `unsubscribe` 或 `clearTimeout` 導致 Memory Leak。
+    - **範例:**
+      ```typescript
+      useEffect(() => {
+        const unsubscribe = firestore().onSnapshot(...);
+        return () => unsubscribe(); // 必須回傳清除函式
+      }, []);
+      ```
 
 ## TypeScript 規範
 
