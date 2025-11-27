@@ -7,10 +7,10 @@
 
 MVP 階段的偏好設定更新**不需要獨立的 Cloud Function API**，原因：
 
-1. ✅ **簡單操作**: 只是更新 Firestore 文件
-2. ✅ **權限控制**: Firestore Security Rules 已足夠
-3. ✅ **即時性**: 直接操作比 API 更快
-4. ✅ **離線支援**: Firestore SDK 支援離線快取
+1. ✅ **簡單操作**: 只是更新 本地資料庫
+2. ✅ **權限控制**: Sync Engine 負責權限驗證
+3. ✅ **即時性**: 本地寫入立即反應
+4. ✅ **離線支援**: 完全離線運作，Sync Engine 負責背景同步
 
 ## Firestore Security Rules
 
@@ -48,33 +48,34 @@ service cloud.firestore {
 import firestore from '@react-native-firebase/firestore';
 
 /**
- * 更新使用者語言偏好
+ * 更新使用者語言偏好 (Local-First)
  */
 async function updateLanguagePreference(userId: string, language: string) {
-  await firestore()
-    .collection('users')
-    .doc(userId)
-    .update({
-      'preferences.language': language,
-      updatedAt: firestore.FieldValue.serverTimestamp()
+  await database.write(async () => {
+    const user = await database.get('users').find(userId);
+    await user.update(u => {
+      u.preferences = { ...u.preferences, language };
+      u.updatedAt = Date.now();
     });
+  });
   
-  console.log(`Language updated to ${language}`);
+  console.log(`Language updated locally to ${language}`);
+  // Sync Engine will pick up this change automatically
 }
 
 /**
- * 更新使用者貨幣偏好
+ * 更新使用者貨幣偏好 (Local-First)
  */
 async function updateCurrencyPreference(userId: string, currency: string) {
-  await firestore()
-    .collection('users')
-    .doc(userId)
-    .update({
-      'preferences.currency': currency,
-      updatedAt: firestore.FieldValue.serverTimestamp()
+  await database.write(async () => {
+    const user = await database.get('users').find(userId);
+    await user.update(u => {
+      u.preferences = { ...u.preferences, currency };
+      u.updatedAt = Date.now();
     });
+  });
   
-  console.log(`Currency updated to ${currency}`);
+  console.log(`Currency updated locally to ${currency}`);
 }
 ```
 

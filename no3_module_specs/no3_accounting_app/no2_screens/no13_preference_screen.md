@@ -65,10 +65,9 @@
         - **行為:** 立即更新 本機 DB Settings 表
         - **欄位:** 必須設定 `updatedOn`
     - **雲端同步:**
-        - **行為:** 同步更新 Firestore `users/{uid}`
-        - **邏輯:** 呼叫 User Management API 或直接寫入 `preferences` 欄位
-            - **注意:** 寫入 `currency` 時，需將 `baseCurrencyId` 轉換回 ISO Code (String)
-        - **錯誤處理:** 若無網路，標記 dirty flag 待下次連線更新，或依賴 Batch Sync 機制補上，但建議即時寫入以確保 User Management 資料即時性
+        - **行為:** 由 Sync Engine 自動處理
+        - **邏輯:** Sync Engine 監聽本地 DB 變更，若 `isPremium` 為 True 則自動同步至 Firestore
+        - **錯誤處理:** Sync Engine 內建重試與離線佇列機制
     - **後續:**
         - **IF** 變更時區或語系:
             - **行為:** 立即觸發 App 相關設定重新載入, 確保 UI 即時更新
@@ -79,7 +78,7 @@
         - **行為:** 呼叫 `authService.signOut()`
     - **監聽:**
         - **目標:** AuthContext 認證狀態變化
-        - **行為:** AppNavigator 自動切換回 LoginScreen
+        - **行為:** AppNavigator 切換至 HomeScreen (進入訪客模式)
 
 ---
 

@@ -2,7 +2,7 @@
 
 > **核心設計哲學**: **Local-First & Unobtrusive**
 > - **不阻擋**: App 啟動後立即進入首頁，不強制登入。
-> - **情境感知**: 僅在冷啟動且未登入時主動提示登入；熱啟動則不打擾。
+> - **情境感知**: 僅在使用者嘗試執行需權限操作 (如付費、備份) 時才要求登入；啟動時不打擾。
 > - **強健性**: 登入時確保使用者資料完整建立。
 > - **最終一致**: 權限與資料狀態透過背景同步達成一致，UI 始終依賴本地狀態 `PremiumContext`。
 
@@ -97,10 +97,7 @@ sequenceDiagram
                 end
                 
             else 未登入
-                opt 是冷啟動
-                    App->>App: 自動彈出 Login Modal
-                end
-                Note right of App: 熱啟動則維持訪客模式，不打擾使用者
+                Note right of App: 維持訪客模式，完全不打擾使用者 (Contextual Login)
             end
         end
     end

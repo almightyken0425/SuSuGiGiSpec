@@ -10,6 +10,9 @@
 - **行為:** 檢查 本機儲存的 Auth State 認證狀態
 - **IF** 認證狀態 == `Valid` 已登入
     - **導航:** HomeScreen
+- **IF** 認證狀態 == `null` 未登入 (Guest)
+    - **導航:** HomeScreen
+    - **行為:** 進入訪客模式，使用本地資料庫
     - **行為:** 於 HomeScreen 立即從 本機 DB 讀取資料並顯示 UI
     - **IF** `PremiumContext.isPremiumUser` == True
         - **目的:** 依序執行所有必要的付費者背景啟動任務
@@ -24,5 +27,6 @@
             - **IF True:**
                 - **執行:** 批次同步流程
                 - **更新:** `lastSyncCheckDate`
-- **IF** 認證狀態 == `null` 未登入
-    - **導航:** LoginScreen
+- **IF** 認證狀態 == `null` 未登入 (Guest)
+    - **導航:** HomeScreen
+    - **行為:** 進入訪客模式，使用本地資料庫

@@ -1,8 +1,10 @@
 # 登入認證後邏輯
 
 - **觸發:** 認證成功時，由 LoginScreen.md 觸發
-- **讀取 User Profile:**
-    - **行為:** 嘗試讀取 Firestore `users/{uid}`
+- **檢查權限:** 透過 RevenueCat 檢查 `isPremium`
+- **IF** `isPremium` == True:
+    - **讀取 User Profile:**
+        - **行為:** 嘗試讀取 Firestore `users/{uid}`
 - **IF** 讀取成功, 舊用戶:
     - **行為:** 解析 Firestore 回傳的 `preferences`
         - language, currency, timezone
@@ -13,7 +15,7 @@
         - `theme` = `preferences.theme`
         - `updatedOn` = Current Timestamp
     - **行為:** 觸發同步與定期交易
-- **IF** 讀取失敗或文件不存在, 新用戶:
+- **IF** (讀取失敗 或 文件不存在 或 `isPremium` == False), 新用戶/訪客轉正:
     - **行為:** 執行 **初始化流程**
     - **決定預設值:**
         - **主要幣別:** 嘗試從裝置 Locale 取得，若無則預設 TWD (需轉換為 ISO Code)
@@ -26,6 +28,7 @@
             - 帳戶: 現金 (使用主要幣別)
             - 類別: 食衣住行標準類別
     - **寫入雲端 (User Management Onboarding):**
+        - **條件:** 僅在 `isPremium` == True 時執行
         - **行為:** 建立 Firestore `users/{uid}` 文件
         - **內容:**
             - `uid`, `email`, `provider`

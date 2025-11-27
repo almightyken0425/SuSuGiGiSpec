@@ -1,7 +1,6 @@
 # 首次登入流程
 
-> [!NOTE]
-> 完整互動流程圖請參閱: `no1_interaction_flows/no1_user_management_flows.md`
+> [no1_interaction_flow.md](file:///Users/kenchio/Documents/GitHub/SuSuGiGiSpec/no3_module_specs/no1_interaction_flows/no1_interaction_flow.md)
 
 ## 實作邏輯 Local-First
 
