@@ -2,9 +2,6 @@
 
 ## 核心架構
 
-> [!NOTE]
-> 完整同步流程圖請參閱: `no1_interaction_flows/no2_accounting_flows.md`
-
 - **架構模型:** 本地優先 Local-First
     - **資料來源:** App 讀寫操作, 一律針對 本機資料庫 Local DB
     - **UI 反應:** UI 即時反應 本機資料庫

@@ -1,12 +1,4 @@
-# 更新使用者偏好設定 (Update Preferences)
-
-> **實作方式**: 直接使用 Firestore SDK（**不需要** Cloud Function）  
-> **原因**: 偏好設定更新是簡單的寫入操作，不涉及複雜邏輯
-
-## 為什麼不需要 API？
-
-MVP 階段的偏好設定更新**不需要獨立的 Cloud Function API**。
-詳細決策權衡請參閱: `no1_module_architecture/no2_trade_off.md`
+# 更新使用者偏好設定
 
 ## Firestore Security Rules
 

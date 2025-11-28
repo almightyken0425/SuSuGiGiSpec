@@ -94,7 +94,7 @@ sequenceDiagram
 ## 6. 決策記錄 (Decision Record)
 
 > **已遷移**: 本報告之決策已整合至各模組架構文件中。
-> - Contextual Login & Logout: `no3_module_specs/no2_user_management/no1_module_architecture/no2_trade_off.md` (Note: Explicit Logout retained for flexibility)
+> - Contextual Login & Logout: `no3_module_specs/no2_user_management/no1_module_architecture/no2_trade_off.md`
 > - Offline Loophole: `no3_module_specs/no3_accounting_app/no1_module_architecture/no2_architecture_tradeoffs.md`
 
 

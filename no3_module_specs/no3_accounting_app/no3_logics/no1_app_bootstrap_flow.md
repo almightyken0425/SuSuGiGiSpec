@@ -1,12 +1,10 @@
 # App 啟動流程
 
-## 流程
-
-> [!NOTE]
-> 完整流程圖請參閱: `no1_interaction_flows/no2_accounting_flows.md`
-
 - **觸發:** 使用者開啟 App
 - **行為:** 顯示 Splash 啟動畫面
+    - **實作策略:** **Seamless Launch (無縫啟動)**
+    - **技術細節:** Native 層使用原生 Launch Screen (iOS/Android) 顯示 Logo 與背景色；React Native 層 App Root View 初始渲染 **完全相同** 的 Logo 與背景色 View。當 JS 載入完成，RN View 蓋過 Native View (使用者無感)。待本地資料讀取完畢後，執行 Fade Out 動畫移除 RN Splash View，顯示 HomeScreen。
+    - **目的:** 消除白畫面 (White Screen) 並掩蓋資料載入時間，創造「秒開」體驗。
 - **行為:** 檢查 本機儲存的 Auth State 認證狀態
 - **IF** 認證狀態 == `Valid` 已登入
     - **導航:** HomeScreen
