@@ -99,7 +99,6 @@ sequenceDiagram
             else 未登入
                 Note right of App: 維持訪客模式，完全不打擾使用者 (Contextual Login)
             end
-
         end
     end
 
@@ -147,8 +146,7 @@ sequenceDiagram
                 end
             end
         end
-    
-
+    end
 
     %% ==========================================
     %% 日常操作與同步
