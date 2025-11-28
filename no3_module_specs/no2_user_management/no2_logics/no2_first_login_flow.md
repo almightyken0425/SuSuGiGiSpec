@@ -1,6 +1,7 @@
 # 首次登入流程
 
-> [no1_interaction_flow.md](file:///Users/kenchio/Documents/GitHub/SuSuGiGiSpec/no3_module_specs/no1_interaction_flows/no1_interaction_flow.md)
+> [!NOTE]
+> 完整互動流程圖請參閱: `no1_interaction_flows/no1_interaction_flow.md`
 
 ## 實作邏輯 Local-First
 
@@ -107,14 +108,9 @@ async function handleGoogleLogin() {
 
 ---
 
-## 關鍵差異說明
+## 同步與衝突處理
 
-### 移除直接 Firestore 寫入
 
-舊版流程在登入時會直接 `firestore().collection('users').doc(uid).set(...)`。
-**新版流程** 改為操作 WatermelonDB。這避免了：
-- 免費用戶消耗 Firestore 寫入額度。
-- 網路不穩導致登入流程卡住 Local DB 操作總是成功。
 
 ### RevenueCat 驅動同步
 

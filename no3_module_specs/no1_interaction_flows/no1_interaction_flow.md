@@ -117,29 +117,37 @@ sequenceDiagram
         note right of App: 強健資料建立流程
         App->>Cloud: 查詢 User Profile
         
-        alt Profile 已存在
-            Cloud-->>App: 返回現有資料
-        else Profile 不存在
-            loop Max 3 Times
-                App->>Cloud: 嘗試建立 User Profile
-                alt 建立成功
-                    App->>Cloud: 再次查詢
-                    Cloud-->>App: 返回新建立資料
-                    Note right of App: 成功跳出迴圈
-                else 建立失敗
-                    App->>App: 等待後重試
+        alt 查詢失敗 (Network Error)
+            App->>U: 顯示錯誤 (Modal 保持開啟)
+        else 查詢成功
+            alt Profile 已存在
+                Cloud-->>App: 返回現有資料
+                App->>App: 綁定 Local Data to User
+                App->>Cloud: 註冊 onSnapshot
+                App->>App: 關閉 Login Modal
+            else Profile 不存在
+                loop Max 3 Times
+                    App->>Cloud: 嘗試建立 User Profile
+                    alt 建立成功
+                        App->>Cloud: 再次查詢
+                        Cloud-->>App: 返回新建立資料
+                        Note right of App: 成功跳出迴圈
+                        App->>App: 綁定 Local Data to User
+                        App->>Cloud: 註冊 onSnapshot
+                        App->>App: 關閉 Login Modal
+                    else 建立失敗
+                        App->>App: 等待後重試
+                    end
+                end
+            
+                opt 3次皆失敗
+                    App->>U: 顯示錯誤 (Modal 保持開啟)
+                    App->>Auth: 自動登出
                 end
             end
-            
-            opt 3次皆失敗
-                App->>U: 顯示錯誤 & 自動登出
-            end
         end
-    end
     
-    App->>App: 關閉 Login Modal
-    App->>App: 綁定 Local Data to User
-    App->>Cloud: 註冊 onSnapshot
+
 
     %% ==========================================
     %% 日常操作與同步
