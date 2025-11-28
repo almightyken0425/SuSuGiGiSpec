@@ -1,7 +1,7 @@
 # 首次登入流程
 
 > [!NOTE]
-> 完整互動流程圖請參閱: `no1_interaction_flows/no1_interaction_flow.md`
+> 完整互動流程圖請參閱: `no1_interaction_flow.md`
 
 ## 實作邏輯 Local-First
 
@@ -13,32 +13,7 @@
 
 ### 使用者登入流程
 
-```mermaid
-sequenceDiagram
-    participant UI as Login Screen
-    participant Auth as Firebase Auth
-    participant RC as RevenueCat
-    participant LocalDB as WatermelonDB
-    participant Sync as Sync Engine
-    
-    UI->>Auth: Google Sign-In
-    Auth-->>UI: User Credential
-    
-    UI->>RC: Configure & Identify (UID)
-    RC-->>UI: CustomerInfo (Entitlements)
-    
-    UI->>LocalDB: Ensure Local User (Upsert)
-    LocalDB-->>UI: User Record
-    
-    alt Has Entitlements (Tier 1+)
-        UI->>Sync: Start Sync Engine
-        Sync->>Firestore: Pull Cloud Data
-    else Free User (Tier 0)
-        UI->>Sync: Stop/Disable Sync Engine
-    end
-    
-    UI->>UI: Navigate to Home
-```
+
 
 ### 程式碼範例
 
@@ -110,8 +85,6 @@ async function handleGoogleLogin() {
 
 ## 同步與衝突處理
 
-
-
 ### RevenueCat 驅動同步
 
 同步功能的開關完全由 RevenueCat 的 `entitlements` 決定。
@@ -132,7 +105,7 @@ async function handleGoogleLogin() {
 
 ### 網路錯誤
 
-- **Auth 階段:** 必須有網路才能進行 Google/Firebase 登入。若無網路，應提示使用者檢查連線。
+- **Auth 階段:** 必須有網路才能進行 Google/Firebase 登入。若無網路，應提示使用者檢查連線，Login Modal 保持開啟。
 - **RevenueCat:** 若無法連線，預設視為無權限 Tier 0，確保使用者能進入 App 使用基本功能。
 - **Sync:** 若 Sync Engine 無法連線，僅影響備份，不影響 App 操作。
 

@@ -113,6 +113,9 @@ sequenceDiagram
     App->>Auth: signInWithGoogle
     Auth-->>App: 返回 User Token
     
+    App->>RC: Identify (Login)
+    RC-->>App: 更新 CustomerInfo (Entitlements)
+    
     rect rgb(240, 248, 255)
         note right of App: 強健資料建立流程
         App->>Cloud: 查詢 User Profile

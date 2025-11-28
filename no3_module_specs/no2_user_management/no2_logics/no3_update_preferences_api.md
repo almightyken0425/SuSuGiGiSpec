@@ -5,12 +5,8 @@
 
 ## 為什麼不需要 API？
 
-MVP 階段的偏好設定更新**不需要獨立的 Cloud Function API**，原因：
-
-1. ✅ **簡單操作**: 只是更新 本地資料庫
-2. ✅ **權限控制**: Sync Engine 負責權限驗證
-3. ✅ **即時性**: 本地寫入立即反應
-4. ✅ **離線支援**: 完全離線運作，Sync Engine 負責背景同步
+MVP 階段的偏好設定更新**不需要獨立的 Cloud Function API**。
+詳細決策權衡請參閱: `no1_module_architecture/no2_trade_off.md`
 
 ## Firestore Security Rules
 
