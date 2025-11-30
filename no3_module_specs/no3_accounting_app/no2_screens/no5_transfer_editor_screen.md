@@ -17,7 +17,7 @@
 | To:   [Account Selector]       |
 | Note: [Note Input]             |
 +--------------------------------+
-| Amount From: [ $ Input ]       |
+| Amount From: [ $ Input ] [Recur]|
 | (Rate & Arrow if Cross-Currency)|
 | Amount To:   [ $ Input ]       |
 |                                |

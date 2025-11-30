@@ -12,7 +12,7 @@
 +--------------------------------+
 |      Date: MM/DD (Day)         |
 +--------------------------------+
-| [ $ Amount Input             ] |
+| [ $ Amount Input    ] [Recur]  |
 |                                |
 | [Category Selector]            |
 | [Account Selector]             |
