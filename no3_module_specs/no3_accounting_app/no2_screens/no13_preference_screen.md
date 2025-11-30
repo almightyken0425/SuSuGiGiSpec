@@ -8,6 +8,26 @@
     - 顯示語言
 - **提供:** 資料管理與帳號登出的進階選項
 
+```text
++--------------------------------+
+| < Back      Preferences        |
++--------------------------------+
+| Appearance                     |
+|  Theme: [ Current Theme ] >    |
+|                                |
+| Localization                   |
+|  Base Currency: [ TWD ] >      |
+|  Time Zone: [ Asia/Taipei ] >  |
+|  Language: [ English ] >       |
+|                                |
+| Sync                           |
+|  [ Sync Now ]                  |
+|                                |
+| Account                        |
+|  [ Logout ]                    |
++--------------------------------+
+```
+
 ## UI 佈局
 
 - **頂部導航列:**

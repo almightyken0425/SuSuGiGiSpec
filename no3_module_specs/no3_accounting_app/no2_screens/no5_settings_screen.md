@@ -5,6 +5,27 @@
 - **提供:** 存取所有帳戶, 資料, 偏好設定的中心化入口
 - **提供:** 登出與升級至付費版的路徑
 
+```text
++--------------------------------+
+| < Back      Settings           |
++--------------------------------+
+| Data Management                |
+|  [Icon] Categories             |
+|  [Icon] Accounts               |
+|  [Icon] Currency Rates (Pro)   |
+|  [Icon] Import Data (Pro)      |
+|                                |
+| Preferences                    |
+|  [Icon] Preferences            |
+|                                |
+| Upgrade                        |
+|  [Icon] Upgrade to Premium     |
+|                                |
+| Account                        |
+|  [Logout]                      |
++--------------------------------+
+```
+
 ## UI 佈局
 
 - **頂部導航列:**

@@ -5,6 +5,21 @@
 - **提供:** 搜尋所有交易與轉帳備註 Note 欄位的介面
 - **允許:** 從搜尋結果導航至該筆紀錄的編輯畫面
 
+```text
++--------------------------------+
+| < Back   [ Search Note... ]    |
++--------------------------------+
+| [Icon] Category Name           |
+|        Note Text (Highlight)   |
+|        $ Amount      Date      |
+|                                |
+| [Icon] Transfer                |
+|        Note Text (Highlight)   |
+|        $ Amount      Date      |
+|                                |
++--------------------------------+
+```
+
 ## UI 佈局
 
 - **頂部導航列:**

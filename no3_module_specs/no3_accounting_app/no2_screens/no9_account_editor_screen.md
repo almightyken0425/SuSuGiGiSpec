@@ -5,6 +5,22 @@
 - **提供:** 新增 或 編輯 帳戶 的統一介面
 - **處理:** 新增外幣帳戶時的匯率輸入流程
 
+```text
++--------------------------------+
+| Close       Title       Save   |
++--------------------------------+
+| Name: [ Input Text ]           |
+| Icon: [ Icon Preview ] >       |
+| Currency: [ TWD ] >            |
+| Initial Balance: [ $ Input ]   |
+| Type: [ Standard Type ] >      |
+|                                |
+| Disable: [ Switch ]            |
+|                                |
+|           [Delete]             |
++--------------------------------+
+```
+
 ## UI 佈局
 
 - **呈現方式:** Modal 形式從底部彈出

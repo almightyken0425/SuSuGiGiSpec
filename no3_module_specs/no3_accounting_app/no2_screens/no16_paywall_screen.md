@@ -20,6 +20,25 @@
 
 ---
 
+```text
++--------------------------------+
+| [X]                            |
+|                                |
+|   Unlock Full Potential        |
+|                                |
+| [Icon] Cloud Backup            |
+| [Icon] Unlimited Accounts      |
+| [Icon] Multi-Currency          |
+|                                |
+| [ ] Yearly $XX / yr (Best)     |
+| [ ] Monthly $XX / mo           |
+|                                |
+| [ Start 7-Day Free Trial ]     |
+|                                |
+| Restore | Terms | Privacy      |
++--------------------------------+
+```
+
 ## UI 佈局
 
 - **頂部導航列:**
