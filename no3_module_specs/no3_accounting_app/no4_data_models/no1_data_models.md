@@ -54,7 +54,57 @@
     - `updatedOn`: Number, Unix Timestamp ms - Not Null, 資料最後更新時間, 同步依據
     - `scheduleId`: String | Null - Foreign Key to Schedules, Nullable, 標記此筆為定期交易產生
         
-    - `scheduleInstanceDate`: Number | Null, Unix Timestamp ms - Nullable, 標記此筆交易對應的排程日期錨點, 此欄位永不應被使用者修改, 僅供系統檢查重複用
+    - `deletedOn`: Number | Null, Unix Timestamp ms - Nullable, Index
+        
+
+### 類別 Categories
+
+- **欄位:**
+    
+    - `id`: String, UUID/GUID - Primary Key
+        
+    - `userId`: String, Auth UID - Foreign Key to Users, Not Null, Index, 資料擁有者
+        
+    - `name`: String - Not Null
+        
+    - `icon`: Number - Foreign Key to IconDefinitions
+                
+    - `standardCategoryId`: Number - Foreign Key to StandardCategory, Not Null, 用於報表歸類
+        
+    - `sortOrder`: Number - Not Null, Default 0, 用於使用者自訂排序
+        
+    - `createdOn`: Number, Unix Timestamp ms - Not Null
+        
+    - `updatedOn`: Number, Unix Timestamp ms - Not Null, 資料最後更新時間, 同步依據
+        
+    - `deletedOn`: Number | Null, Unix Timestamp ms - Nullable, Index
+        
+
+### 收支紀錄 Transactions
+
+- **欄位:**
+    
+    - `id`: String, UUID/GUID - Primary Key
+        
+    - `userId`: String, Auth UID - Foreign Key to Users, Not Null, Index, 資料擁有者
+        
+    - `accountId`: String - Foreign Key to Accounts, Not Null
+        
+    - `categoryId`: String - Foreign Key to Categories, Not Null
+        
+    - `amountCents`: BigInt - Not Null, 金額 (正數), 收入或支出由 Category 決定
+        
+    - `transactionDate`: Number, Unix Timestamp ms - Not Null, 交易發生日 (使用者可改), 用於報表與排序
+        
+    - `note`: String | Null - Nullable, 用於搜尋
+        
+    - `createdOn`: Number, Unix Timestamp ms - Not Null
+        
+    - `updatedOn`: Number, Unix Timestamp ms - Not Null, 資料最後更新時間, 同步依據
+        
+    - `scheduleId`: String | Null - Foreign Key to Schedules, Nullable
+        
+    - `scheduleInstanceDate`: Number | Null, Unix Timestamp ms - Nullable
         
     - `deletedOn`: Number | Null, Unix Timestamp ms - Nullable, Index
         
