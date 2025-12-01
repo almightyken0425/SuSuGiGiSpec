@@ -13,10 +13,10 @@
 | Description text here...       |
 |                                |
 | 1 USD = 32.5 TWD               |
-| Updated: YYYY/MM/DD            |
+| Updated: Oct 25                  |
 |                                |
 | 1 JPY = 0.21 TWD               |
-| Updated: YYYY/MM/DD            |
+| Updated: Oct 25                  |
 |                                |
 |                                |
 |                          (+)   |
@@ -39,7 +39,7 @@
     - **邏輯:** 僅顯示使用者所有貨幣對的最新一筆有效匯率
     - **項目內容:**
         - **UI:** 顯示 1 USD = 32.5 TWD
-        - **UI:** 顯示匯率的最後更新日期 `rateDate`
+        - **UI:** 顯示匯率的最後更新日期 `rateDate` 格式 Date Without Year
     - **空狀態:**
         - **條件:** 使用者尚未使用任何外幣帳戶
         - **顯示:** 當您新增外幣帳戶或進行跨幣別轉帳時, 相關匯率將會顯示於此。
