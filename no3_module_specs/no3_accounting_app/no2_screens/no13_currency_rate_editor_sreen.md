@@ -13,7 +13,7 @@
 |                                |
 | 1 From = [ Rate Input ]        |
 |                                |
-| Date: [ Date Picker ]          |
+| Date: Oct 25, 24               |
 |                                |
 |                                |
 +--------------------------------+

@@ -13,32 +13,19 @@
 +---------------------------------------+
 |       <  Time Period  >               |
 |                                       |
-|           Pie Chart                   |
-|                                       |
-|       Total Balance Area              |
-+---------------------------------------+
-| (Mode 1: Group by Category)           |
-| Expense                               |
-| [v] [Icon] Food           TWD 500.00  |
-|     USD 10.00                  10/25  |
-|     TWD 320 (Converted)               |
-|                                       |
-|     TWD 180.00                 10/25  |
-|                                       |
-| Income                                |
 | [v] [Icon] Salary       TWD 5,000.00  |
 |     TWD 5,000.00               10/01  |
 |                                       |
 | (Mode 2: Group by Date)               |
 | Expense                               |
-| [v] 10/25                 TWD 500.00  |
+| [v] Oct 25                TWD 500.00  |
 |     Food                   USD 10.00  |
 |     Lunch w/ team            TWD 320  |
 |                                       |
 |     Transport             TWD 180.00  |
 |                                       |
 | Income                                |
-| [v] 10/01               TWD 5,000.00  |
+| [v] Oct 01              TWD 5,000.00  |
 |     Salary              TWD 5,000.00  |
 +---------------------------------------+
 | [+] Income [->] Transfer [-] Expense  |
@@ -64,6 +51,12 @@
         - **時間區間標題:**
             - **位置:** `頂部 Header` 之下, `圓餅圖區塊` 之上
             - **UI:** 顯示當前時間區間文字
+            - **格式:** 依據 HomeFilterScreen 選擇的時間粒度
+                - **Day:** 使用 Date With Year 如 Oct 25, 24
+                - **Week:** 顯示範圍，使用 Date Without Year 如 Oct 20 - Oct 26
+                - **Month:** 使用 Month With Year 如 Oct 24
+                - **Year:** 使用 Year 如 2024
+                - **All:** 顯示範圍，使用 Date With Year 如 Oct 01, 23 - Dec 31, 24 取第一筆與最後一筆非刪除紀錄之日期
         - **圓餅圖區塊 PieChart:**
             - **UI 中心:** 顯示 總收入 / 總支出
             - **UI 顏色:**
@@ -96,7 +89,7 @@
                             - **條件:** 非主要貨幣
                             - **UI:** 主要貨幣縮寫 + 換算金額並顯示於原始金額下方
                     - **右側:**
-                        - **日期:** MM/DD
+                        - **日期:** Date Without Year
                 - **按日期分組之內部元件:**
                     - **左側:**
                         - **類別名稱**
@@ -147,7 +140,7 @@
             - **標題顯示:** 類別圖示 + 類別名稱
         - **選項 按日期分組:**
             - **聚合:** 依 `transactionDate` 業務發生日
-            - **標題顯示:** 僅顯示日期文字 MD 且不顯示圖示
+            - **標題顯示:** 僅顯示日期文字 Date Without Year 且不顯示圖示
     - **分組金額計算:**
         - **邏輯:** 依 Filter Modal 選擇的帳戶判斷
         - **IF** 所選帳戶皆為同一非主要貨幣:
@@ -158,7 +151,7 @@
     - **單筆紀錄顯示:**
         - **IF 按類別分組:**
             - **左側:** 原始幣別縮寫 + 原始金額
-            - **右側:** 日期格式 MD
+            - **右側:** 日期格式 Date Without Year
     - **排序:**
         - **分組間:** 依總金額降冪
         - **分組內:** 依 `transactionDate` 降冪
