@@ -13,6 +13,19 @@
 +---------------------------------------+
 |       <  Time Period  >               |
 |                                       |
+|           Pie Chart                   |
+|                                       |
+|       Total Balance Area              |
++---------------------------------------+
+| (Mode 1: Group by Category)           |
+| Expense                               |
+| [v] [Icon] Food           TWD 500.00  |
+|     USD 10.00                  10/25  |
+|     TWD 320 (Converted)               |
+|                                       |
+|     TWD 180.00                 10/25  |
+|                                       |
+| Income                                |
 | [v] [Icon] Salary       TWD 5,000.00  |
 |     TWD 5,000.00               10/01  |
 |                                       |
