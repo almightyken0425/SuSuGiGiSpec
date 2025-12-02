@@ -75,6 +75,9 @@
                     - **IF 單幣別:** 顯示原始幣別金額
                     - **IF 多幣別:** 主要貨幣換算金額
             - **單筆紀錄列:**
+                - `交易類型圖示`
+                    - **IF 定期交易:** 顯示循環圖示
+                    - **ELSE:** 顯示一般圖示
                 - **IF 類別分組:**
                     - `紀錄金額`
                         - **IF 單幣別:** 顯示原始幣別金額
@@ -162,6 +165,10 @@
 
 ## 導航
 
+- **Header 按鈕導航:**
+    - **觸發:** 點擊 `報表篩選按鈕`
+    - **導航:** `HomeFilterScreen`
+
 - **Footer 新增按鈕導航:**
     - **觸發:** Footer 支出、收入、轉帳按鈕點擊
     - **流程:**
@@ -177,7 +184,7 @@
             - **判斷:**
                 - **IF** `active_accounts <= 3` AND `active_categories <= 10`: 執行導航
                 - **ELSE:** 導航 PaywallScreen
-        - **執行導航:**
+        - **導航:**
             - **目標:** `TransactionEditorScreen` 或 `TransferEditorScreen`
             - **參數:**
                 - **IF** `HomeScreen` 時間粒度為 daily:
