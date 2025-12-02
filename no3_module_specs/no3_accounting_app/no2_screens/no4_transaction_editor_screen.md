@@ -31,13 +31,13 @@
 - **頂部 Header:**
     - `取消按鈕`
     - `標題`
-        - **IF 新增模式:** 新增支出 / 新增收入
-        - **IF 編輯模式:** 編輯支出 / 編輯收入
+        - **IF 支出:** 支出
+        - **IF 收入:** 收入
     - `儲存按鈕`
         - **啟用條件:** 所有必填欄位皆有效
 - **日期選擇區:**
     - **預設狀態:**
-        - **顯示:** 格式化日期文字 Date With Year
+        - **顯示:** Date With Year
         - **互動:** 點擊展開日期時間選擇器
     - **展開狀態:**
         - `日曆選擇器`
@@ -79,7 +79,6 @@
     - **判斷依據:** 導航參數 `transactionId`
     - **IF 有 transactionId 編輯模式:**
         - **讀取:** 從本機 DB 讀取該筆交易資料填入表單
-        - **顯示:** 刪除按鈕
     - **IF 無 transactionId 新增模式:**
         - **預設日期:**
             - **IF 有導航參數 defaultDate:** 使用 `defaultDate`
@@ -89,9 +88,9 @@
 - **定期交易按鈕:**
     - **觸發:** 點擊定期交易按鈕
     - **權限檢查:** 讀取 `PremiumContext.isPremiumUser`
-    - **IF True 付費版:**
-        - **行為:** 開啟 ScheduleModal 進行設定
-    - **IF False 免費版:**
+    - **IF True:**
+        - **導航:** RecurringSettingScreen
+    - **IF False:**
         - **導航:** PaywallScreen
 - **儲存邏輯:**
     - **觸發:** 點擊儲存按鈕
@@ -114,7 +113,6 @@
         - **導航:** 關閉畫面返回前一頁
 - **刪除邏輯:**
     - **觸發:** 點擊刪除按鈕
-    - **可見性:** 僅編輯模式
     - **檢查:** `scheduleInstanceDate` 欄位是否有值
     - **IF scheduleInstanceDate 為 null 普通交易:**
         - **軟刪除:** 本機 DB 該筆 `Transaction`

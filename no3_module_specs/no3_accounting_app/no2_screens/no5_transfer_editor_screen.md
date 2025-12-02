@@ -93,7 +93,6 @@
     - **判斷依據:** 導航參數 `transferId`
     - **IF 有 transferId 編輯模式:**
         - **讀取:** 從本機 DB 讀取該筆轉帳資料填入表單
-        - **顯示:** 刪除按鈕
     - **IF 無 transferId 新增模式:**
         - **預設日期:**
             - **IF 有導航參數 defaultDate:** 使用 `defaultDate`
@@ -103,13 +102,12 @@
             - **轉入帳戶:** 選取 `sortOrder` 第二高的項目
             - **IF 帳戶數量少於 2:**
                 - **轉入帳戶:** 留空
-                - **儲存按鈕:** 禁用
-- **定期轉帳按鈕:**
+- **定期交易按鈕:**
     - **觸發:** 點擊定期轉帳按鈕
     - **權限檢查:** 讀取 `PremiumContext.isPremiumUser`
-    - **IF True 付費版:**
-        - **行為:** 開啟 ScheduleModal 進行設定
-    - **IF False 免費版:**
+    - **IF True:**
+        - **導航:** RecurringSettingScreen
+    - **IF False:**
         - **導航:** PaywallScreen
 - **儲存邏輯:**
     - **觸發:** 點擊儲存按鈕
@@ -141,7 +139,6 @@
         - **導航:** 關閉畫面返回前一頁
 - **刪除邏輯:**
     - **觸發:** 點擊刪除按鈕
-    - **可見性:** 僅編輯模式
     - **檢查:** `scheduleInstanceDate` 欄位是否有值
     - **IF scheduleInstanceDate 為 null 普通轉帳:**
         - **軟刪除:** 本機 DB 該筆 `Transfer`

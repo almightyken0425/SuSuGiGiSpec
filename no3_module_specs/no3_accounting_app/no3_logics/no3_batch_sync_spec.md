@@ -15,7 +15,7 @@
 
 - **updatedOn:** 必要欄位
     - **要求:** 所有需同步資料表必須包含 `updatedOn`
-    - **邏輯:** 本機寫入（新增或修改）操作必須更新 `updatedOn`，作為同步依據
+    - **邏輯:** 本機新增或修改操作必須更新 `updatedOn`，作為同步依據
 - **deletedOn:** 軟刪除
 - **lastSyncTimestamp:** 本地儲存
     - **要求:** 本地持久化儲存 `lastSyncTimestamp`
@@ -26,7 +26,7 @@
 
 ## 衝突解決策略
 
-- **策略:** 最後寫入者獲勝 Last Write Wins (LWW)
+- **策略:** 最後寫入者獲勝 Last Write Wins
 - **機制:** 依據 `updatedOn`
 - **範例:**
     - 裝置 A 離線修改 Account-X, `updatedOn`: 10:05 AM
@@ -69,7 +69,7 @@
 
 ## 權限變更同步策略
 
-### 升級 Upgrade (Tier 0 to Tier 1)
+### 升級 Upgrade Tier 0 to Tier 1
 
 當使用者購買訂閱或恢復購買，獲得 `premium` 權限時：
 
@@ -82,7 +82,7 @@
         - 執行 **下載階段:** 拉取雲端可能存在的舊資料（若有）
     - **更新狀態:** 設定 `lastSyncTimestamp`
 
-### 降級 Downgrade (Tier 1 to Tier 0)
+### 降級 Downgrade Tier 1 to Tier 0
 
 當使用者訂閱過期，失去 `premium` 權限時：
 

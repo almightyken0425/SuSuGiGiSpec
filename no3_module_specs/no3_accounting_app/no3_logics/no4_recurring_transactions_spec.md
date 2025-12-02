@@ -11,7 +11,7 @@
         - **資料:** `Transaction` 或 `Transfer`
         - **欄位:** 包含 `scheduleId` 及 `scheduleInstanceDate`
 
-## 補產生邏輯 (App 啟動時)
+## 補產生邏輯 App 啟動時
 
 - **讀取:** 本地儲存 `lastRecurringCheckDate`
 - **計算:** 基於使用者主要時區的當前日期 `currentDateInUserTZ`
