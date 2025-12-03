@@ -215,7 +215,6 @@
     - `rawCustomerInfo`: Object
         - **格式:** JSON
         - **說明:** RevenueCat 原始回傳資料，作為除錯與備用。
-- **狀態計算:** `isPremium` 狀態不再直接儲存，而是由 `PremiumLogic.checkPremiumStatus` 動態計算。
 
 ---
 

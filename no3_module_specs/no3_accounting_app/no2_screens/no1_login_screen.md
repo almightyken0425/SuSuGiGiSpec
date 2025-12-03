@@ -41,7 +41,7 @@
     - **狀態更新:** AuthContext 更新為已登入
 - **導航邏輯:**
     - **檢查:** 是否有 `redirect` 參數
-    - **IF 有 redirect 例如 PaywallScreen:**
+    - **IF 有 redirect:**
         - **導航:** 開啟對應畫面例如重新開啟 Paywall Modal
     - **ELSE 預設:**
         - **導航:** 導航至 HomeScreen
