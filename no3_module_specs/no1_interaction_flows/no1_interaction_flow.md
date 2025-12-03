@@ -64,8 +64,17 @@ sequenceDiagram
             Note right of App: UI 與資料已存在記憶體中，直接顯示
         end
     and 背景邏輯處理
-        par 定期交易 (Local)
+        par 定期交易與權限檢查於 Local
             App->>Local: 讀取 PremiumContext
+            
+            opt isPremium == True AND isOffline == True
+                App->>App: 檢查 Expiration Date
+                alt 已過期且 Current > Expiration
+                    App->>App: 降級為 Free
+                    Note right of App: 防止長期離線規避續費
+                end
+            end
+
             opt isPremium == True
                 App->>Local: 檢查定期交易 (Schedules)
                 Note right of App: 依賴本地資料，無網也可執行

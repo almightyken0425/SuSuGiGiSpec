@@ -87,7 +87,14 @@
     - **顯示:** 從 RevenueCat 取回本地化價格字串
 - **購買邏輯:**
     - **觸發:** 使用者選擇方案並點擊 CTA
-    - **呼叫:** `RevenueCat.purchasePackage`
+    - **前置檢查採用 Redirect Flow:**
+        - **檢查:** `AuthContext.isAnonymous` 確認是否為訪客
+        - **IF True 若為訪客:**
+            - **行為:** 關閉 Paywall Modal
+            - **導航:** `LoginScreen`，並帶入參數 `{ redirect: 'PaywallScreen' }`
+            - **目的:** 確保購買歸戶至正式帳號，避免匿名購買遺失
+    - **執行購買若已登入:**
+        - **呼叫:** `RevenueCat.purchasePackage`
     - **成功後:**
         - **更新:** 本機狀態 `isPremiumUser` 為 True
         - **提示:** 升級成功
