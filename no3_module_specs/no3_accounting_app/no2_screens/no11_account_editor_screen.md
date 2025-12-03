@@ -111,9 +111,12 @@
 - **刪除邏輯:**
     - **觸發:** 點擊刪除按鈕
     - **行為:** 顯示確認對話框
+    - **提示:** "刪除此帳戶將一併刪除所有相關的交易與轉帳紀錄，此動作無法復原。"
     - **成功後:**
-        - **軟刪除:** 本機 DB 該筆 `Account`
-        - **欄位:** 必須設定 `deletedOn` 並更新 `updatedOn`
+        - **軟刪除帳戶:** 設定本機 DB 該筆 `Account` 的 `deletedOn` 欄位
+        - **連動刪除交易:** 搜尋所有 `accountId` 為此帳戶的 `Transactions` 並設定 `deletedOn`
+        - **連動刪除轉帳:** 搜尋所有 `fromAccountId` 或 `toAccountId` 為此帳戶的 `Transfers` 並設定 `deletedOn`
+        - **更新時間:** 所有受影響資料皆需更新 `updatedOn`
         - **導航:** 關閉畫面，返回 AccountListScreen
 
 ---
