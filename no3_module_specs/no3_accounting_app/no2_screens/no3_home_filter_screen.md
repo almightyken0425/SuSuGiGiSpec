@@ -7,7 +7,7 @@
 
 ```text
 +---------------------------------------+
-|             Filter Report      Done   |
+|             Filter Report       Done  |
 +---------------------------------------+
 | Time Granularity:                     |
 | [Day] [Week] [Month] [Year] [All]     |
@@ -69,5 +69,5 @@
     - **來源:** HomeScreen 頂部 Header 篩選按鈕
     - **呈現:** Modal
 - **退出:**
-    - **觸發:** 點擊完成按鈕或向下滑動關閉
+    - **觸發:** 點擊返回按鈕或向下滑動關閉
     - **導航:** 關閉 Modal

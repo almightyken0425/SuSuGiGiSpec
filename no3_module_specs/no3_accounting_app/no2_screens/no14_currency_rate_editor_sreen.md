@@ -7,7 +7,7 @@
 
 ```text
 +--------------------------------+
-| Cancel      Set Rate    Save   |
+| Cancel      Set Rate    Done   |
 +--------------------------------+
 | [ From Currency ] [ To Cur ]   |
 |                                |
@@ -27,7 +27,7 @@
     - `取消按鈕`
         - **導航:** CurrencyRateListScreen
     - `標題` 設定匯率
-    - `儲存按鈕`
+    - `完成按鈕`
 - **貨幣對顯示區:**
     - **UI:** 兩個並排的不可編輯區塊
     - `來源貨幣` From
