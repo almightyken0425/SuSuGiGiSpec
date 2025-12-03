@@ -27,7 +27,7 @@
 
 ## 付費者背景任務
 
-- **檢查條件:** `PremiumContext.isPremiumUser` 為 True
+- **檢查條件:** `PremiumLogic.checkPremiumStatus()` 為 True
 - **目的:** 依序執行所有必要的付費者背景啟動任務
 - **非同步執行:**
     - **定期交易檢查:**

@@ -201,6 +201,24 @@
 
 ---
 
+### PremiumContext Local State
+
+- **說明:** 本地持久化狀態，用於離線檢查 Premium 權限。
+- **欄位:**
+    - `expirationDate`: Number | Null
+        - **格式:** Timestamp
+        - **說明:** Premium 到期時間，Null 代表無期限 Lifetime。
+        - **來源:** 映射自 `rawCustomerInfo`。
+    - `lastChecked`: Number
+        - **格式:** Timestamp
+        - **說明:** 上次與 RevenueCat 同步的時間。
+    - `rawCustomerInfo`: Object
+        - **格式:** JSON
+        - **說明:** RevenueCat 原始回傳資料，作為除錯與備用。
+- **狀態計算:** `isPremium` 狀態不再直接儲存，而是由 `PremiumLogic.checkPremiumStatus` 動態計算。
+
+---
+
 ## App 標準定義資料
 
 - **現況:** 這些是 App 內建的靜態參考資料, 將打包在 App 中或從遠端載入

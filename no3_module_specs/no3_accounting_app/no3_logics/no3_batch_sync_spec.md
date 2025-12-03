@@ -40,7 +40,7 @@
 
 - **手動觸發:** 付費功能
     - **入口:** 設定 > 偏好設定 > 立即同步按鈕
-    - **檢查 Premium:** `PremiumContext.isPremiumUser`
+    - **檢查 Premium:** `PremiumLogic.checkPremiumStatus()`
         - **IF False:** 導航至 PaywallScreen 並終止流程
     - **檢查冷卻機制:** `Now < nextSyncAllowedTime`
         - **IF True:** 提示「您剛才同步過了，請 5 分鐘後再試」並終止流程

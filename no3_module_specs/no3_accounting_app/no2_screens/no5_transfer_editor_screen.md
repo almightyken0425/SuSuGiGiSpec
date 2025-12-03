@@ -104,7 +104,7 @@
                 - **轉入帳戶:** 留空
 - **定期交易按鈕:**
     - **觸發:** 點擊定期轉帳按鈕
-    - **權限檢查:** 讀取 `PremiumContext.isPremiumUser`
+    - **權限檢查:** 讀取 `PremiumLogic.checkPremiumStatus()`
     - **IF True:**
         - **導航:** RecurringSettingScreen
     - **IF False:**
@@ -114,7 +114,7 @@
     - **IF 新增模式:**
         - **跨幣別匯率處理:**
             - **條件:** 轉出與轉入帳戶幣別不同
-            - **權限檢查:** 讀取 `PremiumContext.isPremiumUser`
+            - **權限檢查:** 讀取 `PremiumLogic.checkPremiumStatus()`
             - **IF False 免費版:**
                 - **導航:** PaywallScreen
             - **IF True 付費版:**

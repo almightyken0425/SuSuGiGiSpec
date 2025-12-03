@@ -88,7 +88,7 @@
 
 - **付費牆檢查:**
     - **觸發:** 從 SettingsScreen 導航進入前
-    - **檢查:** `PremiumContext.isPremiumUser`
+    - **檢查:** `PremiumLogic.checkPremiumStatus()`
     - **IF 免費版:**
         - **導航:** PaywallScreen
 - **CSV 解析:**

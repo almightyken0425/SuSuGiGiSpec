@@ -6,11 +6,11 @@
 
 ## 權限檢查
 
-- **檢查:** 透過 RevenueCat 檢查 `isPremium` 狀態
+- **檢查:** 呼叫 `PremiumLogic.refreshPremiumStatus()` 更新本地權限狀態
 
 ## 舊用戶邏輯 Premium
 
-- **條件:** `isPremium` 為 True
+- **條件:** `PremiumLogic.checkPremiumStatus()` 為 True
 - **讀取 User Profile:**
     - **行為:** 嘗試讀取 Firestore `users/{uid}`
 - **IF 讀取成功:**
@@ -25,20 +25,20 @@
 
 ## 新用戶或訪客轉正邏輯
 
-- **條件:** 讀取失敗、文件不存在 或 `isPremium` 為 False
+- **條件:** 讀取失敗、文件不存在 或 `PremiumLogic.checkPremiumStatus()` 為 False
 - **執行:** 初始化流程
 - **決定預設值:**
     - **主要幣別:** 嘗試從裝置 Locale 取得，若無則預設 TWD (需轉換為 ISO Code)
     - **語系:** 嘗試從裝置 Locale 取得，若無則預設系統語言
     - **時區:** 讀取裝置時區
     - **主題:** 預設 system
-- **寫入本機 (App Onboarding):**
+- **寫入本機 App Onboarding:**
     - **建立:** 本機 DB `Settings` 表資料 (需將 ISO Code 轉為 Currency ID)
     - **建立預設資料:**
         - 帳戶: 現金 (使用主要幣別)
         - 類別: 食衣住行標準類別
-- **寫入雲端 (User Management Onboarding):**
-    - **條件:** 僅在 `isPremium` 為 True 時執行
+- **寫入雲端 User Management Onboarding:**
+    - **條件:** 僅在 `PremiumLogic.checkPremiumStatus()` 為 True 時執行
     - **建立:** Firestore `users/{uid}` 文件
     - **內容:**
         - `uid`, `email`, `provider`

@@ -46,7 +46,7 @@
             - `拖拉圖示`
             - **視覺標示停用:**
                 - **條件:** `disabledOn` 非 null
-                - **UI:** 灰色文字或已停用標籤
+                - **UI:** 灰色文字
 
 ---
 
@@ -74,7 +74,7 @@
 - **付費牆檢查:**
     - **觸發:** 點擊新增按鈕
     - **檢查:**
-        - `PremiumContext.isPremiumUser` 狀態
+        - `PremiumLogic.checkPremiumStatus()` 狀態
         - 本機 DB 帳戶總數
     - **IF 免費版 AND 帳戶數量已達上限:**
         - **導航:** PaywallScreen

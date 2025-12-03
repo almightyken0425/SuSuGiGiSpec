@@ -2,7 +2,7 @@
 
 > **核心設計哲學**: **Local-First & Unobtrusive**
 > - **不阻擋**: App 啟動後立即進入首頁，不強制登入。
-> - **情境感知**: 僅在使用者嘗試執行需權限操作 (如付費、備份) 時才要求登入；啟動時不打擾。
+> - **情境感知**: 僅在使用者嘗試執行需權限操作，如付費、備份時才要求登入；啟動時不打擾。
 > - **強健性**: 登入時確保使用者資料完整建立。
 > - **最終一致**: 權限與資料狀態透過背景同步達成一致，UI 始終依賴本地狀態 `PremiumContext`。
 
@@ -67,12 +67,9 @@ sequenceDiagram
         par 定期交易與權限檢查於 Local
             App->>Local: 讀取 PremiumContext
             
-            opt isPremium == True AND isOffline == True
-                App->>App: 檢查 Expiration Date
-                alt 已過期且 Current > Expiration
-                    App->>App: 降級為 Free
-                    Note right of App: 防止長期離線規避續費
-                end
+            opt PremiumLogic.checkPremiumStatus is False
+                App->>App: 降級為 Free
+                Note right of App: 包含離線過期檢查邏輯
             end
 
             opt isPremium == True
@@ -100,7 +97,7 @@ sequenceDiagram
                     Note right of App: 無需重繪，節省資源
                 end
                 
-                opt isPremium == True
+                opt PremiumLogic.checkPremiumStatus is True
                     Note right of App: 確保使用最新權限狀態執行
                     App->>App: 檢查自動同步
                 end

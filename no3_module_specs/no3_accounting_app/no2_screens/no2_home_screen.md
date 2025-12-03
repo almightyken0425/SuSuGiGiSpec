@@ -173,7 +173,7 @@
     - **觸發:** Footer 支出、收入、轉帳按鈕點擊
     - **流程:**
         - **權限驗證:**
-            - **驗證:** 讀取 `PremiumContext.isPremiumUser`
+            - **驗證:** 讀取 `PremiumLogic.checkPremiumStatus()`
             - **IF True:** 執行導航
             - **IF False:** 執行限制檢查
             - **查詢本機 DB:**

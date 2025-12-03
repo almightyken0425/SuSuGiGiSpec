@@ -16,7 +16,7 @@
     - **來源:** 點擊設定主頁上的升級至 Premium 按鈕
 - **被動觸發:**
     - **來源:** 嘗試存取任何付費功能時
-    - **備註:** 由各功能畫面自行檢查 `isPremiumUser` 狀態並呼叫此畫面
+    - **備註:** 由各功能畫面自行檢查 `PremiumLogic.checkPremiumStatus()` 狀態並呼叫此畫面
 
 ---
 
@@ -96,7 +96,7 @@
     - **執行購買若已登入:**
         - **呼叫:** `RevenueCat.purchasePackage`
     - **成功後:**
-        - **更新:** 本機狀態 `isPremiumUser` 為 True
+        - **更新:** 呼叫 `PremiumLogic.refreshPremiumStatus()` 更新權限
         - **提示:** 升級成功
         - **導航:** 自動關閉 PaywallScreen
     - **失敗後:**
@@ -105,7 +105,7 @@
     - **觸發:** 點擊恢復購買連結
     - **呼叫:** `RevenueCat.restorePurchases`
     - **成功後:**
-        - **更新:** 本機狀態 `isPremiumUser` 為 True
+        - **更新:** 呼叫 `PremiumLogic.refreshPremiumStatus()` 更新權限
         - **提示:** 恢復成功
         - **導航:** 自動關閉 PaywallScreen
     - **失敗後:**

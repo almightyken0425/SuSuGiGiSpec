@@ -77,7 +77,7 @@
     - **IF 新增模式:**
         - **付費牆檢查數量:**
             - **檢查:**
-                - `PremiumContext.isPremiumUser` 狀態
+                - `PremiumLogic.checkPremiumStatus()` 狀態
                 - 本機 DB 帳戶數量
             - **IF 免費版 AND 帳戶數量已達上限:**
                 - **導航:** PaywallScreen
@@ -87,7 +87,7 @@
                 - **導航:** PaywallScreen
         - **匯率輸入流程:**
             - **條件:**
-                - `isPremiumUser` 為 True
+                - `PremiumLogic.checkPremiumStatus()` 為 True
                 - 選擇了非基礎貨幣
             - **行為:**
                 - 彈出介面提示使用者輸入初始匯率

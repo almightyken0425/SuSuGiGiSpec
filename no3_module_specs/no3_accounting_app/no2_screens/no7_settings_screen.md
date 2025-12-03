@@ -32,7 +32,7 @@
 
 - **頂部導航列:**
     - `返回按鈕`
-    - `標題` 設定
+    - `標題`
 - **設定列表:**
     - **資料管理:**
         - `類別管理`
@@ -45,8 +45,9 @@
         - `升級至 Premium`
             - **樣式:** 醒目項目
     - **帳號:**
-        - `登出`
-            - **樣式:** 紅色文字按鈕
+        - `登入/登出`
+            - **邏輯:** 依據 `AuthContext.isAnonymous` 顯示對應文字
+            - **樣式:** 一般列表項目
 
 ---
 
@@ -54,22 +55,22 @@
 
 - **項目可見性:**
     - **升級至 Premium:**
-        - **邏輯:** 僅免費版使用者顯示 (`!isPremiumUser`)
+        - **邏輯:** 僅免費版使用者顯示
 - **付費功能檢查:**
     - **觸發:** 點擊 `匯率管理` 或 `匯入資料`
-    - **行為:** 讀取 `PremiumContext.isPremiumUser` 狀態
+    - **行為:** 讀取 `PremiumLogic.checkPremiumStatus` 狀態
     - **IF 免費版:**
         - **導航:** PaywallScreen
     - **IF 付費版:**
         - **導航:** 對應的功能畫面
-- **登出邏輯:**
-    - **觸發:** 點擊登出按鈕
-    - **行為:** 顯示確認對話框
-    - **成功:**
-        - **行為:** 呼叫 `authService.signOut()`
-    - **監聽:**
-        - **目標:** AuthContext 認證狀態變化
-        - **行為:** AppNavigator 自動切換回 LoginScreen
+- **帳號操作邏輯:**
+    - **觸發:** 點擊帳號按鈕
+    - **IF 訪客 isAnonymous:**
+        - **導航:** `LoginScreen`
+    - **IF 已登入:**
+        - **行為:** 顯示登出確認對話框
+        - **確認後:** 呼叫 `authService.signOut()`
+        - **成功後:** `AuthContext` 狀態更新，UI 自動切換為登入按鈕
 
 ---
 
@@ -83,13 +84,15 @@
     - **帳戶管理:**
         - **導航:** `AccountListScreen`
     - **匯率管理:**
-        - **導航:** `CurrencyRateListScreen` (需通過付費檢查)
+        - **導航:** `CurrencyRateListScreen` 需通過付費檢查
     - **匯入資料:**
-        - **導航:** `ImportScreen` (需通過付費檢查)
+        - **導航:** `ImportScreen` 需通過付費檢查
     - **偏好設定:**
         - **導航:** `PreferenceScreen`
     - **升級至 Premium:**
         - **導航:** `PaywallScreen`
+    - **登入:**
+        - **導航:** `LoginScreen`
 
 - **退出:**
     - **觸發:** 頂部導航列返回按鈕點擊

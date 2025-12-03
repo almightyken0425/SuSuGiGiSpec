@@ -69,7 +69,7 @@
     - **IF 新增模式:**
         - **付費牆檢查:**
             - **檢查:**
-                - `PremiumContext.isPremiumUser` 狀態
+                - `PremiumLogic.checkPremiumStatus()` 狀態
                 - 本機 DB 類別數量
             - **IF 免費版 AND 類別數量已達上限:**
                 - **導航:** PaywallScreen
