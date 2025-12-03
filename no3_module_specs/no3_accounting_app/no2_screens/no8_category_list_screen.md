@@ -29,6 +29,9 @@
     - `返回按鈕`
         - **導航:** SettingsScreen
     - `標題` 類別管理
+    - `合併按鈕`
+        - **導航:** MergeEditorScreen
+        - **參數:** mode = Category
 - **支出區:**
     - **區塊標題:**
         - `標題` 支出
@@ -78,7 +81,11 @@
 - **互動:**
     - **點擊項目:**
         - **導航:** CategoryEditorScreen
-        - **模式:** 編輯
+        - **模式:** 新增
+        - **參數:** categoryId
+    - **點擊合併:**
+        - **導航:** MergeEditorScreen
+        - **參數:** mode = Category
         - **參數:** categoryId
     - **拖拉排序:**
         - **限制:** 僅限在各自區塊內
@@ -106,4 +113,4 @@
     - **導航:** SettingsScreen
 - **導出:**
     - **觸發:** 點擊列表項目或新增按鈕
-    - **導航:** CategoryEditorScreen 或 PaywallScreen
+    - **導航:** CategoryEditorScreen 或 PaywallScreen 或 MergeEditorScreen

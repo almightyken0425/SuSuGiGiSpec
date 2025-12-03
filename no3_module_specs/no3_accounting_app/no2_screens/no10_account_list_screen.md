@@ -27,6 +27,9 @@
     - `返回按鈕`
         - **導航:** SettingsScreen
     - `標題` 帳戶管理
+    - `合併按鈕`
+        - **導航:** MergeEditorScreen
+        - **參數:** mode = Account
 - **帳戶區:**
     - **區塊標題:**
         - `標題` 我的帳戶
@@ -68,6 +71,9 @@
     - **點擊新增:**
         - **導航:** AccountEditorScreen
         - **模式:** 新增
+    - **點擊合併:**
+        - **導航:** MergeEditorScreen
+        - **參數:** mode = Account
 - **付費牆檢查:**
     - **觸發:** 點擊新增按鈕
     - **檢查:**
@@ -89,4 +95,4 @@
     - **導航:** SettingsScreen
 - **導出:**
     - **觸發:** 點擊列表項目或新增按鈕
-    - **導航:** AccountEditorScreen 或 PaywallScreen
+    - **導航:** AccountEditorScreen 或 PaywallScreen 或 MergeEditorScreen
