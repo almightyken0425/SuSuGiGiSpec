@@ -7,7 +7,7 @@
 
 ```text
 +--------------------------------+
-| < Back      Categories         |
+| < Back      Categories   Merge |
 +--------------------------------+
 | Expense            [+ Add]     |
 | [Icon] Category Name     [=]   |

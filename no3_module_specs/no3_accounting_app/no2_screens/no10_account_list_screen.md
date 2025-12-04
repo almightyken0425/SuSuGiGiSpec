@@ -7,7 +7,7 @@
 
 ```text
 +--------------------------------+
-| < Back      Accounts           |
+| < Back      Accounts     Merge |
 +--------------------------------+
 | My Accounts        [+ Add]     |
 | [Icon] Account Name      [=]   |
