@@ -10,14 +10,11 @@
 | Close       Title       Save   |
 +--------------------------------+
 | Name: [ Input Text ]           |
-| Icon: [ Icon Preview ] >       |
-| Currency: [ TWD ] >            |
 | Initial Balance: [ $ Input ]   |
-| Type: [ Standard Type ] >      |
+| Currency: [ TWD ] ˅            |
+| Type: [ Standard Type ] ˅      |
+| Icon: [ Icon Preview ] ˅       |
 |                                |
-| Disable: [ Switch ]            |
-|                                |
-|           [Delete]             |
 +--------------------------------+
 ```
 
@@ -51,15 +48,7 @@
     - `標準帳戶類型選擇器`
         - **UI:** 選擇器
         - **行為:** 點擊彈出 StandardAccountType.json 列表
-- **停用開關區:**
-    - `停用開關` Switch 元件
-    - **標題:** 停用此帳戶
-    - **可見性:** 僅編輯模式顯示
-    - **邏輯:** 讀取 `disabledOn` 欄位狀態決定開關預設值
-- **刪除按鈕區:**
-    - `刪除按鈕`
-        - **樣式:** 紅色文字 刪除此帳戶
-        - **可見性:** 僅編輯模式顯示
+
 
 ---
 
@@ -100,24 +89,11 @@
                 - **寫入:** 本機 DB 建立新 `Account` 記錄
                 - **欄位:** 必須設定 `updatedOn`
     - **IF 編輯模式:**
-        - **IF 停用開關開啟:**
-            - **欄位:** `disabledOn` 設為當前時間戳記
-        - **IF 停用開關關閉:**
-            - **欄位:** `disabledOn` 設為 null
         - **更新:** 本機 DB 該筆記錄
         - **欄位:** 必須更新 `updatedOn`
     - **成功後:**
         - **導航:** 關閉畫面，返回 AccountListScreen
-- **刪除邏輯:**
-    - **觸發:** 點擊刪除按鈕
-    - **行為:** 顯示確認對話框
-    - **提示:** "刪除此帳戶將一併刪除所有相關的交易與轉帳紀錄，此動作無法復原。"
-    - **成功後:**
-        - **軟刪除帳戶:** 設定本機 DB 該筆 `Account` 的 `deletedOn` 欄位
-        - **連動刪除交易:** 搜尋所有 `accountId` 為此帳戶的 `Transactions` 並設定 `deletedOn`
-        - **連動刪除轉帳:** 搜尋所有 `fromAccountId` 或 `toAccountId` 為此帳戶的 `Transfers` 並設定 `deletedOn`
-        - **更新時間:** 所有受影響資料皆需更新 `updatedOn`
-        - **導航:** 關閉畫面，返回 AccountListScreen
+
 
 ---
 
