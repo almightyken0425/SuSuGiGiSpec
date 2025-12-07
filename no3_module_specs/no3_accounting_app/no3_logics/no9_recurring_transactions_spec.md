@@ -24,8 +24,13 @@
         - **產生交易:**
             - **IF 檢查不存在:**
                 - **行為:** 使用 `Schedule` 模板創建新記錄
+                - **IF TYPE 為 Transfer:**
+                    - **執行:** 呼叫 `TransferLogic.createTransfer`
+                    - **參數:** 帶入 scheduleInstanceDate 作為 transactionDate
+                - **IF TYPE 為 Transaction:**
+                    - **執行:** 呼叫 `TransactionLogic.createTransaction`
+                    - **參數:** 帶入 scheduleInstanceDate 作為 transactionDate
                 - **欄位:** `scheduleId`, `scheduleInstanceDate`
-                - **備註:** `transactionDate` 欄位值設為 `instanceDate`
             - **IF 檢查已存在:** 跳過，不執行任何操作
         - **更新:** `lastRecurringCheckDate` = `currentDateInUserTZ`
 

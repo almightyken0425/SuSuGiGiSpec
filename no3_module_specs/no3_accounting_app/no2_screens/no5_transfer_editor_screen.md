@@ -111,49 +111,22 @@
         - **導航:** PaywallScreen
 - **儲存邏輯:**
     - **觸發:** 點擊儲存按鈕
-    - **IF 新增模式:**
-        - **跨幣別匯率處理:**
-            - **條件:** 轉出與轉入帳戶幣別不同
-            - **權限檢查:** 讀取 `PremiumLogic.checkPremiumStatus()`
-            - **IF False 免費版:**
-                - **導航:** PaywallScreen
-            - **IF True 付費版:**
-                - **計算:** 隱含匯率 rateCents
-                - **寫入:** 本機 DB 批次新增 `CurrencyRates` 記錄
-                - **欄位:** 必須設定 `updatedOn`，`rateDate` 設為轉帳的 `transactionDate`
-        - **IF 未設定重複規則:**
-            - **寫入:** 本機 DB 建立新 `Transfer` 記錄
-            - **欄位:** 必須設定 `updatedOn`
-        - **IF 設定重複規則:**
-            - **執行:** 定期轉帳建立邏輯
-            - **參照:** 參見定期轉帳規格文件
-    - **IF 編輯模式:**
-        - **檢查:** `scheduleInstanceDate` 欄位是否有值
-        - **IF scheduleInstanceDate 為 null 普通轉帳:**
-            - **更新:** 本機 DB 該筆 `Transfer` 記錄
-            - **欄位:**
-                - 必須更新 `updatedOn`
-                - **IF 跨幣別且匯率變動:** 必須更新 `impliedRateScaled`
-            - **匯率連動 Append-Only:**
-                - **條件:** 跨幣別且隱含匯率變動，或使用者手動修改交易日期 `transactionDate`
-                - **執行:** 新增一筆 `CurrencyRates` 紀錄
-                - **欄位:**
-                    - `rateDate`: **必須** 使用該轉帳的 `transactionDate` 以確保歷史正確性
-                    - `rateCents`: 新的隱含匯率
-        - **IF scheduleInstanceDate 有值 定期轉帳:**
-            - **執行:** 定期轉帳編輯邏輯
-            - **參照:** 參見定期轉帳規格文件
+    - **IF 定期轉帳:**
+        - **新增模式:** 呼叫 `RecurringTransactions.createSchedule`
+        - **編輯模式:** 呼叫 `RecurringTransactions.updateSchedule`
+        - **參照:** 參見定期轉帳規格文件
+    - **IF 普通轉帳:**
+        - **新增模式:** 呼叫 `TransferLogic.createTransfer`
+        - **編輯模式:** 呼叫 `TransferLogic.updateTransfer`
     - **成功後:**
         - **導航:** 關閉畫面返回前一頁
 - **刪除邏輯:**
     - **觸發:** 點擊刪除按鈕
-    - **檢查:** `scheduleInstanceDate` 欄位是否有值
-    - **IF scheduleInstanceDate 為 null 普通轉帳:**
-        - **軟刪除:** 本機 DB 該筆 `Transfer`
-        - **欄位:** 設定 `deletedOn` 並更新 `updatedOn`
-    - **IF scheduleInstanceDate 有值 定期轉帳:**
-        - **執行:** 定期轉帳刪除邏輯
+    - **IF 定期轉帳:**
+        - **執行:** 呼叫 `RecurringTransactions.deleteSchedule`
         - **參照:** 參見定期轉帳規格文件
+    - **IF 普通轉帳:**
+        - **執行:** 呼叫 `TransferLogic.deleteTransfer`
     - **成功後:**
         - **導航:** 關閉畫面返回前一頁
 

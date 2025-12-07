@@ -94,32 +94,22 @@
         - **導航:** PaywallScreen
 - **儲存邏輯:**
     - **觸發:** 點擊儲存按鈕
-    - **IF 新增模式:**
-        - **IF 未設定重複規則:**
-            - **寫入:** 本機 DB 建立新 `Transaction` 記錄
-            - **欄位:** 必須設定 `updatedOn`
-        - **IF 設定重複規則:**
-            - **執行:** 定期交易建立邏輯
-            - **參照:** 參見定期交易規格文件
-    - **IF 編輯模式:**
-        - **檢查:** `scheduleInstanceDate` 欄位是否有值
-        - **IF scheduleInstanceDate 為 null 普通交易:**
-            - **更新:** 本機 DB 該筆 `Transaction` 記錄
-            - **欄位:** 必須更新 `updatedOn`
-        - **IF scheduleInstanceDate 有值 定期交易:**
-            - **執行:** 定期交易編輯邏輯
-            - **參照:** 參見定期交易規格文件
+    - **IF 定期交易:**
+        - **新增模式:** 呼叫 `RecurringTransactions.createSchedule`
+        - **編輯模式:** 呼叫 `RecurringTransactions.updateSchedule`
+        - **參照:** 參見定期交易規格文件
+    - **IF 普通交易:**
+        - **新增模式:** 呼叫 `TransactionLogic.createTransaction`
+        - **編輯模式:** 呼叫 `TransactionLogic.updateTransaction`
     - **成功後:**
         - **導航:** 關閉畫面返回前一頁
 - **刪除邏輯:**
     - **觸發:** 點擊刪除按鈕
-    - **檢查:** `scheduleInstanceDate` 欄位是否有值
-    - **IF scheduleInstanceDate 為 null 普通交易:**
-        - **軟刪除:** 本機 DB 該筆 `Transaction`
-        - **欄位:** 設定 `deletedOn` 並更新 `updatedOn`
-    - **IF scheduleInstanceDate 有值 定期交易:**
-        - **執行:** 定期交易刪除邏輯
+    - **IF 定期交易 (為定期實例):**
+        - **執行:** 呼叫 `RecurringTransactions.deleteSchedule`
         - **參照:** 參見定期交易規格文件
+    - **ELSE 普通交易:**
+        - **執行:** 呼叫 `TransactionLogic.deleteTransaction`
     - **成功後:**
         - **導航:** 關閉畫面返回前一頁
 

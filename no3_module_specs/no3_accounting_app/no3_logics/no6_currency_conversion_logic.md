@@ -10,12 +10,12 @@
 
 ## 核心規則
 
-### 1. 基礎貨幣規則 Base Currency Rule
+### 基礎貨幣規則 Base Currency Rule
 
 - **定義:** 所有全域報表 Global Reports 與總資產計算，**必須** 統一轉換為使用者的 **基礎貨幣 Base Currency**。
 - **來源:** `Settings.baseCurrencyId`
 
-### 2. 直接匯率要求 Direct Rate Requirement
+### 直接匯率要求 Direct Rate Requirement
 
 - **規則:** 系統僅使用 **直接對應** 基礎貨幣的匯率進行轉換。
 - **禁止事項:** 嚴格禁止 **多重跳轉 Multi-hop** 或 **遞迴查找 Recursive Lookup**。
@@ -28,7 +28,7 @@
         - 該金額在報表中視為無法計算，或依各畫面定義處理。
         - **不** 自動推算或是使用近似值。
 
-### 3. 匯率選擇策略 Rate Selection Strategy
+### 匯率選擇策略 Rate Selection Strategy
 
 - **基準時間:** 以交易發生的日期 `transactionDate` 為準。
 - **查找邏輯:**
