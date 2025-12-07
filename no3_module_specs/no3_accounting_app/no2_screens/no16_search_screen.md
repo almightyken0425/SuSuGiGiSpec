@@ -44,7 +44,7 @@
                 - **下方:** 備註 Note，關鍵字高亮
             - **金額日期區:**
                 - **金額:**
-                    - **IF 單一幣別:** Currency Standard 顯示該幣別
+                    - **IF 單幣別:** Currency Standard 顯示該幣別
                     - **IF 多幣別:** 顯示原始幣別金額 + 主要貨幣換算金額
                 - **日期:** 格式 Date Without Year
 

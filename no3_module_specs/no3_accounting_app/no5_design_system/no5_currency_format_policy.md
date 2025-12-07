@@ -39,11 +39,7 @@
 - **用途:** 匯率列表、跨幣別轉帳匯率
 - **範例:** 1 USD ≈ 30.5000 TWD
 - **邏輯:** 顯示 1 單位來源貨幣等於多少目標貨幣
-- **Intl 設定 (目標金額):**
+- **Intl 設定 目標金額:**
     - style: decimal
     - minimumFractionDigits: 0
-    - maximumFractionDigits: 6 (確保精確度)
-
----
-
-**文件結束**
+    - maximumFractionDigits: 6 確保精確度

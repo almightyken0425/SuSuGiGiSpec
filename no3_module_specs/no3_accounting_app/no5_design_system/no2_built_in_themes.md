@@ -1,6 +1,6 @@
-# 內建主題定義 (Built-in Themes)
+# 內建主題定義 Built-in Themes
 
-## 1. 主題列表
+## 主題列表
 
 系統預設提供以下主題：
 
@@ -13,19 +13,19 @@
 
 ---
 
-## 2. 主題 Token 映射
+## 主題 Token 映射
 
-### 2.1 預設淺色 (theme_light_default)
+### 預設淺色 theme_light_default
 - **Base**: Light Mode
 - **Primary Color**: Blue (#2196F3)
 - **Overrides**: None
 
-### 2.2 預設深色 (theme_dark_default)
+### 預設深色 theme_dark_default
 - **Base**: Dark Mode
 - **Primary Color**: Blue (#2196F3)
 - **Overrides**: None
 
-### 2.3 海洋藍 (theme_ocean_blue)
+### 海洋藍 theme_ocean_blue
 - **Base**: Light Mode
 - **Primary Color**: Ocean Blue (#0277BD)
 - **Overrides**:
@@ -33,7 +33,7 @@
   - `color.bg.surface`: #FFFFFF
   - `color.primary.main`: #0277BD
 
-### 2.4 森林綠 (theme_forest_green)
+### 森林綠 theme_forest_green
 - **Base**: Dark Mode
 - **Primary Color**: Forest Green (#2E7D32)
 - **Overrides**:
@@ -43,7 +43,7 @@
 
 ---
 
-## 3. JSON 結構範例
+## JSON 結構範例
 
 ```json
 {

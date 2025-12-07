@@ -1,8 +1,8 @@
-# 設計代幣定義 (Design Tokens)
+# 設計代幣定義 Design Tokens
 
-## 1. 色彩系統 (Color System)
+## 色彩系統 Color System
 
-### 1.1 基礎色盤 (Base Palette)
+### 基礎色盤 Base Palette
 定義系統中使用的所有原始顏色。
 
 - **Neutral (中性色)**: 用於背景、文字、邊框
@@ -31,7 +31,7 @@
   - `error`: #F44336
   - `info`: #2196F3
 
-### 1.2 語意代幣 (Semantic Tokens)
+### 語意代幣 Semantic Tokens
 將基礎顏色映射到具體用途，支援 Light/Dark 模式切換。
 
 | Token Name | Description | Light Mode Default | Dark Mode Default |
@@ -51,13 +51,13 @@
 
 ---
 
-## 2. 字型系統 (Typography System)
+## 字型系統 Typography System
 
-### 2.1 字型家族 (Font Family)
+### 字型家族 Font Family
 - **Base**: Inter, Roboto, "Noto Sans TC", sans-serif
 - **Monospace**: "JetBrains Mono", Consolas, monospace
 
-### 2.2 字級 (Font Size)
+### 字級 Font Size
 - `text-xs`: 12px
 - `text-sm`: 14px
 - `text-base`: 16px
@@ -66,14 +66,14 @@
 - `text-2xl`: 24px
 - `text-3xl`: 30px
 
-### 2.3 字重 (Font Weight)
+### 字重 Font Weight
 - `font-regular`: 400
 - `font-medium`: 500
 - `font-bold`: 700
 
 ---
 
-## 3. 間距系統 (Spacing System)
+## 間距系統 Spacing System
 基於 4px 的網格系統。
 
 - `space-1`: 4px
@@ -87,7 +87,7 @@
 
 ---
 
-## 4. 圓角系統 (Radius System)
+## 圓角系統 Radius System
 - `radius-sm`: 4px
 - `radius-md`: 8px
 - `radius-lg`: 12px
@@ -95,7 +95,7 @@
 
 ---
 
-## 5. 陰影系統 (Shadow System)
+## 陰影系統 Shadow System
 - `shadow-sm`: 0 1px 2px 0 rgba(0, 0, 0, 0.05)
 - `shadow-md`: 0 4px 6px -1px rgba(0, 0, 0, 0.1)
 - `shadow-lg`: 0 10px 15px -3px rgba(0, 0, 0, 0.1)
