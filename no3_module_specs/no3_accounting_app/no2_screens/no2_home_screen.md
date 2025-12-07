@@ -17,11 +17,11 @@
 |                                       |
 |       Total Balance Area              |
 +---------------------------------------+
-| (Mode 1: Group by Category)           |
+| Mode 1: Group by Category       |
 | Expense                               |
 | [v] [Icon] Food           TWD 500.00  |
 |     USD 10.00                  10/25  |
-|     TWD 320 (Converted)               |
+|     TWD 320 Converted                 |
 |                                       |
 |     TWD 180.00                 10/25  |
 |                                       |
@@ -29,7 +29,7 @@
 | [v] [Icon] Salary       TWD 5,000.00  |
 |     TWD 5,000.00               10/01  |
 |                                       |
-| (Mode 2: Group by Date)               |
+| Mode 2: Group by Date                 |
 | Expense                               |
 | [v] Oct 25                TWD 500.00  |
 |     Food                   USD 10.00  |
@@ -105,7 +105,10 @@
         - **過濾:** `當前時間區間` + `所選帳戶`
         - **貨幣邏輯:**
             - **單一幣別:** 顯示該幣別
-            - **多幣別:** 換算為基礎貨幣顯示
+            - **多幣別:**
+                - **邏輯:** 依照 `CurrencyConversionLogic` 進行換算
+                - **限制:** 僅使用直接對應基礎貨幣的匯率 `Currency A -> Base Currency`，不支援多層跳轉。
+                - **例外:** 若無匯率則不計入或標示為未計算。
         - **顏色邏輯:**
             - **排序:** 支出類別依總額降冪排列
             - **合併條件:**

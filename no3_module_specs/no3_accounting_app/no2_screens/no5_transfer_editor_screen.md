@@ -11,14 +11,14 @@
 +--------------------------------+
 | Cancel    Transfer      Done   |
 +--------------------------------+
-|  Date: Oct 25, 2024 (Full)     |
+|  Date: Oct 25, 2024            |
 +--------------------------------+
 | From: [Account Selector]       |
 | To:   [Account Selector]       |
 | Note: [Note Input]             |
 +--------------------------------+
 | Amount From: [ $ Input ] [Recur]|
-| (Rate & Arrow if Cross-Currency)|
+| Rate & Arrow if Cross-Currency |
 | Amount To:   [ $ Input ]       |
 |                                |
 |           [Delete]             |
@@ -131,7 +131,15 @@
         - **檢查:** `scheduleInstanceDate` 欄位是否有值
         - **IF scheduleInstanceDate 為 null 普通轉帳:**
             - **更新:** 本機 DB 該筆 `Transfer` 記錄
-            - **欄位:** 必須更新 `updatedOn`
+            - **欄位:**
+                - 必須更新 `updatedOn`
+                - **IF 跨幣別且匯率變動:** 必須更新 `impliedRateScaled`
+            - **匯率連動 Append-Only:**
+                - **條件:** 跨幣別且隱含匯率變動，或使用者手動修改交易日期 `transactionDate`
+                - **執行:** 新增一筆 `CurrencyRates` 紀錄
+                - **欄位:**
+                    - `rateDate`: **必須** 使用該轉帳的 `transactionDate` 以確保歷史正確性
+                    - `rateCents`: 新的隱含匯率
         - **IF scheduleInstanceDate 有值 定期轉帳:**
             - **執行:** 定期轉帳編輯邏輯
             - **參照:** 參見定期轉帳規格文件
