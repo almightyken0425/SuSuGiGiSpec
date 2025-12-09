@@ -9,7 +9,7 @@ Tinder 式滑動、Diff 預覽、規則編輯等複雜功能，在 Desktop 寬�
 本分析將針對三大核心功能提出 **Mobile-First** 的具體互動設計方案。
 
 ---
-## 0. 首頁架構 Home Screen Architecture
+## 首頁架構 Home Screen Architecture
 
 ### 核心入口設計
 在傳統的底部導航列 Bottom Navigation 右側整合 AI 助理入口，點擊後向上展開對話介面。
@@ -36,7 +36,7 @@ Tinder 式滑動、Diff 預覽、規則編輯等複雜功能，在 Desktop 寬�
 ```
 
 ---
-## 1. 待確認流程 Pending Review
+## 待確認流程 Pending Review
 
 ### 挑戰
 - **單手操作負擔:** 如果累積了 50 筆待確認項目，連續滑動 50 次 Tinder 卡片會造成手指疲勞 Repetitive Strain。
@@ -73,13 +73,13 @@ Tinder 式滑動、Diff 預覽、規則編輯等複雜功能，在 Desktop 寬�
 +------------------+
 ```
 
-1.  **逐日審閱 Contextual Review**
-    - **基底:** 與首頁一致的 `Group by Date` 列表。
-    - **新增 New:** 在當日列表中插入新項目，背景高亮 Green，左側預選 Checkbox。
-    - **舊有 Existing:** 顯示當日已存在的交易 Dimmed，提供上下文對照，例如確認是否重複記帳。
+## 逐日審閱 Contextual Review
+- **基底:** 與首頁一致的 `Group by Date` 列表。
+- **新增 New:** 在當日列表中插入新項目，背景高亮 Green，左側預選 Checkbox。
+- **舊有 Existing:** 顯示當日已存在的交易 Dimmed，提供上下文對照，例如確認是否重複記帳。
 
 ---
-## 2. 邏輯修正 Diff 預覽 Logic Diff
+## 邏輯修正 Diff 預覽 Logic Diff
 
 ### 挑戰
 - **孤立檢視:** 若只看變更的單筆項目，使用者可能忘記當天還有其他類似交易。
@@ -125,7 +125,7 @@ Tinder 式滑動、Diff 預覽、規則編輯等複雜功能，在 Desktop 寬�
     - 採用勾選批次確認，或左滑/右滑逐筆確認。
 
 ---
-## 3. 規則編輯 Rule Customization
+## 規則編輯 Rule Customization
 
 ### 挑戰
 - **輸入困難:** 在手機虛擬鍵盤上編寫複雜邏輯 IF A AND B THEN C 極其痛苦。
