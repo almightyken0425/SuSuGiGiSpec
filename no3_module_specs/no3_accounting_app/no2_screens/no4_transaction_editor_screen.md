@@ -105,10 +105,10 @@
         - **導航:** 關閉畫面返回前一頁
 - **刪除邏輯:**
     - **觸發:** 點擊刪除按鈕
-    - **IF 定期交易 (為定期實例):**
+    - **IF 定期交易:**
         - **執行:** 呼叫 `RecurringTransactions.deleteSchedule`
         - **參照:** 參見定期交易規格文件
-    - **ELSE 普通交易:**
+    - **IF 普通交易:**
         - **執行:** 呼叫 `TransactionLogic.deleteTransaction`
     - **成功後:**
         - **導航:** 關閉畫面返回前一頁
