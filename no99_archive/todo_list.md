@@ -27,3 +27,10 @@
         - 實作建立 1 個預設帳戶邏輯，使用裝置 Locale 幣別
         - 實作建立 7 個預設類別邏輯
         - 將 `seed.ts` 的 `seedInitialData()` 改為呼叫正式邏輯
+
+- [ ] 實作時區切換支援
+    - **UI 調整:** `TransactionEditor` 內的 Date Picker 需支援 `YYYYMMDD HHMMSS` 格式選擇
+    - **連動邏輯:** 修改 `Preference` 時區設定時，`HomeScreen` 需即時更新顯示
+    - **影響範圍:** 時間區間計算、交易時間顯示
+
+- [ ] 修正所有頁面的 modal & segue

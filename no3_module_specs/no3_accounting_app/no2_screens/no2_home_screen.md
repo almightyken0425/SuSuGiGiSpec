@@ -19,39 +19,39 @@
 +---------------------------------------+
 | Mode 1: Group by Category             |
 | Expense                               |
-| [v] [Icon] Food           TWD 500.00  |
-|     USD 10.00                  10/25  |
-|     TWD 320 Converted                 |
+| [v] [Icon] Food           NT$500.00   |
+|     US$10.00                   10/25  |
+|     NT$320 Converted                  |
 |                                       |
-|     TWD 180.00                 10/25  |
+|     NT$180.00                  10/25  |
 |                                       |
-| [v] [->] To External      TWD 1,000   |
+| [v] [->] To External      NT$1,000    |
 |     A -> C                     10/20  |
 |                                       |
 | Income                                |
-| [v] [Icon] Salary       TWD 5,000.00  |
-|     TWD 5,000.00               10/01  |
+| [v] [Icon] Salary       NT$5,000.00   |
+|     NT$5,000.00                10/01  |
 |                                       |
-| [v] [<-] From External    TWD 2,000   |
+| [v] [<-] From External    NT$2,000    |
 |     C -> A                     10/15  |
 |                                       |
 | Mode 2: Group by Date                 |
 | Expense                               |
-| [v] Oct 25                TWD 500.00  |
-|     Food                   USD 10.00  |
-|     Lunch w/ team            TWD 320  |
+| [v] Oct 25                NT$500.00   |
+|     Food                   US$10.00   |
+|     Lunch w/ team            NT$320   |
 |                                       |
-|     Transport             TWD 180.00  |
+|     Transport             NT$180.00   |
 |                                       |
-| [v] Oct 20              TWD 1,000.00  |
-|     A -> C   To External   TWD 1,000  |
+| [v] Oct 20              NT$1,000.00   |
+|     A -> C   To External   NT$1,000   |
 |                                       |
 | Income                                |
-| [v] Oct 15              TWD 2,000.00  |
-|     C -> A   From External TWD 2,000  |
+| [v] Oct 15              NT$2,000.00   |
+|     C -> A   From External NT$2,000   |
 |                                       |
-| [v] Oct 01              TWD 5,000.00  |
-|     Salary              TWD 5,000.00  |
+| [v] Oct 01              NT$5,000.00   |
+|     Salary              NT$5,000.00   |
 +---------------------------------------+
 | [+] Income [->] Transfer [-] Expense  |
 +---------------------------------------+
@@ -84,8 +84,8 @@
                     - **IF 類別分組:** 類別圖示
                     - **IF 日期分組:** 日期區間
                 - **分組金額:** 
-                    - **IF 單幣別:** 顯示原始幣別金額
-                    - **IF 多幣別:** 主要貨幣換算金額
+                    - **IF 單幣別:** 顯示包含符號的原始幣別金額
+                    - **IF 多幣別:** 顯示包含符號的主要貨幣換算金額
             - **單筆紀錄列:**
                 - `交易類型圖示`
                     - **IF 定期交易:** 顯示循環圖示
@@ -120,7 +120,9 @@
 - **資料處理:**
     - **圓餅圖區塊:**
         - **聚合:** 依 `categoryId`
-        - **過濾:** `當前時間區間` + `所選帳戶`
+        - **過濾:**
+            - **條件:** `當前時間區間` + `所選帳戶`
+            - **排除:** 所有轉帳紀錄 (僅計算交易之支出與收入)
         - **貨幣邏輯:**
             - **IF 單幣別:** 顯示該幣別
             - **IF 多幣別:**
