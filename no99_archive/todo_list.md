@@ -34,3 +34,7 @@
     - **影響範圍:** 時間區間計算、交易時間顯示
 
 - [ ] 修正所有頁面的 modal & segue
+- [ ] 修復所有 `timeZoneOffsetInMinutes` 棄用警告
+    - **問題:** `DateTimePicker` 的 `timeZoneOffsetInMinutes` 屬性已棄用，即將移除。
+    - **解法:** 改用 `timeZoneName` 屬性。
+    - **待辦內容:** 檢查並更新專案中所有使用 `DateTimePicker` 的頁面。

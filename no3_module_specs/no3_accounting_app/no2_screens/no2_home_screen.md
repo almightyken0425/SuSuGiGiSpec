@@ -231,7 +231,7 @@
             - **目標:** `TransactionEditorScreen` 或 `TransferEditorScreen`
             - **參數:**
                 - **IF** `HomeScreen` 時間粒度為 daily:
-                    - **參數:** defaultDate
+                    - **參數:** initialDate
                     - **值:** 當前報表日期
                 - **ELSE:**
-                    - **參數:** 無 defaultDate
+                    - **參數:** 無 initialDate
