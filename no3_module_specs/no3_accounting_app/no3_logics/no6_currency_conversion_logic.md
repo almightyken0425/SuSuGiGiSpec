@@ -30,10 +30,14 @@
 
 ### 匯率選擇策略 Rate Selection Strategy
 
-- **基準時間:** 以交易發生的日期 `transactionDate` 為準。
 - **查找邏輯:**
-    - 使用 `CurrencyRates` 表中，`rateDate` 小於等於 `transactionDate` 的 **最新一筆** 紀錄。
-    - **SQL 概念:** `SELECT * FROM CurrencyRates WHERE currencyFrom = 'USD' AND currencyTo = 'TWD' AND rateDate <= transactionDate ORDER BY rateDate DESC LIMIT 1`
+    - 使用 `CurrencyRates` 表中，該貨幣對的 **最新一筆** 紀錄。
+    - 不考慮交易日期，統一使用最新設定的匯率。
+    - **SQL 概念:** `SELECT * FROM CurrencyRates WHERE currencyFrom = 'USD' AND currencyTo = 'TWD' ORDER BY rateDate DESC LIMIT 1`
+- **設計理由:**
+    - 簡化使用者操作流程
+    - 修改匯率後立即全域生效
+    - 無需記憶交易日期
 
 ---
 
