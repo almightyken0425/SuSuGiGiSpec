@@ -2,7 +2,7 @@
 
 ## 邏輯目標
 
-- **定義:** 系統如何處理多幣別之間的金額轉換與報表彙整
+- **定義:** 說明系統如何處理多幣別之間的金額轉換與報表彙整
 - **目的:** 確保使用者在不同介面看到的金額一致且符合直覺
 
 ---
@@ -38,25 +38,41 @@
 
 ---
 
-## 轉帳紀錄顯示列表 Transfer Display Rules
+## 轉帳紀錄顯示規則 Transfer Display Rules
 
-- **前提:** 假設系統基礎貨幣為 **TWD**。
-- **情境:** 包含 同幣別轉帳、跨幣別轉帳、雙外幣轉帳。
+- **說明:** 本表詳列在不同 **錢包篩選 (Filter)** 情境下，系統應如何呈現轉帳紀錄。
+- **符號:**
+    - **Amount From:** 轉出金額
+    - **Amount To:** 轉入金額
+    - **Base:** 基礎幣別 (假設為 TWD)
 
-| 轉帳情境 Flow Context | 當前篩選 Filter | 收支類型 Type | 取用欄位 Field | 顯示幣別與邏輯 Logic |
-| :--- | :--- | :--- | :--- | :--- |
-| **TWD -> TWD** | 轉出帳戶 TWD | 支出 Expense | 轉出金額 Amount From | **TWD** 不轉換 |
-| **TWD -> TWD** | 轉入帳戶 TWD | 收入 Income | 轉入金額 Amount To | **TWD** 不轉換 |
-| **TWD -> TWD** | 全域 Global | 支出 Expense | 轉出金額 Amount From | **TWD** 不轉換 |
-| | | | | |
-| **USD -> TWD** | 轉出帳戶 USD | 支出 Expense | 轉出金額 Amount From | **USD** 不轉換 |
-| **USD -> TWD** | 轉入帳戶 TWD | 收入 Income | 轉入金額 Amount To | **TWD** 不轉換 |
-| **USD -> TWD** | 全域 Global | 支出 Expense | 轉出金額 Amount From | **TWD** 轉換為基礎幣別 |
-| | | | | |
-| **TWD -> USD** | 轉出帳戶 TWD | 支出 Expense | 轉出金額 Amount From | **TWD** 不轉換 |
-| **TWD -> USD** | 轉入帳戶 USD | 收入 Income | 轉入金額 Amount To | **USD** 不轉換 |
-| **TWD -> USD** | 全域 Global | 支出 Expense | 轉出金額 Amount From | **TWD** 不轉換 原始即為基礎幣別 |
-| | | | | |
-| **USD -> JPY** | 轉出帳戶 USD | 支出 Expense | 轉出金額 Amount From | **USD** 不轉換 |
-| **USD -> JPY** | 轉入帳戶 JPY | 收入 Income | 轉入金額 Amount To | **JPY** 不轉換 |
-| **USD -> JPY** | 全域 Global | 支出 Expense | 轉出金額 Amount From | **TWD** 轉換為基礎幣別 |
+### 1. 單選錢包情境 (Single Wallet Filter)
+
+| 當前篩選 Filter | 交易情境 Transfer Pair | 命中角色 Role | 顯示類型 Type | 取用欄位 Field | 邏輯與幣別 Logic |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **USD** | **USD -> TWD** (轉出) | 轉出方 | 支出 Expense | Amount From | **USD** 不轉換 |
+| **USD** | **TWD -> USD** (轉入) | 轉入方 | 收入 Income | Amount To | **USD** 不轉換 |
+| **USD** | **USD -> JPY** (轉出) | 轉出方 | 支出 Expense | Amount From | **USD** 不轉換 |
+| **USD** | **JPY -> USD** (轉入) | 轉入方 | 收入 Income | Amount To | **USD** 不轉換 |
+
+### 2. 多選錢包情境 (Multi-Wallet Filter)
+- **假設:** 使用者同時勾選了 **USD** 與 **JPY** 兩個錢包。
+
+| 當前篩選 Filter | 交易情境 Transfer Pair | 命中角色 Role | 顯示類型 Type | 取用欄位 Field | 邏輯與幣別 Logic |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **USD & JPY** | **USD -> TWD** (轉出至未選) | 轉出方 (USD) | 支出 Expense | Amount From | **USD** 不轉換 |
+| **USD & JPY** | **TWD -> JPY** (自未選轉入) | 轉入方 (JPY) | 收入 Income | Amount To | **JPY** 不轉換 |
+| **USD & JPY** | **USD -> JPY** (內部互轉) | 轉出方 (USD) | 支出 Expense | Amount From | **USD** 不轉換 (列表呈現第1筆) |
+| **USD & JPY** | **USD -> JPY** (內部互轉) | 轉入方 (JPY) | 收入 Income | Amount To | **JPY** 不轉換 (列表呈現第2筆) |
+
+### 3. 全域情境 (Global / All Wallets)
+
+| 當前篩選 Filter | 交易情境 Transfer Pair | 命中角色 Role | 顯示類型 Type | 取用欄位 Field | 邏輯與幣別 Logic |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **全域 Global** | **USD -> TWD** | 總覽 | 支出 Expense | Amount From | 轉為 **Base (TWD)** |
+| **全域 Global** | **TWD -> USD** | 總覽 | 支出 Expense | Amount From | 轉為 **Base (TWD)** |
+| **全域 Global** | **USD -> JPY** | 總覽 | 支出 Expense | Amount From | 轉為 **Base (TWD)** |
+| **全域 Global** | **TWD -> TWD** | 總覽 | 支出 Expense | Amount From | **TWD** 不轉換 |
+| **全域 Global** | **USD -> USD** | 總覽 | 支出 Expense | Amount From | 轉為 **Base (TWD)** |
+
+- **全域補充:** 在全域視角下，轉帳通常視為一種「流動」，為了統計方便與版面一致，系統統一呈現 **轉出方** 的視角，並將金額換算為 **基礎幣別**。
