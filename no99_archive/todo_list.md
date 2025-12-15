@@ -34,3 +34,9 @@
     - **影響範圍:** 時間區間計算、交易時間顯示
 
 - [ ] 修正所有頁面的 modal & segue
+
+## 待修復問題
+
+- [ ] 修復首頁 Filter 切換 Group By Category 到 Date 的延遲問題
+    - **問題描述:** 使用者回報在 `HomeScreen` 切換顯示分組從 `Category` 變成 `Date` 時有明顯延遲
+    - **待辦內容:** 檢查 `PeriodDataStore` 的資料處理效率，優化重新分組的邏輯
