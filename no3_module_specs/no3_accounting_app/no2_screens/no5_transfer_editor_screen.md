@@ -95,7 +95,7 @@
         - **讀取:** 從本機 DB 讀取該筆轉帳資料填入表單
     - **IF 無 transferId 新增模式:**
         - **預設日期:**
-            - **IF 有導航參數 defaultDate:** 使用 `defaultDate`
+            - **IF 有導航參數 initialDate:** 使用 `initialDate` 之日期，並結合當前時間（時分秒）
             - **ELSE:** 使用裝置目前時間含時分秒
         - **預設帳戶:**
             - **轉出帳戶:** 選取 `sortOrder` 最高的項目
@@ -138,7 +138,7 @@
     - **來源:** HomeScreen
     - **可選參數:**
         - `transferId` 用於編輯模式
-        - `defaultDate` 用於預設日期
+        - `initialDate` 用於預設日期
 - **退出:**
     - **觸發:** 點擊取消按鈕或儲存/刪除成功
     - **導航:** 返回上一頁
