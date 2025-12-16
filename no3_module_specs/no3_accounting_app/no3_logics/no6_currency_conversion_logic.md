@@ -59,10 +59,10 @@
 
 | 轉帳 | 顯示區域 | 顯示金額 | 換算邏輯 |
 | :--- | :--- | :--- | :--- |
-| USD → TWD | 支出 | amountFrom USD | 查找 USD → TWD 換算 |
-| USD → JPY | 支出 | amountFrom USD | 查找 USD → TWD 換算 |
-| TWD → USD | 收入 | amountTo USD | 查找 USD → TWD 換算 |
-| JPY → USD | 收入 | amountTo USD | 查找 USD → TWD 換算 |
+| USD → TWD | 支出 | amountFrom USD | 查找 USD ↔ TWD 換算 |
+| USD → JPY | 支出 | amountFrom USD | 查找 USD ↔ TWD 換算 |
+| TWD → USD | 收入 | amountTo USD | 查找 USD ↔ TWD 換算 |
+| JPY → USD | 收入 | amountTo USD | 查找 USD ↔ TWD 換算 |
 | TWD → JPY | 不顯示 | - | USD 不涉及此轉帳 |
 
 ---
@@ -72,9 +72,9 @@
 | 轉帳 | 顯示區域 | 顯示金額 | 換算邏輯 |
 | :--- | :--- | :--- | :--- |
 | TWD → JPY | 支出 | amountFrom TWD | 直接顯示 |
-| USD → JPY | 支出 | amountFrom USD | 查找 USD → TWD 換算 |
+| USD → JPY | 支出 | amountFrom USD | 查找 USD ↔ TWD 換算 |
 | JPY → TWD | 收入 | amountTo TWD | 直接顯示 |
-| JPY → USD | 收入 | amountTo USD | 查找 USD → TWD 換算 |
+| JPY → USD | 收入 | amountTo USD | 查找 USD ↔ TWD 換算 |
 | TWD → USD | 不顯示 | - | 內部轉帳 |
 | USD → TWD | 不顯示 | - | 內部轉帳 |
 
