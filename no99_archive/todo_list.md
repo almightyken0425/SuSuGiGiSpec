@@ -35,6 +35,15 @@
 
 - [ ] 修正所有頁面的 modal & segue
 
+- [ ] 實作 HomeFilter 帳戶選擇的 Universal Logic
+    - **背景:** 目前在 merge 或 delete 帳戶後，若導致篩選列表為空，系統不做任何自動選取。
+    - **目標:** 定義並實作一個通用的預設選取邏輯（例如：當沒有任何選取時，自動選取排序第一的帳戶，或是顯示特定提示）。
+    - **實作位置:** `SuSuGiGiApp/src/contexts/HomeFilterContext.tsx`
+    - **相關檔案:**
+        - `SuSuGiGiApp/src/contexts/HomeFilterContext.tsx` (核心邏輯)
+        - `SuSuGiGiApp/src/screens/Home/HomeFilterScreen.tsx` (篩選器 UI)
+        - `SuSuGiGiSpec/no3_module_specs/no3_accounting_app/no2_screens/no2_home_screen.md` (規格定義)
+
 ## 待修復問題
 
 - [ ] 修復首頁 Filter 切換 Group By Category 到 Date 的延遲問題

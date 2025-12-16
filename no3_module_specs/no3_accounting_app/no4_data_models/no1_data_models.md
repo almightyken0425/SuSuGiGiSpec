@@ -41,8 +41,7 @@
         
     - `icon`: Number - Foreign Key to IconDefinitions
         
-    - `initialBalanceCents`: BigInt - Not Null, Default 0
-        
+
     - `currencyId`: Number - Foreign Key to Currencies, Not Null
         
     - `standardAccountTypeId`: Number | Null - Foreign Key to StandardAccountTypes, Nullable

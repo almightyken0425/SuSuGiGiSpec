@@ -10,7 +10,7 @@
 | Close       Title       Save   |
 +--------------------------------+
 | Name: [ Input Text ]           |
-| Initial Balance: [ $ Input ]   |
+
 | Currency: [ TWD ] ˅            |
 | Type: [ Standard Type ] ˅      |
 | Icon: [ Icon Preview ] ˅       |
@@ -36,8 +36,7 @@
     - `帳戶名稱輸入框`
         - **UI:** 文字輸入框 TextInput
         - **屬性:** 必填
-    - `初始餘額輸入框`
-        - **UI:** 金額輸入框
+
     - `幣別選擇器`
         - **UI:** Inline 展開式選擇器帶搜尋
         - **收合狀態:** 顯示當前所選幣別與展開指示器 ˅
