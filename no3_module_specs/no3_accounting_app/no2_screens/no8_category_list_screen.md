@@ -95,9 +95,10 @@
 - **付費牆檢查:**
     - **觸發:** 點擊任一新增按鈕
     - **檢查:**
-        - `PremiumLogic.checkPremiumStatus()` 狀態
-        - 本機 DB 自訂類別總數
-    - **IF 免費版 AND 類別數量已達上限:**
+        - `PremiumLogic.checkPremiumAccess()`
+        - `PremiumLogic.checkPremiumAccess()`
+        - 檢查全域限制 帳戶 <= 3 AND 類別 <= 10
+    - **IF 被限制 (Blocked):**
         - **導航:** PaywallScreen
     - **ELSE:**
         - **導航:** CategoryEditorScreen

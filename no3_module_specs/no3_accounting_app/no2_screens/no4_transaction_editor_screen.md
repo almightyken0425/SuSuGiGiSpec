@@ -87,7 +87,7 @@
         - **預設帳戶:** 選取 `sortOrder` 最高的帳戶
 - **定期交易按鈕:**
     - **觸發:** 點擊定期交易按鈕
-    - **權限檢查:** 讀取 `PremiumLogic.checkPremiumStatus()`
+    - **權限檢查:** 呼叫 `PremiumLogic.checkPremiumAccess()` 檢查 Global Usage Limits
     - **IF True:**
         - **導航:** RecurringSettingScreen
     - **IF False:**

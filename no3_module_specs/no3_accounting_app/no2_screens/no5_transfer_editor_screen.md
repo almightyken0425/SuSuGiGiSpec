@@ -104,7 +104,7 @@
                 - **轉入帳戶:** 留空
 - **定期交易按鈕:**
     - **觸發:** 點擊定期轉帳按鈕
-    - **權限檢查:** 讀取 `PremiumLogic.checkPremiumStatus()`
+    - **權限檢查:** 呼叫 `PremiumLogic.checkPremiumAccess()` 檢查 Global Usage Limits
     - **IF True:**
         - **導航:** RecurringSettingScreen
     - **IF False:**

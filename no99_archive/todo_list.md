@@ -93,3 +93,141 @@
 4.  **高亮顯示**: 檢查備註欄位中的關鍵字是否被高亮顯示（粗體或不同顏色）。
 5.  **無搜尋結果**: 輸入隨機字串，驗證顯示「找不到符合 [關鍵字] 的紀錄」訊息。
 6.  **導航**: 點擊搜尋結果，驗證是否開啟正確的編輯頁面。
+
+---
+
+## [Planning] Theme Refactor (2025-12-17)
+
+# 主題架構重構計畫 V4
+
+## 目標描述
+在 app 中目前並沒有「亮/暗模式」的區別，只有「主題 (Theme)」的切換。因此 `src/constants/theme.ts` 中的 `LIGHT_THEME` 常數命名並不準確。此外，直接在 Component 中使用此靜態常數會導致 Bug：當使用者切換主題時（例如從經典紫切換到海洋藍），介面無法即時更新。
+
+本計畫將把 `LIGHT_THEME` 重命名為 `DEFAULT_THEME` 以反映其真實用途，並將相關 Component 更新為使用 `usePreference()` Hook 來取得動態主題。
+
+## `theme.ts` 程式架構分析
+1.  **Palette Primitives (基礎色票)**: 定義 `neutral`, `semantic` 等原始顏色。
+2.  **Contract (ThemeType)**: 定義 `bg`, `text`, `border` 等介面結構。
+3.  **Implementations (主題實作)**: `THEME_1`, `THEME_2` 實際將色票填入結構。
+4.  **Global Tokens (全域設定)**: `TYPOGRAPHY`, `SPACING` 等共用設定。
+
+---
+
+## 頁面元件的使用方式詳解 (Component Usage Pattern)
+
+由於 React Native 的 `StyleSheet.create` 是在檔案載入時執行一次 (Static Evaluation)，若直接在其中使用 `LIGHT_THEME`，樣式就會被「鎖死」。為了支援動態主題切換，我們必須改變樣式的寫法。
+
+### 1. 取得動態主題物件
+首先，在 Component 內部使用 `usePreference` hook 來訂閱主題變更。
+
+```tsx
+import { usePreference } from '../contexts/PreferenceContext';
+
+export default function MyComponent() {
+    const { theme } = usePreference(); // 當主題切換時，Component 會重新渲染
+    // ...
+}
+```
+
+### 2. 處理樣式 (Styles)
+有兩種主要策略：
+
+#### 策略 A: 簡單元件 (Inline Styles)
+對於結構簡單或只有少量顏色變化的元件，直接使用行內樣式 (Inline Styles)。
+
+```tsx
+<Text style={{ color: theme.text.primary, fontSize: 16 }}>
+    標題文字
+</Text>
+```
+
+#### 策略 B: 複雜元件 (Themed StyleSheet Pattern) **[推薦]**
+對於樣式複雜的元件，為了避免在每次 Render 時都重新建立物件造成效能浪費，我們使用 `useMemo` 搭配「樣式產生器函數」。
+
+1. **定義樣式產生器**: 將 `StyleSheet.create` 移入一個函數中，接受 `theme` 作為參數。
+2. **使用 useMemo**: 在 Component 內呼叫此函數，並依賴 `theme` 進行快取。
+
+**重構前 (Static - 有問題):**
+```tsx
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: LIGHT_THEME.bg.base, // 永遠鎖死在舊主題
+    }
+});
+
+function MyComponent() {
+    return <View style={styles.container} />;
+}
+```
+
+**重構後 (Dynamic - 推薦):**
+```tsx
+// 1. 定義樣式產生器 (移出 Component 外)
+const createStyles = (theme: ThemeType) => StyleSheet.create({
+    container: {
+        backgroundColor: theme.bg.base, // 使用傳入的 theme
+    },
+    text: {
+        color: theme.text.primary,
+    }
+});
+
+function MyComponent() {
+    const { theme } = usePreference();
+    
+    // 2. 使用 useMemo 產生當前樣式
+    // 只有當 theme 物件改變時，才會重新計算樣式
+    const styles = React.useMemo(() => createStyles(theme), [theme]);
+
+    return (
+        <View style={styles.container}>
+            <Text style={styles.text}>Hello World</Text>
+        </View>
+    );
+}
+```
+
+---
+
+## 需要使用者審閱
+> [!NOTE]
+> 此重構將涉及修改多個畫面與元件，將靜態引用替換為動態 Hook。
+
+## 預計變更
+
+### 常數 (Constants)
+#### [MODIFY] [theme.ts](file:///c:/Users/ken.chio/OneDrive%20-%20%E5%8B%9D%E5%92%8C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/%E6%96%87%E4%BB%B6/Repository/SuSuGiGiApp/src/constants/theme.ts)
+- 將 `LIGHT_THEME` 重命名為 `DEFAULT_THEME`。
+
+### 受影響檔案清單 (全部列出)
+以下檔案目前引用了 `LIGHT_THEME`，將逐一更新為上述的 **策略 B (Themed StyleSheet Pattern)**。
+
+#### Component (元件)
+- [AccountSelector.tsx](file:///c:/Users/ken.chio/OneDrive%20-%20%E5%8B%9D%E5%92%8C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/%E6%96%87%E4%BB%B6/Repository/SuSuGiGiApp/src/components/AccountSelector.tsx)
+- [CategorySelector.tsx](file:///c:/Users/ken.chio/OneDrive%20-%20%E5%8B%9D%E5%92%8C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/%E6%96%87%E4%BB%B6/Repository/SuSuGiGiApp/src/components/CategorySelector.tsx)
+
+#### Screen (畫面) - 設定與工具
+- [SettingsScreen.tsx](file:///c:/Users/ken.chio/OneDrive%20-%20%E5%8B%9D%E5%92%8C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/%E6%96%87%E4%BB%B6/Repository/SuSuGiGiApp/src/screens/Settings/SettingsScreen.tsx)
+- [ImportScreen.tsx](file:///c:/Users/ken.chio/OneDrive%20-%20%E5%8B%9D%E5%92%8C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/%E6%96%87%E4%BB%B6/Repository/SuSuGiGiApp/src/screens/Settings/ImportScreen.tsx)
+- [PaywallScreen.tsx](file:///c:/Users/ken.chio/OneDrive%20-%20%E5%8B%9D%E5%92%8C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/%E6%96%87%E4%BB%B6/Repository/SuSuGiGiApp/src/screens/Paywall/PaywallScreen.tsx)
+- [LoginScreen.tsx](file:///c:/Users/ken.chio/OneDrive%20-%20%E5%8B%9D%E5%92%8C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/%E6%96%87%E4%BB%B6/Repository/SuSuGiGiApp/src/screens/Auth/LoginScreen.tsx)
+
+#### Screen (畫面) - 編輯器與列表
+- [TransactionEditorScreen.tsx](file:///c:/Users/ken.chio/OneDrive%20-%20%E5%8B%9D%E5%92%8C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/%E6%96%87%E4%BB%B6/Repository/SuSuGiGiApp/src/screens/Transactions/TransactionEditorScreen.tsx)
+- [TransferEditorScreen.tsx](file:///c:/Users/ken.chio/OneDrive%20-%20%E5%8B%9D%E5%92%8C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/%E6%96%87%E4%BB%B6/Repository/SuSuGiGiApp/src/screens/Transactions/TransferEditorScreen.tsx)
+- [RecurringSettingScreen.tsx](file:///c:/Users/ken.chio/OneDrive%20-%20%E5%8B%9D%E5%92%8C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/%E6%96%87%E4%BB%B6/Repository/SuSuGiGiApp/src/screens/Transactions/RecurringSettingScreen.tsx)
+- [MergeEditorScreen.tsx](file:///c:/Users/ken.chio/OneDrive%20-%20%E5%8B%9D%E5%92%8C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/%E6%96%87%E4%BB%B6/Repository/SuSuGiGiApp/src/screens/Merge/MergeEditorScreen.tsx)
+- [CategoryListScreen.tsx](file:///c:/Users/ken.chio/OneDrive%20-%20%E5%8B%9D%E5%92%8C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/%E6%96%87%E4%BB%B6/Repository/SuSuGiGiApp/src/screens/Categories/CategoryListScreen.tsx)
+- [CategoryEditorScreen.tsx](file:///c:/Users/ken.chio/OneDrive%20-%20%E5%8B%9D%E5%92%8C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/%E6%96%87%E4%BB%B6/Repository/SuSuGiGiApp/src/screens/Categories/CategoryEditorScreen.tsx)
+- [AccountListScreen.tsx](file:///c:/Users/ken.chio/OneDrive%20-%20%E5%8B%9D%E5%92%8C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/%E6%96%87%E4%BB%B6/Repository/SuSuGiGiApp/src/screens/Accounts/AccountListScreen.tsx)
+- [AccountEditorScreen.tsx](file:///c:/Users/ken.chio/OneDrive%20-%20%E5%8B%9D%E5%92%8C%E7%A7%91%E6%8A%80%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/%E6%96%87%E4%BB%B6/Repository/SuSuGiGiApp/src/screens/Accounts/AccountEditorScreen.tsx)
+
+## 驗證計畫
+
+### 手動驗證
+1.  **檢查建置**: 確保 App 編譯無誤。
+2.  **主題切換測試**:
+    - 進入「設定」->「偏好設定」。
+    - 將主題切換為「海洋藍 (Ocean Teal)」。
+    - 逐一檢查上述受影響的畫面，確認背景、文字顏色皆正確變換。
+    - **特別驗證**: 確認 Selector Modal 與 Recurring Setting Modal 的顏色也正確更新。
