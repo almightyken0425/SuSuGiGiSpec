@@ -61,7 +61,7 @@ graph TD
     
     FinanceLock --> FinanceAction
     
-    FinanceAction -->|"Approve - Select Channel"| ApproveReq
+    FinanceAction -->|"Approve<br/>(With Selected Channel)"| ApproveReq
 
     RiskAction -->|"Reject"| Decline
     FinanceAction -->|"Reject"| Decline
