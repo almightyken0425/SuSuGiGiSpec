@@ -126,15 +126,17 @@ graph TD
     FinanceActionAuto ==>|"Auto Approve<br/>With Auto Selected Channel"| RequestActionAuto
     
     RequestActionAuto -->|"Success"| FinanceApprovedAuto
-    RequestActionAuto -->|"Fail"| DeclineAuto
+    RequestActionAuto ==>|"Fail"| DeclineAuto
     
     FinanceApprovedAuto -->|"Wait Callback"| CallbackAuto
 
     CallbackAuto -->|"Approve"| SuccessAuto
     
-    CallbackAuto -->|"Reject"| DeclineAuto
+    CallbackAuto ==>|"Reject"| DeclineAuto
 
     RiskActionAuto -->|"Manual Reject"| DeclineAuto
+
+    linkStyle 5,6,7,8,10,13 stroke:#F24F13,stroke-width:4px;
 
     style RiskLockActionBoxAuto fill:#fff,stroke:#333,stroke-dasharray: 5 5
     style FinanceLockActionBoxAuto fill:#fff,stroke:#333,stroke-dasharray: 5 5
