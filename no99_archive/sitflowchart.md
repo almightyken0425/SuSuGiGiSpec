@@ -118,7 +118,7 @@ graph TD
     
     RiskLockAuto --> RiskActionAuto
     
-    RiskActionAuto -->|"Approve"| ApproveAuto
+    RiskActionAuto -->|"Manual Approve"| ApproveAuto
     
     ApproveAuto -->|"Auto"| FinanceLockActionBoxAuto
     FinanceLockActionBoxAuto -->|"Auto"| FinanceLockAuto
@@ -132,9 +132,9 @@ graph TD
 
     CallbackAuto -->|"Approve"| SuccessAuto
     
-    CallbackAuto -->|"Reject / API Fail"| DeclineAuto
+    CallbackAuto -->|"Reject"| DeclineAuto
 
-    RiskActionAuto -->|"Reject"| DeclineAuto
+    RiskActionAuto -->|"Manual Reject"| DeclineAuto
 
     style RiskLockActionBoxAuto fill:#fff,stroke:#333,stroke-dasharray: 5 5
     style FinanceLockActionBoxAuto fill:#fff,stroke:#333,stroke-dasharray: 5 5
