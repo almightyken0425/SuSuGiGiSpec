@@ -47,7 +47,7 @@ graph TD
     Success("Status: Approve<br/>(Success)")
     Callback{"Callback / API Result"}
 
-    Start -->|"Submit"| Pending
+    Start --> Pending
     
     Pending --> RiskLockActionBox
     RiskLockActionBox --> RiskLock
@@ -100,7 +100,7 @@ graph TD
     SuccessAuto("Status: Approve<br/>(Success)")
     CallbackAuto{"Callback / API Result"}
 
-    StartAuto -->|"Submit"| PendingAuto
+    StartAuto --> PendingAuto
     
     PendingAuto --> RiskLockActionBoxAuto
     RiskLockActionBoxAuto --> RiskLockAuto
