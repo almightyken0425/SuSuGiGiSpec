@@ -120,10 +120,10 @@ graph TD
     
     RiskActionAuto -->|"Manual Approve"| ApproveAuto
     
-    ApproveAuto -->|"Auto"| FinanceLockActionBoxAuto
-    FinanceLockActionBoxAuto -->|"Auto"| FinanceLockAuto
-    FinanceLockAuto -->|"Auto"| FinanceActionAuto
-    FinanceActionAuto -->|"Auto Approve<br/>With Auto Selected Channel"| RequestActionAuto
+    ApproveAuto ==>|"Auto"| FinanceLockActionBoxAuto
+    FinanceLockActionBoxAuto ==>|"Auto"| FinanceLockAuto
+    FinanceLockAuto ==>|"Auto"| FinanceActionAuto
+    FinanceActionAuto ==>|"Auto Approve<br/>With Auto Selected Channel"| RequestActionAuto
     
     RequestActionAuto -->|"Success"| FinanceApprovedAuto
     RequestActionAuto -->|"Fail"| DeclineAuto
