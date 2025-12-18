@@ -46,7 +46,7 @@ graph TD
     FinanceApproved("Status: Approved")
     
     Decline("Status: Declined")
-    Success("Status: Approved<br/>(Success)")
+    Success("Update<br>Vendor Tx ID")
     Callback{"Callback / API Result"}
 
     Start -->|"Submit"| Pending
@@ -77,8 +77,6 @@ graph TD
     RiskAction -->|"Reject"| Decline
     FinanceAction -->|"Reject"| Decline
 
-    style Decline fill:#f96,stroke:#333
-    style Success fill:#9f9,stroke:#333
     style RiskLockActionBox fill:#fff,stroke:#333,stroke-dasharray: 5 5
     style FinanceLockActionBox fill:#fff,stroke:#333,stroke-dasharray: 5 5
 ```
