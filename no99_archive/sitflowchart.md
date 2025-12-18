@@ -31,35 +31,35 @@ graph TD
     %% 節點定義
     Start(["玩家發起提款"])
     Pending("Pending")
-    Risk_Lock["Risk 鎖定"]
-    Risk_Action{"Risk 審核"}
+    RiskLock["Risk 鎖定"]
+    RiskAction{"Risk 審核"}
     Checked("Checked (Finance 尚未鎖定)")
-    Finance_Lock["Finance 鎖定"]
-    Finance_Action{"Finance 審核"}
-    Approve_Req("Approve (對三方發起申請)")
+    FinanceLock["Finance 鎖定"]
+    FinanceAction{"Finance 審核"}
+    ApproveReq("Approve (對三方發起申請)")
     Decline(["Decline"])
     Success(["更新 Vendor TX ID"])
     Callback{"三方 Callback / API 結果"}
 
-    subgraph Platform [平台系統]
+    subgraph PlatformSystem ["平台系統"]
         Start --> Pending
-        Pending --> Risk_Lock
-        Risk_Lock --> Risk_Action
+        Pending --> RiskLock
+        RiskLock --> RiskAction
         
-        Risk_Action -- "同意" --> Checked
-        Checked --> Finance_Lock
-        Finance_Lock --> Finance_Action
+        RiskAction -- "同意" --> Checked
+        Checked --> FinanceLock
+        FinanceLock --> FinanceAction
         
-        Finance_Action -- "同意 - 選擇 Channel" --> Approve_Req
+        FinanceAction -- "同意 - 選擇 Channel" --> ApproveReq
 
-        Risk_Action -- "拒絕" --> Decline
-        Finance_Action -- "拒絕" --> Decline
+        RiskAction -- "拒絕" --> Decline
+        FinanceAction -- "拒絕" --> Decline
         
         Success
     end
 
-    subgraph Third_Party [三方金流]
-        Approve_Req --> Callback
+    subgraph ThirdParty ["三方金流"]
+        ApproveReq --> Callback
     end
 
     Callback -- "Approve" --> Success
@@ -79,57 +79,57 @@ graph TD
 ```mermaid
 graph TD
     %% 節點定義
-    Start_A(["玩家發起提款"])
-    Pending_A("Pending")
-    Risk_Lock_A["Risk 鎖定"]
-    Risk_Action_A{"Risk 審核"}
-    Approve_Auto("Approve (系統自動選擇 Channel)")
-    Approve_Req_A("Approve (對三方發起申請)")
-    Decline_A(["Decline"])
-    Success_A(["更新 Vendor TX ID"])
-    Callback_A{"三方 Callback / API 結果"}
+    StartAuto(["玩家發起提款"])
+    PendingAuto("Pending")
+    RiskLockAuto["Risk 鎖定"]
+    RiskActionAuto{"Risk 審核"}
+    ApproveAuto("Approve (系統自動選擇 Channel)")
+    ApproveReqAuto("Approve (對三方發起申請)")
+    DeclineAuto(["Decline"])
+    SuccessAuto(["更新 Vendor TX ID"])
+    CallbackAuto{"三方 Callback / API 結果"}
 
-    subgraph Platform_Auto [平台系統 - 自動模式]
-        Start_A --> Pending_A
-        Pending_A --> Risk_Lock_A
-        Risk_Lock_A --> Risk_Action_A
+    subgraph PlatformAuto ["平台系統 - 自動模式"]
+        StartAuto --> PendingAuto
+        PendingAuto --> RiskLockAuto
+        RiskLockAuto --> RiskActionAuto
         
         %% 高亮自動化路徑
-        Risk_Action_A -- "同意 (自動觸發)" ===> Approve_Auto
-        Approve_Auto ===> Approve_Req_A
+        RiskActionAuto -- "同意 (自動觸發)" ===> ApproveAuto
+        ApproveAuto ===> ApproveReqAuto
 
-        Risk_Action_A -- "拒絕" --> Decline_A
-        Success_A
+        RiskActionAuto -- "拒絕" --> DeclineAuto
+        SuccessAuto
     end
 
-    subgraph Third_Party_A [三方金流]
-        Approve_Req_A --> Callback_A
+    subgraph ThirdPartyAuto ["三方金流"]
+        ApproveReqAuto --> CallbackAuto
     end
 
-    Callback_A -- "Approve" --> Success_A
+    CallbackAuto -- "Approve" --> SuccessAuto
     
     %% 高亮報廢路徑
-    Callback_A -- "Reject / API Fail" --x Decline_A
+    CallbackAuto -- "Reject / API Fail" --x DeclineAuto
 
     %% 樣式與連結美化
     %% linkStyle 索引 (基於連接線出現順序):
-    %% 0: Start_A -> Pending_A
-    %% 1: Pending_A -> Risk_Lock_A
-    %% 2: Risk_Lock_A -> Risk_Action_A
-    %% 3: Risk_Action_A == "同意" ==> Approve_Auto
-    %% 4: Approve_Auto ===> Approve_Req_A
-    %% 5: Risk_Action_A -- "拒絕" --> Decline_A
-    %% 6: Approve_Req_A --> Callback_A
-    %% 7: Callback_A -- "Approve" --> Success_A
-    %% 8: Callback_A -- "Reject" --x Decline_A
+    %% 0: StartAuto -> PendingAuto
+    %% 1: PendingAuto -> RiskLockAuto
+    %% 2: RiskLockAuto -> RiskActionAuto
+    %% 3: RiskActionAuto == "同意" ==> ApproveAuto
+    %% 4: ApproveAuto ===> ApproveReqAuto
+    %% 5: RiskActionAuto -- "拒絕" --> DeclineAuto
+    %% 6: ApproveReqAuto --> CallbackAuto
+    %% 7: CallbackAuto -- "Approve" --> SuccessAuto
+    %% 8: CallbackAuto -- "Reject" --x DeclineAuto
 
     linkStyle 3 stroke:#2196f3,stroke-width:4px;
     linkStyle 4 stroke:#2196f3,stroke-width:4px;
     linkStyle 8 stroke:#f44336,stroke-width:2px;
 
-    style Decline_A fill:#f96,stroke:#333
-    style Success_A fill:#9f9,stroke:#333
-    style Approve_Auto fill:#e3f2fd,stroke:#2196f3
+    style DeclineAuto fill:#f96,stroke:#333
+    style SuccessAuto fill:#9f9,stroke:#333
+    style ApproveAuto fill:#e3f2fd,stroke:#2196f3
 ```
 
 ---
