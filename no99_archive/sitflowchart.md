@@ -101,7 +101,7 @@ graph TD
     ApproveAuto("Status: Checked")
     
     FinanceLockActionBoxAuto["Finance Lock"]
-    FinanceLockAuto("Status: Lock<br/>(Auto Processing)")
+    FinanceLockAuto("Status: Lock")
     
     FinanceActionAuto{"Finance Approve/Reject<br/>(Auto)"}
     RequestActionAuto{"Send Request<br/>to 3rd"}
@@ -118,14 +118,14 @@ graph TD
     
     RiskLockAuto --> RiskActionAuto
     
-    RiskActionAuto -->|"Approve (Auto Trigger)"| ApproveAuto
+    RiskActionAuto -->|"Approve"| ApproveAuto
     
     ApproveAuto --> FinanceLockActionBoxAuto
     FinanceLockActionBoxAuto --> FinanceLockAuto
     
     FinanceLockAuto --> FinanceActionAuto
     
-    FinanceActionAuto -->|"Approve<br/>(Auto Select Channel)"| RequestActionAuto
+    FinanceActionAuto -->|"Approve<br/>With Auto Selected Channel"| RequestActionAuto
     
     RequestActionAuto -->|"Success"| FinanceApprovedAuto
     RequestActionAuto -->|"Fail"| DeclineAuto
