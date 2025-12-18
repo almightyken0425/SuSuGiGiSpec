@@ -73,6 +73,10 @@ graph TD
     Callback -->|"Approve"| Success
     Callback -->|"Reject"| Checked
 
+    %% 補回拒絕路徑
+    RiskAction -->|"Reject"| Decline
+    FinanceAction -->|"Reject"| Decline
+
     style Decline fill:#f96,stroke:#333
     style Success fill:#9f9,stroke:#333
     style RiskLockActionBox fill:#fff,stroke:#333,stroke-dasharray: 5 5
@@ -133,6 +137,9 @@ graph TD
     %% 高亮報廢路徑
     CallbackAuto --x|"Reject / API Fail"| DeclineAuto
 
+    %% 補回 Risk 拒絕路徑 (若遺失)
+    RiskActionAuto -->|"Reject"| DeclineAuto
+
     %% 樣式與連結美化
     %% linkStyle 索引 (基於連接線出現順序):
     %% 0: StartAuto -> PendingAuto
@@ -148,6 +155,7 @@ graph TD
     %% 10: FinanceApprovedAuto --> CallbackAuto
     %% 11: CallbackAuto --> SuccessAuto
     %% 12: CallbackAuto --x DeclineAuto
+    %% 13: RiskActionAuto --> DeclineAuto (New)
 
     linkStyle 4 stroke:#2196f3,stroke-width:4px;
     linkStyle 7 stroke:#2196f3,stroke-width:4px;
