@@ -58,12 +58,12 @@ graph TD
     
     RiskAction -->|"Approve"| Checked
     
-    Checked --> FinanceLockActionBox
-    FinanceLockActionBox --> FinanceLock
+    Checked ==> FinanceLockActionBox
+    FinanceLockActionBox ==> FinanceLock
     
-    FinanceLock --> FinanceAction
+    FinanceLock ==> FinanceAction
     
-    FinanceAction -->|"Approve<br/>With Selected Channel"| RequestAction
+    FinanceAction ==>|"Approve<br/>With Selected Channel"| RequestAction
     
     RequestAction -->|"Success"| FinanceApproved
     RequestAction -->|"Fail"| Checked
@@ -73,9 +73,10 @@ graph TD
     Callback -->|"Approve"| Success
     Callback -->|"Reject"| Checked
 
-    %% 補回拒絕路徑
     RiskAction -->|"Reject"| Decline
     FinanceAction -->|"Reject"| Decline
+
+    linkStyle 5,6,7,8,10,13 stroke:#F24F13,stroke-width:4px;
 
     style RiskLockActionBox fill:#fff,stroke:#333,stroke-dasharray: 5 5
     style FinanceLockActionBox fill:#fff,stroke:#333,stroke-dasharray: 5 5
