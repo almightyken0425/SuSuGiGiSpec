@@ -59,7 +59,7 @@ graph TD
     Checked --> FinanceLockActionBox
     FinanceLockActionBox --> FinanceLock
     
-    FinanceLock -->|"Review"| FinanceAction
+    FinanceLock --> FinanceAction
     
     FinanceAction -->|"Approve - Select Channel"| ApproveReq
 
