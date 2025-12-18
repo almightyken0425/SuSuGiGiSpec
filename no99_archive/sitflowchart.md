@@ -46,14 +46,14 @@ graph TD
         Pending --> RiskLock
         RiskLock --> RiskAction
         
-        RiskAction -- "同意" --> Checked
+        RiskAction -->|"同意"| Checked
         Checked --> FinanceLock
         FinanceLock --> FinanceAction
         
-        FinanceAction -- "同意 - 選擇 Channel" --> ApproveReq
+        FinanceAction -->|"同意 - 選擇 Channel"| ApproveReq
 
-        RiskAction -- "拒絕" --> Decline
-        FinanceAction -- "拒絕" --> Decline
+        RiskAction -->|"拒絕"| Decline
+        FinanceAction -->|"拒絕"| Decline
         
         Success
     end
@@ -62,8 +62,8 @@ graph TD
         ApproveReq --> Callback
     end
 
-    Callback -- "Approve" --> Success
-    Callback -- "Reject" --> Checked
+    Callback -->|"Approve"| Success
+    Callback -->|"Reject"| Checked
 
     style Decline fill:#f96,stroke:#333
     style Success fill:#9f9,stroke:#333
@@ -95,10 +95,10 @@ graph TD
         RiskLockAuto --> RiskActionAuto
         
         %% 高亮自動化路徑
-        RiskActionAuto -- "同意 (自動觸發)" ===> ApproveAuto
+        RiskActionAuto ==>|"同意 (自動觸發)"| ApproveAuto
         ApproveAuto ===> ApproveReqAuto
 
-        RiskActionAuto -- "拒絕" --> DeclineAuto
+        RiskActionAuto -->|"拒絕"| DeclineAuto
         SuccessAuto
     end
 
@@ -106,22 +106,22 @@ graph TD
         ApproveReqAuto --> CallbackAuto
     end
 
-    CallbackAuto -- "Approve" --> SuccessAuto
+    CallbackAuto -->|"Approve"| SuccessAuto
     
     %% 高亮報廢路徑
-    CallbackAuto -- "Reject / API Fail" --x DeclineAuto
+    CallbackAuto --x|"Reject / API Fail"| DeclineAuto
 
     %% 樣式與連結美化
     %% linkStyle 索引 (基於連接線出現順序):
     %% 0: StartAuto -> PendingAuto
     %% 1: PendingAuto -> RiskLockAuto
     %% 2: RiskLockAuto -> RiskActionAuto
-    %% 3: RiskActionAuto == "同意" ==> ApproveAuto
+    %% 3: RiskActionAuto ==> ApproveAuto
     %% 4: ApproveAuto ===> ApproveReqAuto
-    %% 5: RiskActionAuto -- "拒絕" --> DeclineAuto
+    %% 5: RiskActionAuto --> DeclineAuto
     %% 6: ApproveReqAuto --> CallbackAuto
-    %% 7: CallbackAuto -- "Approve" --> SuccessAuto
-    %% 8: CallbackAuto -- "Reject" --x DeclineAuto
+    %% 7: CallbackAuto --> SuccessAuto
+    %% 8: CallbackAuto --x DeclineAuto
 
     linkStyle 3 stroke:#2196f3,stroke-width:4px;
     linkStyle 4 stroke:#2196f3,stroke-width:4px;
