@@ -16,8 +16,8 @@
     - `Pending`: 玩家發起提款後的初始狀態。
     - `Lock`: 提款單進入審核鎖定狀態。
     - `Checked`: Risk 團隊審核同意後的狀態。
-    - `Approve`: Finance 團隊審核同意，並已向三方發起提款申請或執行手動出款後的最終核准狀態。
-    - `Decline`: 任何階段拒絕或三方系統異常後的最終拒絕狀態。
+    - `Approved`: Finance 團隊審核同意，並已向三方發起提款申請或執行手動出款後的最終核准狀態。
+    - `Declined`: 任何階段拒絕或三方系統異常後的最終拒絕狀態。
 
 ---
 
@@ -33,21 +33,21 @@ graph TD
     Pending("Status: Pending")
     
     RiskLockActionBox["Risk Lock"]
-    RiskLock("Status: Locked")
+    RiskLock("Status: Lock<br/>(Risk Review)")
     
     RiskAction{"Risk Approve/Reject"}
     Checked("Status: Checked")
     
     FinanceLockActionBox["Finance Lock"]
-    FinanceLock("Status: Locked")
+    FinanceLock("Status: Lock<br/>(Finance Review)")
     
     FinanceAction{"Finance Approve/Reject"}
-    ApproveReq("Status: Approve<br/>(Requesting 3rd Party)")
-    Decline("Status: Decline")
-    Success("Status: Approve<br/>(Success)")
+    ApproveReq("Status: Requesting<br/>(3rd Party)")
+    Decline("Status: Declined")
+    Success("Status: Approved<br/>(Success)")
     Callback{"Callback / API Result"}
 
-    Start --> Pending
+    Start -->|"Submit"| Pending
     
     Pending --> RiskLockActionBox
     RiskLockActionBox --> RiskLock
@@ -61,7 +61,7 @@ graph TD
     
     FinanceLock --> FinanceAction
     
-    FinanceAction -->|"Approve<br/>(With Selected Channel)"| ApproveReq
+    FinanceAction -->|"Approve<br/>With Selected Channel"| ApproveReq
 
     RiskAction -->|"Reject"| Decline
     FinanceAction -->|"Reject"| Decline
@@ -69,7 +69,7 @@ graph TD
     ApproveReq -->|"Wait Response"| Callback
 
     Callback -->|"Approve"| Success
-    Callback -->|"Reject"| Checked
+    Callback -->|"Reject"| FinanceLockActionBox
 
     style Decline fill:#f96,stroke:#333
     style Success fill:#9f9,stroke:#333
@@ -91,16 +91,20 @@ graph TD
     PendingAuto("Status: Pending")
     
     RiskLockActionBoxAuto["Risk Lock"]
-    RiskLockAuto("Status: Locked")
+    RiskLockAuto("Status: Lock<br/>(Risk Review)")
     
     RiskActionAuto{"Risk Approve/Reject"}
-    ApproveAuto("Status: Checked")
-    ApproveReqAuto("Status: Approve<br/>(Requesting 3rd Party)")
-    DeclineAuto("Status: Decline")
-    SuccessAuto("Status: Approve<br/>(Success)")
+    ApproveAuto("Status: Checked<br/>(Auto Select Channel)")
+    
+    FinanceLockActionBoxAuto["Finance Lock"]
+    FinanceLockAuto("Status: Lock<br/>(Auto Processing)")
+
+    ApproveReqAuto("Status: Requesting<br/>(3rd Party)")
+    DeclineAuto("Status: Declined")
+    SuccessAuto("Status: Approved<br/>(Success)")
     CallbackAuto{"Callback / API Result"}
 
-    StartAuto --> PendingAuto
+    StartAuto -->|"Submit"| PendingAuto
     
     PendingAuto --> RiskLockActionBoxAuto
     RiskLockActionBoxAuto --> RiskLockAuto
@@ -109,7 +113,11 @@ graph TD
     
     %% 高亮自動化路徑
     RiskActionAuto ==>|"Approve (Auto Trigger)"| ApproveAuto
-    ApproveAuto ===>|"Auto Request"| ApproveReqAuto
+    
+    ApproveAuto --> FinanceLockActionBoxAuto
+    FinanceLockActionBoxAuto --> FinanceLockAuto
+    
+    FinanceLockAuto ===>|"Auto Request"| ApproveReqAuto
 
     RiskActionAuto -->|"Reject"| DeclineAuto
     
@@ -118,7 +126,7 @@ graph TD
     CallbackAuto -->|"Approve"| SuccessAuto
     
     %% 高亮報廢路徑
-    CallbackAuto --x|"Reject / API Fail"| DeclineAuto
+    CallbackAuto --x|"Reject / API Fail"| FinanceLockActionBoxAuto
 
     %% 樣式與連結美化
     %% linkStyle 索引 (基於連接線出現順序):
@@ -127,20 +135,23 @@ graph TD
     %% 2: RiskLockActionBoxAuto -> RiskLockAuto
     %% 3: RiskLockAuto -> RiskActionAuto
     %% 4: RiskActionAuto ==> ApproveAuto
-    %% 5: ApproveAuto ===> ApproveReqAuto
-    %% 6: RiskActionAuto --> DeclineAuto
-    %% 7: ApproveReqAuto --> CallbackAuto
-    %% 8: CallbackAuto --> SuccessAuto
-    %% 9: CallbackAuto --x DeclineAuto
+    %% 5: ApproveAuto --> FinanceLockActionBoxAuto
+    %% 6: FinanceLockActionBoxAuto --> FinanceLockAuto
+    %% 7: FinanceLockAuto ===> ApproveReqAuto
+    %% 8: RiskActionAuto --> DeclineAuto
+    %% 9: ApproveReqAuto --> CallbackAuto
+    %% 10: CallbackAuto --> SuccessAuto
+    %% 11: CallbackAuto --x FinanceLockActionBoxAuto
 
     linkStyle 4 stroke:#2196f3,stroke-width:4px;
-    linkStyle 5 stroke:#2196f3,stroke-width:4px;
-    linkStyle 9 stroke:#f44336,stroke-width:2px;
+    linkStyle 7 stroke:#2196f3,stroke-width:4px;
+    linkStyle 11 stroke:#f44336,stroke-width:2px;
 
     style DeclineAuto fill:#f96,stroke:#333
     style SuccessAuto fill:#9f9,stroke:#333
     style ApproveAuto fill:#e3f2fd,stroke:#2196f3
     style RiskLockActionBoxAuto fill:#fff,stroke:#333,stroke-dasharray: 5 5
+    style FinanceLockActionBoxAuto fill:#fff,stroke:#333,stroke-dasharray: 5 5
 ```
 
 ---
@@ -149,10 +160,14 @@ graph TD
 
 - **手動審核 (OFF):**
     - Finance 點擊同意時，必須跳出彈窗選擇 `Payment Channel`。
-    - **IF** 三方 Reject: 流程連回 `Checked`，由財務重新鎖定並選擇其他通道。
+    - **IF** 三方 Reject: 流程連回 `Locked (Finance)`，由財務重新提交。
 - **自動審核 (ON):**
     - Risk 同意後，系統背景自動執行 Finance 鎖定與同意，完全跳過人工 Finance UI。
-    - **IF** 三方 Reject/API Fail: 狀態**直接轉為 `Decline`**，視為該筆訂單終止，不再退回人工處理。
+    - **IF** 三方 Reject/API Fail: 狀態**回到 `Locked (Finance)`**，若為自動模式可能觸發重試或需人工介入。
+
+---
+
+**文件結束**
 
 ---
 
