@@ -94,8 +94,8 @@ graph TD
     %% 14: RiskAction --> Decline
     %% 15: FinanceAction --> Decline
 
-    linkStyle 5,6,7,8 stroke:#F24F13,stroke-width:4px;
-    linkStyle 10,13 stroke:#20308c,stroke-width:4px;
+    linkStyle 5,6,7,8 stroke:#20308c,stroke-width:4px;
+    linkStyle 10,13 stroke:#F24F13,stroke-width:4px;
 
     style RiskLockActionBox fill:#fff,stroke:#333,stroke-dasharray: 5 5
     style FinanceLockActionBox fill:#fff,stroke:#333,stroke-dasharray: 5 5
@@ -173,8 +173,8 @@ graph TD
     %% 13: CallbackAuto ==> DeclineAuto (Reject)
     %% 14: RiskActionAuto --> DeclineAuto
 
-    linkStyle 5,6,7,8 stroke:#F24F13,stroke-width:4px;
-    linkStyle 10,13 stroke:#20308c,stroke-width:4px;
+    linkStyle 5,6,7,8 stroke:#20308c,stroke-width:4px;
+    linkStyle 10,13 stroke:#F24F13,stroke-width:4px;
 
     style RiskLockActionBoxAuto fill:#fff,stroke:#333,stroke-dasharray: 5 5
     style FinanceLockActionBoxAuto fill:#fff,stroke:#333,stroke-dasharray: 5 5
