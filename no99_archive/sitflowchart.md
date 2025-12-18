@@ -33,13 +33,13 @@ graph TD
     Pending("Status: Pending")
     
     RiskLockActionBox["Risk Lock"]
-    RiskLock("Status: Locked<br/>(Risk Review)")
+    RiskLock("Status: Locked")
     
     RiskAction{"Risk Approve/Reject"}
     Checked("Status: Checked")
     
     FinanceLockActionBox["Finance Lock"]
-    FinanceLock("Status: Locked<br/>(Finance Review)")
+    FinanceLock("Status: Locked")
     
     FinanceAction{"Finance Approve/Reject"}
     ApproveReq("Status: Approve<br/>(Requesting 3rd Party)")
@@ -91,10 +91,10 @@ graph TD
     PendingAuto("Status: Pending")
     
     RiskLockActionBoxAuto["Risk Lock"]
-    RiskLockAuto("Status: Locked<br/>(Risk Review)")
+    RiskLockAuto("Status: Locked")
     
     RiskActionAuto{"Risk Approve/Reject"}
-    ApproveAuto("Status: Checked<br/>(Auto Select Channel)")
+    ApproveAuto("Status: Checked")
     ApproveReqAuto("Status: Approve<br/>(Requesting 3rd Party)")
     DeclineAuto("Status: Decline")
     SuccessAuto("Status: Approve<br/>(Success)")
