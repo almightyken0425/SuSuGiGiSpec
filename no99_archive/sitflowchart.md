@@ -1,4 +1,4 @@
-# 提款審核流程規格：手動與自動財務審核對照
+# 提款審核流程規格：全域流程圖 (手動/自動對照)
 
 ---
 
@@ -21,69 +21,58 @@
 
 ---
 
-## 手動財務審核流程 (OFF)
-
-- **行為描述:** 需要 Risk 與 Finance 分別執行 鎖定與同意。
-- **流程圖:**
+## 全域流程圖
 
 ```mermaid
 graph TD
-    %% 定義節點
+    %% 初始步驟
     Start([玩家發起提款]) --> Pending(Pending)
-    
     Pending --> Risk_Lock[Risk 鎖定]
     Risk_Lock --> Risk_Action{Risk 審核}
-    Risk_Action -- 拒絕 --> Decline1([Decline])
-    Risk_Action -- 同意 --> Checked(Checked)
     
+    %% Risk 拒絕
+    Risk_Action -- 拒絕 --> Decline_Final([Decline])
+    
+    %% Risk 同意後檢查
+    Risk_Action -- 同意 --> Check_Auto{是否開啟<br/>Auto Approve?}
+    
+    %% 分支 1: 手動財務審核
+    Check_Auto -- OFF --> Checked(Checked)
     Checked --> Finance_Lock[Finance 鎖定]
     Finance_Lock --> Finance_Action{Finance 審核}
-    Finance_Action -- 拒絕 --> Decline2([Decline])
-    Finance_Action -- 同意 - 選擇 Channel --> ApproveMan(Approve <br/>並對三方發起申請)
+    Finance_Action -- 拒絕 --> Decline_Final
+    Finance_Action -- 同意 - 選擇 Channel --> Approve_Request(Approve <br/>並對三方發起申請)
     
-    ApproveMan --> Callback{三方 Callback}
+    %% 分支 2: 自動財務審核
+    Check_Auto -- ON --> Approve_Auto_Flow(Approve <br/>系統自動選擇 Channel)
+    Approve_Auto_Flow --> Approve_Request
+    
+    %% 三方處理與回報
+    Approve_Request --> Callback{三方 Callback / API 結果}
     Callback -- Approve --> Success([更新 Vendor TX ID])
-    Callback -- Reject --> Checked
+    
+    %% 異常處理分支
+    Callback -- Reject / API Fail --> Fail_Branch{模式判定}
+    Fail_Branch -- 手動模式 --> Checked
+    Fail_Branch -- 自動模式 --> Decline_Final
 
     %% 樣式美化
-    style Decline1 fill:#f96,stroke:#333
-    style Decline2 fill:#f96,stroke:#333
+    style Decline_Final fill:#f96,stroke:#333
     style Success fill:#9f9,stroke:#333
+    style Check_Auto fill:#fff9c4,stroke:#333
+    style Fail_Branch fill:#fff9c4,stroke:#333
 ```
-
-- **核心細節:**
-    - Finance 點擊同意時，必須跳出彈窗選擇 `Payment Channel`。
-    - 若三方 Callback 回傳 `Reject`，則狀態退回至 `Checked` 供財務人員手動再次鎖定/重選通道。
 
 ---
 
-## 自動財務審核流程 (ON)
+## 核心行為細節
 
-- **行為描述:** Risk 同意後，系統自動以預設 `Payment Channel` 執行 Finance 同意邏輯。
-- **流程圖:**
-
-```mermaid
-graph TD
-    %% 定義節點
-    Start_Auto([玩家發起提款]) --> Pending_Auto(Pending)
-    
-    Pending_Auto --> Risk_Lock_Auto[Risk 鎖定]
-    Risk_Lock_Auto --> Risk_Action_Auto{Risk 審核}
-    Risk_Action_Auto -- 拒絕 --> Decline_Auto([Decline])
-    Risk_Action_Auto -- 同意 - 自動選擇 Channel --> ApproveAuto(Approve <br/>並對三方發起申請)
-    
-    ApproveAuto --> Callback_Auto{三方 Callback / API 結果}
-    Callback_Auto -- Approve --> Success_Auto([更新 Vendor TX ID])
-    Callback_Auto -- Reject / API Fail --> Decline_Auto
-
-    %% 樣式美化
-    style Decline_Auto fill:#f96,stroke:#333
-    style Success_Auto fill:#9f9,stroke:#333
-```
-
-- **核心細節:**
+- **手動審核流程細節:**
+    - Finance 點擊同意時，必須跳出彈窗選擇 `Payment Channel`。
+    - 若三方 Callback 回傳 `Reject`，則狀態退回至 `Checked` 供財務人員手動再次鎖定/重選通道。
+- **自動審核流程細節:**
     - 系統應提供「預設自動提款通道」設定。
-    - Risk 同意後，不需 Finance 干預，系統背景自動執行 Finance 鎖定並同意。
+    - Risk 同意後，系統背景自動執行 Finance 鎖定並同意，不需人工操作。
     - **IF** 三方 API 建立提款單失敗 **OR** 回傳 `Reject`:
         - 狀態直接轉為 `Decline`。
         - **行為:** 為了與 T1 包網平台的簡便流程對齊，自動模式下若發生錯誤不退回人工處理。
