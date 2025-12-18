@@ -29,13 +29,13 @@
 ```mermaid
 graph TD
     %% 節點定義
-    Start(["Player Request Withdrawal"])
+    Start(["Player Submit Withdrawal"])
     Pending("Pending")
     RiskLock["Risk Lock"]
-    RiskAction{"Risk Check"}
+    RiskAction{"Risk Approve/Reject"}
     Checked("Checked (Finance Unlocked)")
     FinanceLock["Finance Lock"]
-    FinanceAction{"Finance Check"}
+    FinanceAction{"Finance Approve/Reject"}
     ApproveReq("Approve (Request 3rd Party)")
     Decline(["Decline"])
     Success(["Update Vendor TX ID"])
@@ -76,7 +76,7 @@ graph TD
     StartAuto(["Player Request Withdrawal"])
     PendingAuto("Pending")
     RiskLockAuto["Risk Lock"]
-    RiskActionAuto{"Risk Check"}
+    RiskActionAuto{"Risk Approve/Reject"}
     ApproveAuto("Approve (Auto Select Channel)")
     ApproveReqAuto("Approve (Request 3rd Party)")
     DeclineAuto(["Decline"])
