@@ -29,30 +29,30 @@
 ```mermaid
 graph TD
     %% 節點定義
-    Start(["玩家發起提款"])
+    Start(["Player Request Withdrawal"])
     Pending("Pending")
-    RiskLock["Risk 鎖定"]
-    RiskAction{"Risk 審核"}
-    Checked("Checked (Finance 尚未鎖定)")
-    FinanceLock["Finance 鎖定"]
-    FinanceAction{"Finance 審核"}
-    ApproveReq("Approve (對三方發起申請)")
+    RiskLock["Risk Lock"]
+    RiskAction{"Risk Check"}
+    Checked("Checked (Finance Unlocked)")
+    FinanceLock["Finance Lock"]
+    FinanceAction{"Finance Check"}
+    ApproveReq("Approve (Request 3rd Party)")
     Decline(["Decline"])
-    Success(["更新 Vendor TX ID"])
-    Callback{"三方 Callback / API 結果"}
+    Success(["Update Vendor TX ID"])
+    Callback{"Callback / API Result"}
 
     Start --> Pending
     Pending --> RiskLock
     RiskLock --> RiskAction
     
-    RiskAction -->|"同意"| Checked
+    RiskAction -->|"Approve"| Checked
     Checked --> FinanceLock
     FinanceLock --> FinanceAction
     
-    FinanceAction -->|"同意 - 選擇 Channel"| ApproveReq
+    FinanceAction -->|"Approve - Select Channel"| ApproveReq
 
-    RiskAction -->|"拒絕"| Decline
-    FinanceAction -->|"拒絕"| Decline
+    RiskAction -->|"Reject"| Decline
+    FinanceAction -->|"Reject"| Decline
     
     ApproveReq --> Callback
 
@@ -73,25 +73,25 @@ graph TD
 ```mermaid
 graph TD
     %% 節點定義
-    StartAuto(["玩家發起提款"])
+    StartAuto(["Player Request Withdrawal"])
     PendingAuto("Pending")
-    RiskLockAuto["Risk 鎖定"]
-    RiskActionAuto{"Risk 審核"}
-    ApproveAuto("Approve (系統自動選擇 Channel)")
-    ApproveReqAuto("Approve (對三方發起申請)")
+    RiskLockAuto["Risk Lock"]
+    RiskActionAuto{"Risk Check"}
+    ApproveAuto("Approve (Auto Select Channel)")
+    ApproveReqAuto("Approve (Request 3rd Party)")
     DeclineAuto(["Decline"])
-    SuccessAuto(["更新 Vendor TX ID"])
-    CallbackAuto{"三方 Callback / API 結果"}
+    SuccessAuto(["Update Vendor TX ID"])
+    CallbackAuto{"Callback / API Result"}
 
     StartAuto --> PendingAuto
     PendingAuto --> RiskLockAuto
     RiskLockAuto --> RiskActionAuto
     
     %% 高亮自動化路徑
-    RiskActionAuto ==>|"同意 (自動觸發)"| ApproveAuto
+    RiskActionAuto ==>|"Approve (Auto Trigger)"| ApproveAuto
     ApproveAuto ===> ApproveReqAuto
 
-    RiskActionAuto -->|"拒絕"| DeclineAuto
+    RiskActionAuto -->|"Reject"| DeclineAuto
     
     ApproveReqAuto --> CallbackAuto
 
