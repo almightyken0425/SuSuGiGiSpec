@@ -76,7 +76,8 @@ graph TD
     RiskAction -->|"Reject"| Decline
     FinanceAction -->|"Reject"| Decline
 
-    linkStyle 5,6,7,8,10,13 stroke:#F24F13,stroke-width:4px;
+    linkStyle 5,6,7,8 stroke:#F24F13,stroke-width:4px;
+    linkStyle 10,13 stroke:#f44336,stroke-width:4px;
 
     style RiskLockActionBox fill:#fff,stroke:#333,stroke-dasharray: 5 5
     style FinanceLockActionBox fill:#fff,stroke:#333,stroke-dasharray: 5 5
@@ -137,7 +138,8 @@ graph TD
 
     RiskActionAuto -->|"Manual Reject"| DeclineAuto
 
-    linkStyle 5,6,7,8,10,13 stroke:#F24F13,stroke-width:4px;
+    linkStyle 5,6,7,8 stroke:#F24F13,stroke-width:4px;
+    linkStyle 10,13 stroke:#f44336,stroke-width:4px;
 
     style RiskLockActionBoxAuto fill:#fff,stroke:#333,stroke-dasharray: 5 5
     style FinanceLockActionBoxAuto fill:#fff,stroke:#333,stroke-dasharray: 5 5
