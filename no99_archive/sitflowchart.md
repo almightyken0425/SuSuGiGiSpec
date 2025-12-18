@@ -31,10 +31,16 @@ graph TD
     %% 節點定義
     Start(["Player Submit Withdrawal"])
     Pending("Status: Pending")
+    
+    RiskLockActionBox["Risk Lock"]
     RiskLock("Status: Locked<br/>(Risk Review)")
+    
     RiskAction{"Risk Approve/Reject"}
     Checked("Status: Checked")
+    
+    FinanceLockActionBox["Finance Lock"]
     FinanceLock("Status: Locked<br/>(Finance Review)")
+    
     FinanceAction{"Finance Approve/Reject"}
     ApproveReq("Status: Approve<br/>(Requesting 3rd Party)")
     Decline("Status: Decline")
@@ -42,11 +48,17 @@ graph TD
     Callback{"Callback / API Result"}
 
     Start -->|"Submit"| Pending
-    Pending -->|"Lock"| RiskLock
+    
+    Pending --> RiskLockActionBox
+    RiskLockActionBox --> RiskLock
+    
     RiskLock -->|"Review"| RiskAction
     
     RiskAction -->|"Approve"| Checked
-    Checked -->|"Lock"| FinanceLock
+    
+    Checked --> FinanceLockActionBox
+    FinanceLockActionBox --> FinanceLock
+    
     FinanceLock -->|"Review"| FinanceAction
     
     FinanceAction -->|"Approve - Select Channel"| ApproveReq
@@ -61,6 +73,8 @@ graph TD
 
     style Decline fill:#f96,stroke:#333
     style Success fill:#9f9,stroke:#333
+    style RiskLockActionBox fill:#fff,stroke:#333,stroke-dasharray: 5 5
+    style FinanceLockActionBox fill:#fff,stroke:#333,stroke-dasharray: 5 5
 ```
 
 ---
@@ -75,7 +89,10 @@ graph TD
     %% 節點定義
     StartAuto(["Player Submit Withdrawal"])
     PendingAuto("Status: Pending")
+    
+    RiskLockActionBoxAuto["Risk Lock"]
     RiskLockAuto("Status: Locked<br/>(Risk Review)")
+    
     RiskActionAuto{"Risk Approve/Reject"}
     ApproveAuto("Status: Checked<br/>(Auto Select Channel)")
     ApproveReqAuto("Status: Approve<br/>(Requesting 3rd Party)")
@@ -84,7 +101,10 @@ graph TD
     CallbackAuto{"Callback / API Result"}
 
     StartAuto -->|"Submit"| PendingAuto
-    PendingAuto -->|"Lock"| RiskLockAuto
+    
+    PendingAuto --> RiskLockActionBoxAuto
+    RiskLockActionBoxAuto --> RiskLockAuto
+    
     RiskLockAuto -->|"Review"| RiskActionAuto
     
     %% 高亮自動化路徑
@@ -103,22 +123,24 @@ graph TD
     %% 樣式與連結美化
     %% linkStyle 索引 (基於連接線出現順序):
     %% 0: StartAuto -> PendingAuto
-    %% 1: PendingAuto -> RiskLockAuto
-    %% 2: RiskLockAuto -> RiskActionAuto
-    %% 3: RiskActionAuto ==> ApproveAuto
-    %% 4: ApproveAuto ===> ApproveReqAuto
-    %% 5: RiskActionAuto --> DeclineAuto
-    %% 6: ApproveReqAuto --> CallbackAuto
-    %% 7: CallbackAuto --> SuccessAuto
-    %% 8: CallbackAuto --x DeclineAuto
+    %% 1: PendingAuto -> RiskLockActionBoxAuto
+    %% 2: RiskLockActionBoxAuto -> RiskLockAuto
+    %% 3: RiskLockAuto -> RiskActionAuto
+    %% 4: RiskActionAuto ==> ApproveAuto
+    %% 5: ApproveAuto ===> ApproveReqAuto
+    %% 6: RiskActionAuto --> DeclineAuto
+    %% 7: ApproveReqAuto --> CallbackAuto
+    %% 8: CallbackAuto --> SuccessAuto
+    %% 9: CallbackAuto --x DeclineAuto
 
-    linkStyle 3 stroke:#2196f3,stroke-width:4px;
     linkStyle 4 stroke:#2196f3,stroke-width:4px;
-    linkStyle 8 stroke:#f44336,stroke-width:2px;
+    linkStyle 5 stroke:#2196f3,stroke-width:4px;
+    linkStyle 9 stroke:#f44336,stroke-width:2px;
 
     style DeclineAuto fill:#f96,stroke:#333
     style SuccessAuto fill:#9f9,stroke:#333
     style ApproveAuto fill:#e3f2fd,stroke:#2196f3
+    style RiskLockActionBoxAuto fill:#fff,stroke:#333,stroke-dasharray: 5 5
 ```
 
 ---
