@@ -52,7 +52,7 @@ graph TD
     Pending --> RiskLockActionBox
     RiskLockActionBox --> RiskLock
     
-    RiskLock -->|"Review"| RiskAction
+    RiskLock --> RiskAction
     
     RiskAction -->|"Approve"| Checked
     
@@ -105,7 +105,7 @@ graph TD
     PendingAuto --> RiskLockActionBoxAuto
     RiskLockActionBoxAuto --> RiskLockAuto
     
-    RiskLockAuto -->|"Review"| RiskActionAuto
+    RiskLockAuto --> RiskActionAuto
     
     %% 高亮自動化路徑
     RiskActionAuto ==>|"Approve (Auto Trigger)"| ApproveAuto
