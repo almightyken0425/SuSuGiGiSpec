@@ -25,42 +25,62 @@
 
 ```mermaid
 graph TD
-    %% 初始步驟
-    Start([玩家發起提款]) --> Pending(Pending)
-    Pending --> Risk_Lock[Risk 鎖定]
-    Risk_Lock --> Risk_Action{Risk 審核}
-    
-    %% Risk 拒絕
-    Risk_Action -- 拒絕 --> Decline_Final([Decline])
-    
-    %% Risk 同意後檢查
-    Risk_Action -- 同意 --> Check_Auto{是否開啟<br/>Auto Approve?}
-    
-    %% 分支 1: 手動財務審核
-    Check_Auto -- OFF --> Checked(Checked)
-    Checked --> Finance_Lock[Finance 鎖定]
-    Finance_Lock --> Finance_Action{Finance 審核}
-    Finance_Action -- 拒絕 --> Decline_Final
-    Finance_Action -- 同意 - 選擇 Channel --> Approve_Request(Approve <br/>並對三方發起申請)
-    
-    %% 分支 2: 自動財務審核
-    Check_Auto -- ON --> Approve_Auto_Flow(Approve <br/>系統自動選擇 Channel)
-    Approve_Auto_Flow --> Approve_Request
-    
-    %% 三方處理與回報
-    Approve_Request --> Callback{三方 Callback / API 結果}
-    Callback -- Approve --> Success([更新 Vendor TX ID])
-    
-    %% 異常處理分支
-    Callback -- Reject / API Fail --> Fail_Branch{模式判定}
-    Fail_Branch -- 手動模式 --> Checked
-    Fail_Branch -- 自動模式 --> Decline_Final
+    subgraph Platform_System [平台系統行為]
+        %% 初始步驟
+        Start([玩家發起提款]) --> Pending(Pending)
+        Pending --> Risk_Lock[Risk 鎖定]
+        Risk_Action{Risk 審核}
+        Risk_Lock --> Risk_Action
+        
+        %% Risk 同意後檢查
+        Check_Auto{是否開啟<br/>Auto Approve?}
+        Risk_Action -- 同意 --> Check_Auto
+        
+        %% 分支 1: 手動財務審核
+        Checked(Checked)
+        Check_Auto -- OFF --> Checked
+        Finance_Lock[Finance 鎖定]
+        Checked --> Finance_Lock
+        Finance_Action{Finance 審核}
+        Finance_Lock --> Finance_Action
+        
+        %% 分支 2: 自動財務審核
+        Approve_Auto_Flow(Approve <br/>系統自動選擇 Channel)
+        Check_Auto -- ON --> Approve_Auto_Flow
+        
+        %% 共同發送 API 點
+        Approve_Request(Approve <br/>對三方發起申請)
+        Finance_Action -- 同意 - 選擇 Channel --> Approve_Request
+        Approve_Auto_Flow --> Approve_Request
+
+        %% 拒絕與成功最終站
+        Decline_Final([Decline])
+        Risk_Action -- 拒絕 --> Decline_Final
+        Finance_Action -- 拒絕 --> Decline_Final
+        
+        Success([更新 Vendor TX ID])
+
+        %% 異常處理分支
+        Fail_Branch{模式判定}
+        Fail_Branch -- 手動模式 --> Checked
+        Fail_Branch -- 自動模式 --> Decline_Final
+    end
+
+    subgraph Third_Party [三方金流行為 - Metronic]
+        Approve_Request --> Callback{三方 Callback <br/>/ API 結果}
+    end
+
+    %% 回傳平台處理
+    Callback -- Approve --> Success
+    Callback -- Reject / API Fail --> Fail_Branch
 
     %% 樣式美化
     style Decline_Final fill:#f96,stroke:#333
     style Success fill:#9f9,stroke:#333
     style Check_Auto fill:#fff9c4,stroke:#333
     style Fail_Branch fill:#fff9c4,stroke:#333
+    style Platform_System fill:#f5f5f5,stroke:#999,stroke-dasharray: 5 5
+    style Third_Party fill:#e1f5fe,stroke:#01579b
 ```
 
 ---
