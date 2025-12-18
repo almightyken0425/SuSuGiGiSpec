@@ -36,17 +36,17 @@ graph TD
         Check_Auto{是否開啟<br/>Auto Approve?}
         Risk_Action -- 同意 --> Check_Auto
         
-        %% 分支 1: 手動財務審核
-        Checked(Checked)
-        Check_Auto -- OFF --> Checked
+        %% 分支 1: 手動財務審核 (Auto OFF)
+        Checked(Checked <br/>Finance 尚未鎖定)
+        Check_Auto -- "OFF (手動)" --> Checked
         Finance_Lock[Finance 鎖定]
         Checked --> Finance_Lock
         Finance_Action{Finance 審核}
         Finance_Lock --> Finance_Action
         
-        %% 分支 2: 自動財務審核
+        %% 分支 2: 自動財務審核 (Auto ON)
         Approve_Auto_Flow(Approve <br/>系統自動選擇 Channel)
-        Check_Auto -- ON --> Approve_Auto_Flow
+        Check_Auto -- "ON (自動)" --> Approve_Auto_Flow
         
         %% 共同發送 API 點
         Approve_Request(Approve <br/>對三方發起申請)
@@ -60,10 +60,10 @@ graph TD
         
         Success([更新 Vendor TX ID])
 
-        %% 異常處理分支
+        %% 異常處理分支 (模式判定)
         Fail_Branch{模式判定}
-        Fail_Branch -- 手動模式 --> Checked
-        Fail_Branch -- 自動模式 --> Decline_Final
+        Fail_Branch -- "手動模式 (Auto OFF)" --> Checked
+        Fail_Branch -- "自動模式 (Auto ON)" --> Decline_Final
     end
 
     subgraph Third_Party [三方金流行為 - Metronic]
