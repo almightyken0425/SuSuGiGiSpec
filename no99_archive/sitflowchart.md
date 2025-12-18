@@ -28,31 +28,42 @@
 
 ```mermaid
 graph TD
+    %% 節點定義
+    Start(["玩家發起提款"])
+    Pending("Pending")
+    Risk_Lock["Risk 鎖定"]
+    Risk_Action{"Risk 審核"}
+    Checked("Checked (Finance 尚未鎖定)")
+    Finance_Lock["Finance 鎖定"]
+    Finance_Action{"Finance 審核"}
+    Approve_Req("Approve (對三方發起申請)")
+    Decline(["Decline"])
+    Success(["更新 Vendor TX ID"])
+    Callback{"三方 Callback / API 結果"}
+
     subgraph Platform [平台系統]
-        Start([玩家發起提款]) --> Pending(Pending)
-        Pending --> Risk_Lock[Risk 鎖定]
-        Risk_Action{Risk 審核}
+        Start --> Pending
+        Pending --> Risk_Lock
         Risk_Lock --> Risk_Action
         
-        Risk_Action -- 同意 --> Checked(Checked <br/>Finance 尚未鎖定)
-        Checked --> Finance_Lock[Finance 鎖定]
-        Finance_Lock --> Finance_Action{Finance 審核}
+        Risk_Action -- "同意" --> Checked
+        Checked --> Finance_Lock
+        Finance_Lock --> Finance_Action
         
-        Approve_Req(Approve <br/>對三方發起申請)
-        Finance_Action -- 同意 - 選擇 Channel --> Approve_Req
+        Finance_Action -- "同意 - 選擇 Channel" --> Approve_Req
 
-        Risk_Action -- 拒絕 --> Decline([Decline])
-        Finance_Action -- 拒絕 --> Decline
+        Risk_Action -- "拒絕" --> Decline
+        Finance_Action -- "拒絕" --> Decline
         
-        Success([更新 Vendor TX ID])
+        Success
     end
 
     subgraph Third_Party [三方金流]
-        Approve_Req --> Callback{三方 Callback <br/>/ API 結果}
+        Approve_Req --> Callback
     end
 
-    Callback -- Approve --> Success
-    Callback -- Reject --> Checked
+    Callback -- "Approve" --> Success
+    Callback -- "Reject" --> Checked
 
     style Decline fill:#f96,stroke:#333
     style Success fill:#9f9,stroke:#333
@@ -67,32 +78,53 @@ graph TD
 
 ```mermaid
 graph TD
+    %% 節點定義
+    Start_A(["玩家發起提款"])
+    Pending_A("Pending")
+    Risk_Lock_A["Risk 鎖定"]
+    Risk_Action_A{"Risk 審核"}
+    Approve_Auto("Approve (系統自動選擇 Channel)")
+    Approve_Req_A("Approve (對三方發起申請)")
+    Decline_A(["Decline"])
+    Success_A(["更新 Vendor TX ID"])
+    Callback_A{"三方 Callback / API 結果"}
+
     subgraph Platform_Auto [平台系統 - 自動模式]
-        Start_A([玩家發起提款]) --> Pending_A(Pending)
-        Pending_A --> Risk_Lock_A[Risk 鎖定]
-        Risk_Action_A{Risk 審核}
+        Start_A --> Pending_A
+        Pending_A --> Risk_Lock_A
         Risk_Lock_A --> Risk_Action_A
         
         %% 高亮自動化路徑
-        Risk_Action_A -- "同意 (自動觸發)" ===> Approve_Auto(Approve <br/>系統自動選擇 Channel)
-        linkStyle 4 stroke:#2196f3,stroke-width:4px;
-        
-        Approve_Req_A(Approve <br/>對三方發起申請)
+        Risk_Action_A -- "同意 (自動觸發)" ===> Approve_Auto
         Approve_Auto ===> Approve_Req_A
-        linkStyle 5 stroke:#2196f3,stroke-width:4px;
 
-        Risk_Action_A -- 拒絕 --> Decline_A([Decline])
-        Success_A([更新 Vendor TX ID])
+        Risk_Action_A -- "拒絕" --> Decline_A
+        Success_A
     end
 
     subgraph Third_Party_A [三方金流]
-        Approve_Req_A --> Callback_A{三方 Callback <br/>/ API 結果}
+        Approve_Req_A --> Callback_A
     end
 
-    Callback_A -- Approve --> Success_A
+    Callback_A -- "Approve" --> Success_A
     
     %% 高亮報廢路徑
     Callback_A -- "Reject / API Fail" --x Decline_A
+
+    %% 樣式與連結美化
+    %% linkStyle 索引 (基於連接線出現順序):
+    %% 0: Start_A -> Pending_A
+    %% 1: Pending_A -> Risk_Lock_A
+    %% 2: Risk_Lock_A -> Risk_Action_A
+    %% 3: Risk_Action_A == "同意" ==> Approve_Auto
+    %% 4: Approve_Auto ===> Approve_Req_A
+    %% 5: Risk_Action_A -- "拒絕" --> Decline_A
+    %% 6: Approve_Req_A --> Callback_A
+    %% 7: Callback_A -- "Approve" --> Success_A
+    %% 8: Callback_A -- "Reject" --x Decline_A
+
+    linkStyle 3 stroke:#2196f3,stroke-width:4px;
+    linkStyle 4 stroke:#2196f3,stroke-width:4px;
     linkStyle 8 stroke:#f44336,stroke-width:2px;
 
     style Decline_A fill:#f96,stroke:#333
