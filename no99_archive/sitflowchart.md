@@ -30,15 +30,15 @@
 graph TD
     %% 節點定義
     Start(["Player Submit Withdrawal"])
-    Pending("Pending")
-    RiskLock["Risk Lock"]
+    Pending("Status: Pending")
+    RiskLock["Status: Locked<br/>(Risk Review)"]
     RiskAction{"Risk Approve/Reject"}
-    Checked("Checked (Finance Unlocked)")
-    FinanceLock["Finance Lock"]
+    Checked("Status: Checked")
+    FinanceLock["Status: Locked<br/>(Finance Review)"]
     FinanceAction{"Finance Approve/Reject"}
-    ApproveReq("Approve (Request 3rd Party)")
-    Decline(["Decline"])
-    Success(["Update Vendor TX ID"])
+    ApproveReq("Status: Approve<br/>(Requesting 3rd Party)")
+    Decline(["Status: Decline"])
+    Success(["Status: Approve<br/>(Success)"])
     Callback{"Callback / API Result"}
 
     Start --> Pending
@@ -73,14 +73,14 @@ graph TD
 ```mermaid
 graph TD
     %% 節點定義
-    StartAuto(["Player Request Withdrawal"])
-    PendingAuto("Pending")
-    RiskLockAuto["Risk Lock"]
+    StartAuto(["Player Submit Withdrawal"])
+    PendingAuto("Status: Pending")
+    RiskLockAuto["Status: Locked<br/>(Risk Review)"]
     RiskActionAuto{"Risk Approve/Reject"}
-    ApproveAuto("Approve (Auto Select Channel)")
-    ApproveReqAuto("Approve (Request 3rd Party)")
-    DeclineAuto(["Decline"])
-    SuccessAuto(["Update Vendor TX ID"])
+    ApproveAuto("Status: Checked<br/>(Auto Select Channel)")
+    ApproveReqAuto("Status: Approve<br/>(Requesting 3rd Party)")
+    DeclineAuto(["Status: Decline"])
+    SuccessAuto(["Status: Approve<br/>(Success)"])
     CallbackAuto{"Callback / API Result"}
 
     StartAuto --> PendingAuto
