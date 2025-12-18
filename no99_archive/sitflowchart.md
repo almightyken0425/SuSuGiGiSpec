@@ -63,7 +63,7 @@ graph TD
     
     FinanceLock --> FinanceAction
     
-    FinanceAction -->|"Approve"| RequestAction
+    FinanceAction -->|"Approve<br/>With Selected Channel"| RequestAction
     
     RequestAction -->|"Success"| FinanceApproved
     RequestAction -->|"Fail"| Checked
@@ -98,11 +98,12 @@ graph TD
     RiskLockAuto("Status: Lock<br/>(Risk Review)")
     
     RiskActionAuto{"Risk Approve/Reject"}
-    ApproveAuto("Status: Checked<br/>(Auto Select Channel)")
+    ApproveAuto("Status: Checked")
     
     FinanceLockActionBoxAuto["Finance Lock"]
     FinanceLockAuto("Status: Lock<br/>(Auto Processing)")
     
+    FinanceActionAuto{"Finance Approve/Reject<br/>(Auto)"}
     RequestActionAuto{"Send Request<br/>to 3rd"}
     FinanceApprovedAuto("Status: Approved")
 
@@ -123,7 +124,9 @@ graph TD
     ApproveAuto --> FinanceLockActionBoxAuto
     FinanceLockActionBoxAuto --> FinanceLockAuto
     
-    FinanceLockAuto ==> RequestActionAuto
+    FinanceLockAuto --> FinanceActionAuto
+    
+    FinanceActionAuto ==>|"Approve<br/>(Auto Select Channel)"| RequestActionAuto
     
     RequestActionAuto ==>|"Success"| FinanceApprovedAuto
     RequestActionAuto -->|"Fail"| DeclineAuto
@@ -147,18 +150,19 @@ graph TD
     %% 4: RiskActionAuto ==> ApproveAuto
     %% 5: ApproveAuto --> FinanceLockActionBoxAuto
     %% 6: FinanceLockActionBoxAuto --> FinanceLockAuto
-    %% 7: FinanceLockAuto ==> RequestActionAuto
-    %% 8: RequestActionAuto ==> FinanceApprovedAuto
-    %% 9: RequestActionAuto --> DeclineAuto
-    %% 10: FinanceApprovedAuto --> CallbackAuto
-    %% 11: CallbackAuto --> SuccessAuto
-    %% 12: CallbackAuto --x DeclineAuto
-    %% 13: RiskActionAuto --> DeclineAuto (New)
+    %% 7: FinanceLockAuto --> FinanceActionAuto
+    %% 8: FinanceActionAuto ==> RequestActionAuto
+    %% 9: RequestActionAuto ==> FinanceApprovedAuto
+    %% 10: RequestActionAuto --> DeclineAuto
+    %% 11: FinanceApprovedAuto --> CallbackAuto
+    %% 12: CallbackAuto --> SuccessAuto
+    %% 13: CallbackAuto --x DeclineAuto
+    %% 14: RiskActionAuto --> DeclineAuto (New)
 
     linkStyle 4 stroke:#2196f3,stroke-width:4px;
-    linkStyle 7 stroke:#2196f3,stroke-width:4px;
     linkStyle 8 stroke:#2196f3,stroke-width:4px;
-    linkStyle 12 stroke:#f44336,stroke-width:2px;
+    linkStyle 9 stroke:#2196f3,stroke-width:4px;
+    linkStyle 13 stroke:#f44336,stroke-width:2px;
 
     style ApproveAuto fill:#e3f2fd,stroke:#2196f3
     style RiskLockActionBoxAuto fill:#fff,stroke:#333,stroke-dasharray: 5 5
