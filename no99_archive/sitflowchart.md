@@ -107,7 +107,7 @@ graph TD
     FinanceApprovedAuto("Status: Approved")
 
     DeclineAuto("Status: Declined")
-    SuccessAuto("Status: Approved<br/>(Success)")
+    SuccessAuto("Update<br>Vendor Tx ID")
     CallbackAuto{"Callback / API Result"}
 
     StartAuto -->|"Submit"| PendingAuto
@@ -160,8 +160,6 @@ graph TD
     linkStyle 8 stroke:#2196f3,stroke-width:4px;
     linkStyle 12 stroke:#f44336,stroke-width:2px;
 
-    style DeclineAuto fill:#f96,stroke:#333
-    style SuccessAuto fill:#9f9,stroke:#333
     style ApproveAuto fill:#e3f2fd,stroke:#2196f3
     style RiskLockActionBoxAuto fill:#fff,stroke:#333,stroke-dasharray: 5 5
     style FinanceLockActionBoxAuto fill:#fff,stroke:#333,stroke-dasharray: 5 5
