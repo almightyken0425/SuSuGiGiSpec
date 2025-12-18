@@ -17,7 +17,6 @@
     - `Lock`: 提款單進入審核鎖定狀態。
     - `Checked`: Risk 團隊審核同意後的狀態。
     - `Approved`: Finance 團隊審核同意，準備或正在向三方發起提款申請的過渡狀態。
-    - `Waiting Response`: 已向三方發起請求，等待回調或 API 結果的狀態。
     - `Declined`: 任何階段拒絕或三方系統異常後的最終拒絕狀態。
 
 ---
@@ -45,7 +44,6 @@ graph TD
     FinanceAction{"Finance Approve/Reject"}
     RequestAction{"Send Request<br/>to 3rd"}
     FinanceApproved("Status: Approved")
-    WaitResponse("Status: Waiting Response")
     
     Decline("Status: Declined")
     Success("Status: Approved<br/>(Success)")
@@ -70,8 +68,7 @@ graph TD
     RequestAction -->|"Success"| FinanceApproved
     RequestAction -->|"Fail"| Checked
     
-    FinanceApproved --> WaitResponse
-    WaitResponse -->|"Wait Callback"| Callback
+    FinanceApproved -->|"Wait Callback"| Callback
 
     Callback -->|"Approve"| Success
     Callback -->|"Reject"| Checked
@@ -106,7 +103,6 @@ graph TD
     
     RequestActionAuto{"Send Request<br/>to 3rd"}
     FinanceApprovedAuto("Status: Approved")
-    WaitResponseAuto("Status: Waiting Response")
 
     DeclineAuto("Status: Declined")
     SuccessAuto("Status: Approved<br/>(Success)")
@@ -130,8 +126,7 @@ graph TD
     RequestActionAuto ==>|"Success"| FinanceApprovedAuto
     RequestActionAuto -->|"Fail"| DeclineAuto
     
-    FinanceApprovedAuto ==> WaitResponseAuto
-    WaitResponseAuto -->|"Wait Callback"| CallbackAuto
+    FinanceApprovedAuto -->|"Wait Callback"| CallbackAuto
 
     CallbackAuto -->|"Approve"| SuccessAuto
     
@@ -150,16 +145,14 @@ graph TD
     %% 7: FinanceLockAuto ==> RequestActionAuto
     %% 8: RequestActionAuto ==> FinanceApprovedAuto
     %% 9: RequestActionAuto --> DeclineAuto
-    %% 10: FinanceApprovedAuto ==> WaitResponseAuto
-    %% 11: WaitResponseAuto --> CallbackAuto
-    %% 12: CallbackAuto --> SuccessAuto
-    %% 13: CallbackAuto --x DeclineAuto
+    %% 10: FinanceApprovedAuto --> CallbackAuto
+    %% 11: CallbackAuto --> SuccessAuto
+    %% 12: CallbackAuto --x DeclineAuto
 
     linkStyle 4 stroke:#2196f3,stroke-width:4px;
     linkStyle 7 stroke:#2196f3,stroke-width:4px;
     linkStyle 8 stroke:#2196f3,stroke-width:4px;
-    linkStyle 10 stroke:#2196f3,stroke-width:4px;
-    linkStyle 13 stroke:#f44336,stroke-width:2px;
+    linkStyle 12 stroke:#f44336,stroke-width:2px;
 
     style DeclineAuto fill:#f96,stroke:#333
     style SuccessAuto fill:#9f9,stroke:#333
