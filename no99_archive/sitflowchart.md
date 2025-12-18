@@ -31,30 +31,30 @@ graph TD
     %% 節點定義
     Start(["Player Submit Withdrawal"])
     Pending("Status: Pending")
-    RiskLock["Status: Locked<br/>(Risk Review)"]
+    RiskLock("Status: Locked<br/>(Risk Review)")
     RiskAction{"Risk Approve/Reject"}
     Checked("Status: Checked")
-    FinanceLock["Status: Locked<br/>(Finance Review)"]
+    FinanceLock("Status: Locked<br/>(Finance Review)")
     FinanceAction{"Finance Approve/Reject"}
     ApproveReq("Status: Approve<br/>(Requesting 3rd Party)")
-    Decline(["Status: Decline"])
-    Success(["Status: Approve<br/>(Success)"])
+    Decline("Status: Decline")
+    Success("Status: Approve<br/>(Success)")
     Callback{"Callback / API Result"}
 
-    Start --> Pending
-    Pending --> RiskLock
-    RiskLock --> RiskAction
+    Start -->|"Submit"| Pending
+    Pending -->|"Lock"| RiskLock
+    RiskLock -->|"Review"| RiskAction
     
     RiskAction -->|"Approve"| Checked
-    Checked --> FinanceLock
-    FinanceLock --> FinanceAction
+    Checked -->|"Lock"| FinanceLock
+    FinanceLock -->|"Review"| FinanceAction
     
     FinanceAction -->|"Approve - Select Channel"| ApproveReq
 
     RiskAction -->|"Reject"| Decline
     FinanceAction -->|"Reject"| Decline
     
-    ApproveReq --> Callback
+    ApproveReq -->|"Wait Response"| Callback
 
     Callback -->|"Approve"| Success
     Callback -->|"Reject"| Checked
@@ -75,25 +75,25 @@ graph TD
     %% 節點定義
     StartAuto(["Player Submit Withdrawal"])
     PendingAuto("Status: Pending")
-    RiskLockAuto["Status: Locked<br/>(Risk Review)"]
+    RiskLockAuto("Status: Locked<br/>(Risk Review)")
     RiskActionAuto{"Risk Approve/Reject"}
     ApproveAuto("Status: Checked<br/>(Auto Select Channel)")
     ApproveReqAuto("Status: Approve<br/>(Requesting 3rd Party)")
-    DeclineAuto(["Status: Decline"])
-    SuccessAuto(["Status: Approve<br/>(Success)"])
+    DeclineAuto("Status: Decline")
+    SuccessAuto("Status: Approve<br/>(Success)")
     CallbackAuto{"Callback / API Result"}
 
-    StartAuto --> PendingAuto
-    PendingAuto --> RiskLockAuto
-    RiskLockAuto --> RiskActionAuto
+    StartAuto -->|"Submit"| PendingAuto
+    PendingAuto -->|"Lock"| RiskLockAuto
+    RiskLockAuto -->|"Review"| RiskActionAuto
     
     %% 高亮自動化路徑
     RiskActionAuto ==>|"Approve (Auto Trigger)"| ApproveAuto
-    ApproveAuto ===> ApproveReqAuto
+    ApproveAuto ===>|"Auto Request"| ApproveReqAuto
 
     RiskActionAuto -->|"Reject"| DeclineAuto
     
-    ApproveReqAuto --> CallbackAuto
+    ApproveReqAuto -->|"Wait Response"| CallbackAuto
 
     CallbackAuto -->|"Approve"| SuccessAuto
     
