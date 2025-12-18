@@ -118,53 +118,26 @@ graph TD
     
     RiskLockAuto --> RiskActionAuto
     
-    %% 高亮自動化路徑
-    RiskActionAuto ==>|"Approve (Auto Trigger)"| ApproveAuto
+    RiskActionAuto -->|"Approve (Auto Trigger)"| ApproveAuto
     
     ApproveAuto --> FinanceLockActionBoxAuto
     FinanceLockActionBoxAuto --> FinanceLockAuto
     
     FinanceLockAuto --> FinanceActionAuto
     
-    FinanceActionAuto ==>|"Approve<br/>(Auto Select Channel)"| RequestActionAuto
+    FinanceActionAuto -->|"Approve<br/>(Auto Select Channel)"| RequestActionAuto
     
-    RequestActionAuto ==>|"Success"| FinanceApprovedAuto
+    RequestActionAuto -->|"Success"| FinanceApprovedAuto
     RequestActionAuto -->|"Fail"| DeclineAuto
     
     FinanceApprovedAuto -->|"Wait Callback"| CallbackAuto
 
     CallbackAuto -->|"Approve"| SuccessAuto
     
-    %% 高亮報廢路徑
-    CallbackAuto --x|"Reject / API Fail"| DeclineAuto
+    CallbackAuto -->|"Reject / API Fail"| DeclineAuto
 
-    %% 補回 Risk 拒絕路徑 (若遺失)
     RiskActionAuto -->|"Reject"| DeclineAuto
 
-    %% 樣式與連結美化
-    %% linkStyle 索引 (基於連接線出現順序):
-    %% 0: StartAuto -> PendingAuto
-    %% 1: PendingAuto -> RiskLockActionBoxAuto
-    %% 2: RiskLockActionBoxAuto -> RiskLockAuto
-    %% 3: RiskLockAuto -> RiskActionAuto
-    %% 4: RiskActionAuto ==> ApproveAuto
-    %% 5: ApproveAuto --> FinanceLockActionBoxAuto
-    %% 6: FinanceLockActionBoxAuto --> FinanceLockAuto
-    %% 7: FinanceLockAuto --> FinanceActionAuto
-    %% 8: FinanceActionAuto ==> RequestActionAuto
-    %% 9: RequestActionAuto ==> FinanceApprovedAuto
-    %% 10: RequestActionAuto --> DeclineAuto
-    %% 11: FinanceApprovedAuto --> CallbackAuto
-    %% 12: CallbackAuto --> SuccessAuto
-    %% 13: CallbackAuto --x DeclineAuto
-    %% 14: RiskActionAuto --> DeclineAuto (New)
-
-    linkStyle 4 stroke:#2196f3,stroke-width:4px;
-    linkStyle 8 stroke:#2196f3,stroke-width:4px;
-    linkStyle 9 stroke:#2196f3,stroke-width:4px;
-    linkStyle 13 stroke:#f44336,stroke-width:2px;
-
-    style ApproveAuto fill:#e3f2fd,stroke:#2196f3
     style RiskLockActionBoxAuto fill:#fff,stroke:#333,stroke-dasharray: 5 5
     style FinanceLockActionBoxAuto fill:#fff,stroke:#333,stroke-dasharray: 5 5
 ```
