@@ -1,4 +1,4 @@
-# 提款審核流程規格：全域流程圖 (手動/自動對照)
+# 提款審核流程規格：手動與自動模式對照
 
 ---
 
@@ -21,81 +21,95 @@
 
 ---
 
-## 全域流程圖
+## 手動財務審核流程 (Auto OFF)
+
+- **行為描述:** 需 Risk 與 Finance 兩關人工審核。若三方拒絕，流程退回至 `Checked` 供再次處理。
+- **流程圖:**
 
 ```mermaid
 graph TD
-    subgraph Platform_System [平台系統行為]
-        %% 初始步驟
+    subgraph Platform [平台系統]
         Start([玩家發起提款]) --> Pending(Pending)
         Pending --> Risk_Lock[Risk 鎖定]
         Risk_Action{Risk 審核}
         Risk_Lock --> Risk_Action
         
-        %% Risk 同意後檢查
-        Check_Auto{是否開啟<br/>Auto Approve?}
-        Risk_Action -- 同意 --> Check_Auto
+        Risk_Action -- 同意 --> Checked(Checked <br/>Finance 尚未鎖定)
+        Checked --> Finance_Lock[Finance 鎖定]
+        Finance_Lock --> Finance_Action{Finance 審核}
         
-        %% 分支 1: 手動財務審核 (Auto OFF)
-        Checked(Checked <br/>Finance 尚未鎖定)
-        Check_Auto -- "OFF (手動)" --> Checked
-        Finance_Lock[Finance 鎖定]
-        Checked --> Finance_Lock
-        Finance_Action{Finance 審核}
-        Finance_Lock --> Finance_Action
-        
-        %% 分支 2: 自動財務審核 (Auto ON)
-        Approve_Auto_Flow(Approve <br/>系統自動選擇 Channel)
-        Check_Auto -- "ON (自動)" --> Approve_Auto_Flow
-        
-        %% 共同發送 API 點
-        Approve_Request(Approve <br/>對三方發起申請)
-        Finance_Action -- 同意 - 選擇 Channel --> Approve_Request
-        Approve_Auto_Flow --> Approve_Request
+        Approve_Req(Approve <br/>對三方發起申請)
+        Finance_Action -- 同意 - 選擇 Channel --> Approve_Req
 
-        %% 拒絕與成功最終站
-        Decline_Final([Decline])
-        Risk_Action -- 拒絕 --> Decline_Final
-        Finance_Action -- 拒絕 --> Decline_Final
+        Risk_Action -- 拒絕 --> Decline([Decline])
+        Finance_Action -- 拒絕 --> Decline
         
         Success([更新 Vendor TX ID])
-
-        %% 異常處理分支 (模式判定)
-        Fail_Branch{模式判定}
-        Fail_Branch -- "手動模式 (Auto OFF)" --> Checked
-        Fail_Branch -- "自動模式 (Auto ON)" --> Decline_Final
     end
 
-    subgraph Third_Party [三方金流行為 - Metronic]
-        Approve_Request --> Callback{三方 Callback <br/>/ API 結果}
+    subgraph Third_Party [三方金流]
+        Approve_Req --> Callback{三方 Callback <br/>/ API 結果}
     end
 
-    %% 回傳平台處理
     Callback -- Approve --> Success
-    Callback -- Reject / API Fail --> Fail_Branch
+    Callback -- Reject --> Checked
 
-    %% 樣式美化
-    style Decline_Final fill:#f96,stroke:#333
+    style Decline fill:#f96,stroke:#333
     style Success fill:#9f9,stroke:#333
-    style Check_Auto fill:#fff9c4,stroke:#333
-    style Fail_Branch fill:#fff9c4,stroke:#333
-    style Platform_System fill:#f5f5f5,stroke:#999,stroke-dasharray: 5 5
-    style Third_Party fill:#e1f5fe,stroke:#01579b
 ```
 
 ---
 
-## 核心行為細節
+## 自動財務審核流程 (Auto ON)
 
-- **手動審核流程細節:**
+- **行為描述:** Risk 同意後系統背景自動處理。若三方失敗，則**直接拒絕**不退回人工。
+- **流程圖:**
+
+```mermaid
+graph TD
+    subgraph Platform_Auto [平台系統 - 自動模式]
+        Start_A([玩家發起提款]) --> Pending_A(Pending)
+        Pending_A --> Risk_Lock_A[Risk 鎖定]
+        Risk_Action_A{Risk 審核}
+        Risk_Lock_A --> Risk_Action_A
+        
+        %% 高亮自動化路徑
+        Risk_Action_A -- "同意 (自動觸發)" ===> Approve_Auto(Approve <br/>系統自動選擇 Channel)
+        linkStyle 4 stroke:#2196f3,stroke-width:4px;
+        
+        Approve_Req_A(Approve <br/>對三方發起申請)
+        Approve_Auto ===> Approve_Req_A
+        linkStyle 5 stroke:#2196f3,stroke-width:4px;
+
+        Risk_Action_A -- 拒絕 --> Decline_A([Decline])
+        Success_A([更新 Vendor TX ID])
+    end
+
+    subgraph Third_Party_A [三方金流]
+        Approve_Req_A --> Callback_A{三方 Callback <br/>/ API 結果}
+    end
+
+    Callback_A -- Approve --> Success_A
+    
+    %% 高亮報廢路徑
+    Callback_A -- "Reject / API Fail" --x Decline_A
+    linkStyle 8 stroke:#f44336,stroke-width:2px;
+
+    style Decline_A fill:#f96,stroke:#333
+    style Success_A fill:#9f9,stroke:#333
+    style Approve_Auto fill:#e3f2fd,stroke:#2196f3
+```
+
+---
+
+## 核心行為細節對照
+
+- **手動審核 (OFF):**
     - Finance 點擊同意時，必須跳出彈窗選擇 `Payment Channel`。
-    - 若三方 Callback 回傳 `Reject`，則狀態退回至 `Checked` 供財務人員手動再次鎖定/重選通道。
-- **自動審核流程細節:**
-    - 系統應提供「預設自動提款通道」設定。
-    - Risk 同意後，系統背景自動執行 Finance 鎖定並同意，不需人工操作。
-    - **IF** 三方 API 建立提款單失敗 **OR** 回傳 `Reject`:
-        - 狀態直接轉為 `Decline`。
-        - **行為:** 為了與 T1 包網平台的簡便流程對齊，自動模式下若發生錯誤不退回人工處理。
+    - **IF** 三方 Reject: 流程連回 `Checked`，由財務重新鎖定並選擇其他通道。
+- **自動審核 (ON):**
+    - Risk 同意後，系統背景自動執行 Finance 鎖定與同意，完全跳過人工 Finance UI。
+    - **IF** 三方 Reject/API Fail: 狀態**直接轉為 `Decline`**，視為該筆訂單終止，不再退回人工處理。
 
 ---
 
