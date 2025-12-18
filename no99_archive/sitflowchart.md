@@ -41,26 +41,20 @@ graph TD
     Success(["更新 Vendor TX ID"])
     Callback{"三方 Callback / API 結果"}
 
-    subgraph PlatformSystem ["平台系統"]
-        Start --> Pending
-        Pending --> RiskLock
-        RiskLock --> RiskAction
-        
-        RiskAction -->|"同意"| Checked
-        Checked --> FinanceLock
-        FinanceLock --> FinanceAction
-        
-        FinanceAction -->|"同意 - 選擇 Channel"| ApproveReq
+    Start --> Pending
+    Pending --> RiskLock
+    RiskLock --> RiskAction
+    
+    RiskAction -->|"同意"| Checked
+    Checked --> FinanceLock
+    FinanceLock --> FinanceAction
+    
+    FinanceAction -->|"同意 - 選擇 Channel"| ApproveReq
 
-        RiskAction -->|"拒絕"| Decline
-        FinanceAction -->|"拒絕"| Decline
-        
-        Success
-    end
-
-    subgraph ThirdParty ["三方金流"]
-        ApproveReq --> Callback
-    end
+    RiskAction -->|"拒絕"| Decline
+    FinanceAction -->|"拒絕"| Decline
+    
+    ApproveReq --> Callback
 
     Callback -->|"Approve"| Success
     Callback -->|"Reject"| Checked
@@ -89,22 +83,17 @@ graph TD
     SuccessAuto(["更新 Vendor TX ID"])
     CallbackAuto{"三方 Callback / API 結果"}
 
-    subgraph PlatformAuto ["平台系統 - 自動模式"]
-        StartAuto --> PendingAuto
-        PendingAuto --> RiskLockAuto
-        RiskLockAuto --> RiskActionAuto
-        
-        %% 高亮自動化路徑
-        RiskActionAuto ==>|"同意 (自動觸發)"| ApproveAuto
-        ApproveAuto ===> ApproveReqAuto
+    StartAuto --> PendingAuto
+    PendingAuto --> RiskLockAuto
+    RiskLockAuto --> RiskActionAuto
+    
+    %% 高亮自動化路徑
+    RiskActionAuto ==>|"同意 (自動觸發)"| ApproveAuto
+    ApproveAuto ===> ApproveReqAuto
 
-        RiskActionAuto -->|"拒絕"| DeclineAuto
-        SuccessAuto
-    end
-
-    subgraph ThirdPartyAuto ["三方金流"]
-        ApproveReqAuto --> CallbackAuto
-    end
+    RiskActionAuto -->|"拒絕"| DeclineAuto
+    
+    ApproveReqAuto --> CallbackAuto
 
     CallbackAuto -->|"Approve"| SuccessAuto
     
