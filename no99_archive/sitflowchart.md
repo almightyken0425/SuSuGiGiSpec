@@ -43,9 +43,8 @@ graph TD
     FinanceLock("Status: Lock<br/>(Finance Review)")
     
     FinanceAction{"Finance Approve/Reject"}
-    FinanceApproved("Status: Approved")
-    
     RequestAction{"Send Request<br/>to 3rd"}
+    FinanceApproved("Status: Approved")
     WaitResponse("Status: Waiting Response")
     
     Decline("Status: Declined")
@@ -66,12 +65,12 @@ graph TD
     
     FinanceLock --> FinanceAction
     
-    FinanceAction -->|"Approve"| FinanceApproved
-    FinanceApproved --> RequestAction
+    FinanceAction -->|"Approve"| RequestAction
     
-    RequestAction -->|"Success"| WaitResponse
+    RequestAction -->|"Success"| FinanceApproved
     RequestAction -->|"Fail"| Checked
     
+    FinanceApproved --> WaitResponse
     WaitResponse -->|"Wait Callback"| Callback
 
     Callback -->|"Approve"| Success
@@ -105,8 +104,8 @@ graph TD
     FinanceLockActionBoxAuto["Finance Lock"]
     FinanceLockAuto("Status: Lock<br/>(Auto Processing)")
     
-    FinanceApprovedAuto("Status: Approved")
     RequestActionAuto{"Send Request<br/>to 3rd"}
+    FinanceApprovedAuto("Status: Approved")
     WaitResponseAuto("Status: Waiting Response")
 
     DeclineAuto("Status: Declined")
@@ -126,12 +125,12 @@ graph TD
     ApproveAuto --> FinanceLockActionBoxAuto
     FinanceLockActionBoxAuto --> FinanceLockAuto
     
-    FinanceLockAuto ==> FinanceApprovedAuto
-    FinanceApprovedAuto ==> RequestActionAuto
+    FinanceLockAuto ==> RequestActionAuto
     
-    RequestActionAuto ==>|"Success"| WaitResponseAuto
+    RequestActionAuto ==>|"Success"| FinanceApprovedAuto
     RequestActionAuto -->|"Fail"| DeclineAuto
     
+    FinanceApprovedAuto ==> WaitResponseAuto
     WaitResponseAuto -->|"Wait Callback"| CallbackAuto
 
     CallbackAuto -->|"Approve"| SuccessAuto
@@ -148,10 +147,10 @@ graph TD
     %% 4: RiskActionAuto ==> ApproveAuto
     %% 5: ApproveAuto --> FinanceLockActionBoxAuto
     %% 6: FinanceLockActionBoxAuto --> FinanceLockAuto
-    %% 7: FinanceLockAuto ==> FinanceApprovedAuto
-    %% 8: FinanceApprovedAuto ==> RequestActionAuto
-    %% 9: RequestActionAuto ==> WaitResponseAuto
-    %% 10: RequestActionAuto --> DeclineAuto
+    %% 7: FinanceLockAuto ==> RequestActionAuto
+    %% 8: RequestActionAuto ==> FinanceApprovedAuto
+    %% 9: RequestActionAuto --> DeclineAuto
+    %% 10: FinanceApprovedAuto ==> WaitResponseAuto
     %% 11: WaitResponseAuto --> CallbackAuto
     %% 12: CallbackAuto --> SuccessAuto
     %% 13: CallbackAuto --x DeclineAuto
@@ -159,7 +158,7 @@ graph TD
     linkStyle 4 stroke:#2196f3,stroke-width:4px;
     linkStyle 7 stroke:#2196f3,stroke-width:4px;
     linkStyle 8 stroke:#2196f3,stroke-width:4px;
-    linkStyle 9 stroke:#2196f3,stroke-width:4px;
+    linkStyle 10 stroke:#2196f3,stroke-width:4px;
     linkStyle 13 stroke:#f44336,stroke-width:2px;
 
     style DeclineAuto fill:#f96,stroke:#333
