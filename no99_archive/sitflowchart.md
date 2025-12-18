@@ -76,8 +76,26 @@ graph TD
     RiskAction -->|"Reject"| Decline
     FinanceAction -->|"Reject"| Decline
 
+    %% linkStyle 索引 (基於連接線出現順序):
+    %% 0: Start -> Pending
+    %% 1: Pending -> RiskLockActionBox
+    %% 2: RiskLockActionBox -> RiskLock
+    %% 3: RiskLock -> RiskAction
+    %% 4: RiskAction -> Checked
+    %% 5: Checked ==> FinanceLockActionBox
+    %% 6: FinanceLockActionBox ==> FinanceLock
+    %% 7: FinanceLock ==> FinanceAction
+    %% 8: FinanceAction ==> RequestAction
+    %% 9: RequestAction --> FinanceApproved
+    %% 10: RequestAction --> Checked (Fail)
+    %% 11: FinanceApproved --> Callback
+    %% 12: Callback --> Success
+    %% 13: Callback --> Checked (Reject)
+    %% 14: RiskAction --> Decline
+    %% 15: FinanceAction --> Decline
+
     linkStyle 5,6,7,8 stroke:#F24F13,stroke-width:4px;
-    linkStyle 10,13 stroke:#f44336,stroke-width:4px;
+    linkStyle 10,13 stroke:#20308c,stroke-width:4px;
 
     style RiskLockActionBox fill:#fff,stroke:#333,stroke-dasharray: 5 5
     style FinanceLockActionBox fill:#fff,stroke:#333,stroke-dasharray: 5 5
@@ -138,8 +156,25 @@ graph TD
 
     RiskActionAuto -->|"Manual Reject"| DeclineAuto
 
+    %% linkStyle 索引 (基於連接線出現順序):
+    %% 0: StartAuto -> PendingAuto
+    %% 1: PendingAuto -> RiskLockActionBoxAuto
+    %% 2: RiskLockActionBoxAuto -> RiskLockAuto
+    %% 3: RiskLockAuto -> RiskActionAuto
+    %% 4: RiskActionAuto -> ApproveAuto
+    %% 5: ApproveAuto ==> FinanceLockActionBoxAuto
+    %% 6: FinanceLockActionBoxAuto ==> FinanceLockAuto
+    %% 7: FinanceLockAuto ==> FinanceActionAuto
+    %% 8: FinanceActionAuto ==> RequestActionAuto
+    %% 9: RequestActionAuto --> FinanceApprovedAuto
+    %% 10: RequestActionAuto ==> DeclineAuto (Fail)
+    %% 11: FinanceApprovedAuto --> CallbackAuto
+    %% 12: CallbackAuto --> SuccessAuto
+    %% 13: CallbackAuto ==> DeclineAuto (Reject)
+    %% 14: RiskActionAuto --> DeclineAuto
+
     linkStyle 5,6,7,8 stroke:#F24F13,stroke-width:4px;
-    linkStyle 10,13 stroke:#f44336,stroke-width:4px;
+    linkStyle 10,13 stroke:#20308c,stroke-width:4px;
 
     style RiskLockActionBoxAuto fill:#fff,stroke:#333,stroke-dasharray: 5 5
     style FinanceLockActionBoxAuto fill:#fff,stroke:#333,stroke-dasharray: 5 5
