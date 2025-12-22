@@ -1,5 +1,50 @@
 # iOS Build Troubleshooting Report - 2025-12-19
 
+---
+
+## 技術摘要（給工程師的快速參考）
+
+**問題核心**：在 Expo SDK 54（React Native 0.81.5）專案中整合 `@react-native-firebase` 時，遭遇無法解決的編譯衝突。
+
+**環境**：
+- Expo SDK: 54
+- React Native: 0.81.5  
+- 目標：整合 Firebase v12（`@react-native-firebase/*`）
+- 平台：iOS（本地 build + EAS Build）
+
+**根本問題**：
+
+1. **Firebase 12 的依賴需求**與 **RN 0.81.5 的限制**形成死結：
+   - Firebase 12 要求 `use_frameworks! :linkage => :static` 或 modular headers
+   - RN 0.81.5 的 Hermes 引擎在 frameworks 模式下有 C++ ABI 不兼容
+   - 錯誤：`HermesExecutorFactory.cpp` 中的 `unique_ptr` 和 `shared_ptr` template 衝突
+
+2. **無法繞過 Hermes 編譯**：
+   - 即使設定 `jsEngine: "jsc"`，RN 0.81.5 仍會編譯 Hermes 源代碼
+   - 導致相同的 12 個 C++ 編譯錯誤
+
+3. **降級 Firebase 到 v11 也失敗**：
+   - Pod install 在本地環境反覆卡住（產生重複進程）
+   - xcodebuild 卡在 "Planning build" 階段超過 20 分鐘
+   - 懷疑是本地 CocoaPods/xcodebuild 環境問題
+
+**嘗試過的方案（全部失敗）**：
+- ✗ Static frameworks + gRPC opt-outs
+- ✗ 切換到 JSC 引擎  
+- ✗ 降級 Firebase 到 v11
+- ✗ 完全移除 Firebase 的乾淨 build
+- ✗ EAS Build（需要付費 Apple Developer 帳號 $99/年）
+
+**可行解決方案**：
+1. **升級到 Expo SDK 55+**（RN 0.82+ 對 Hermes 整合更好）
+2. **付費註冊 Apple Developer** + 使用 EAS Build
+3. **暫時移除 Firebase**，改用 mock auth 繼續開發
+4. **優先開發 Android**（不需要付費帳號）
+
+**結論**：這是版本兼容性的系統性問題，不是配置錯誤。需要選擇升級路徑或替代方案。
+
+---
+
 ## 背景 (Context)
 在整合 Native Firebase (`@react-native-firebase`) 到 Expo 專案 (Static Linking 模式) 時，遭遇了嚴重的 iOS 編譯錯誤。主要涉及 CocoaPods 的 Header Search Paths、Module Maps 以及靜態/動態庫的相容性衝突。這份報告記錄了問題的根源與最終的解決方案，以備日後維護參考。
 
@@ -109,3 +154,177 @@ end
 
 ## 檔案參照
 - **Podfile:** `/Users/kenchio/Documents/GitHub/SuSuGiGiApp/ios/Podfile`
+
+---
+
+# Firebase 整合問題追蹤 - 2025-12-21/22
+
+## 問題背景
+
+在成功解決初步的 iOS build 問題後，嘗試整合 Native Firebase (`@react-native-firebase`) 時，遭遇了更深層的編譯問題，最終發現是環境與版本的根本不兼容問題。
+
+## 嘗試方案時間軸
+
+### 方案 1: Firebase 12 + Static Frameworks（失敗）
+- **策略**: 使用 `use_frameworks! :linkage => :static`，對 gRPC 使用 opt-out
+- **問題**: 遭遇 Hermes C++ ABI 不兼容
+- **錯誤**: `HermesExecutorFactory.cpp` 出現 12 個持續性編譯錯誤
+  ```
+  ❌  shared_ptr.h:675: incompatible pointer types assigning to '__shared_weak_count *'
+  ❌  unique_ptr.h:767: no matching constructor for 'facebook::react::HermesExecutor'
+  ```
+- **結論**: Expo SDK 54 + React Native 0.81.5 + Firebase 12 在 frameworks 模式下與 Hermes 引擎有根本的 C++ ABI 衝突
+
+### 方案 2: 切換到 JSC 引擎（失敗）
+- **策略**: 在 `app.json` 設定 `"jsEngine": "jsc"` 以避開 Hermes
+- **問題**: React Native 0.81.5 即使使用 JSC 作為運行時引擎，仍會編譯 Hermes 相關代碼
+- **錯誤**: 完全相同的 12 個 Hermes 編譯錯誤
+- **結論**: 在 RN 0.81.x，Hermes 源代碼是強制編譯的，無法通過引擎切換繞過
+
+### 方案 3: 降級 Firebase 到 v11（失敗）
+- **策略**: 降級所有 Firebase 套件到 `@react-native-firebase/*@20.5.0`（對應 Firebase 11）
+- **檔案調整**:
+  - 移除 `use_frameworks!`
+  - 簡化 Podfile 為標準靜態庫配置
+  - 移除 Google Sign-In（因依賴衝突）
+- **問題**: 
+  - Pod install 反覆卡住，產生重複進程
+  - 多次執行 `pod install` 皆無法完成或產生不完整安裝
+  - Podfile.lock 重複損壞或遺失
+- **錯誤模式**:
+  ```
+  Installing abseil (1.20240116.2)  ← 卡在此步驟超過 10 分鐘
+  [Multiple pod processes running simultaneously]
+  ```
+
+### 方案 4: 完全移除 Firebase 的最小化 Build（失敗）
+- **策略**: 重置 Podfile 為最小 Expo 預設配置，完全不包含 Firebase
+- **問題**: xcodebuild 卡在 "Planning build" 階段超過 20 分鐘
+- **觀察**:
+  - `xcodebuild` 進程存在但 CPU 時間僅 1.66 秒（幾乎沒有實際工作）
+  - DerivedData 顯示 7079 個預編譯模塊但無進展
+  - 多次嘗試皆在相同階段卡住
+- **結論**: 本地開發環境的 CocoaPods/xcodebuild 有系統性問題
+
+## 根本原因分析
+
+### 技術層面
+
+1. **版本不兼容三角關係**:
+   - Firebase 12 要求 `use_frameworks!` 或 modular headers
+   - React Native 0.81.5 與 frameworks 模式兼容性差
+   - Hermes 在 frameworks/modular 模式下有 C++ template 問題
+
+2. **本地環境問題**:
+   - CocoaPods 安裝過程反覆產生重複進程並卡住
+   - xcodebuild 反覆在 "Planning build" 階段停滯
+   - 檔案權限問題（`node_modules` 中的 header 檔案權限為 600）
+
+### 成功修復的項目 ✅
+
+- 識別所有錯誤模式與根本原因
+- 創建多種 Podfile 配置策略（static frameworks, modular headers, 混合模式）
+- 成功實作 `Firebase.h` 的條件式 Swift header 引用補丁
+- 添加 `FOLLY_NO_COROUTINES=1` 防止 Folly 錯誤
+- 修復 react-native 套件的檔案權限問題
+- 完整記錄除錯過程
+
+### 無法在本地解決的問題 ❌
+
+- 本地 iOS 模擬器 build
+- 當前 SDK 版本下的 Firebase 整合
+- 本地開發環境的 Pod install 可靠性
+
+## EAS Build 雲端編譯方案
+
+### 設置過程
+
+1. **安裝 EAS CLI**: ✅ 完成
+   ```bash
+   npm install -g eas-cli  # 安裝 465 packages
+   ```
+
+2. **配置 EAS Build**: ✅ 完成
+   ```bash
+   eas build:configure  # 生成 eas.json
+   ```
+
+3. **安裝 expo-dev-client**: ✅ 完成
+   - 自動安裝 6 packages
+   - 為 development build 做準備
+
+4. **Apple Developer 帳號需求**: ❌ **阻礙**
+   ```
+   ✔ Logged in and verified
+   Authentication with Apple Developer Portal failed!
+   You have no team associated with your Apple account, cannot proceed.
+   (Do you have a paid Apple Developer account?)
+   ```
+
+### 關鍵發現
+
+**即使使用 EAS Build（雲端編譯），development build 仍需要付費的 Apple Developer Program 會員資格（$99 美元/年）。**
+
+## 目前狀態與建議
+
+### 專案當前配置
+
+- **app.json**: 
+  - 設定 `jsEngine: "jsc"`
+  - 連結 Firebase 配置檔案（`GoogleService-Info.plist`, `google-services.json`）
+- **package.json**: 
+  - Firebase 套件: v20.5.0（Firebase 11）
+  - Google Sign-In: 已移除
+- **ios/Podfile**: 當前為最小化 Expo 預設配置（不含 Firebase）
+- **eas.json**: ✅ 已配置，準備好進行雲端 build
+
+### 後續選項
+
+#### 選項 1: 註冊 Apple Developer Program（推薦）
+- **費用**: $99 美元/年
+- **優點**: 
+  - 可使用 EAS Build 生成 development build
+  - 未來上架 App Store 的必要條件
+  - 存取完整的開發工具與功能
+- **流程**: https://developer.apple.com/programs/
+
+#### 選項 2: 暫時移除 Firebase，使用 Expo Go 繼續開發
+- 移除所有 Firebase 依賴
+- 使用 `npx expo start` + Expo Go 測試
+- 其他功能照常開發
+- 有付費帳號後再重新整合 Firebase
+
+#### 選項 3: 優先進行 Android 開發與測試
+- Android 不需要付費開發者帳號
+- 可立即編譯和測試
+- Firebase 功能完全相同
+- 驗證整合無誤後再處理 iOS
+
+#### 選項 4: 升級 Expo SDK（長期方案）
+- 升級到 Expo SDK 55+（使用 React Native 0.82+）
+- RN 0.82+ 對 Hermes 整合更完善
+- 需要完整測試現有代碼
+- 可能解決當前的版本兼容性問題
+
+### 技術學習重點
+
+1. **Firebase 12 與 React Native 整合的複雜性**:
+   - Static frameworks vs modular headers 的選擇影響深遠
+   - Hermes 引擎在特定配置下有 C++ ABI 限制
+   - CocoaPods 的模塊系統與 Swift/Objective-C 混合專案的挑戰
+
+2. **EAS Build 的價值**:
+   - 提供一致、可控的雲端 build 環境
+   - 繞過本地環境的系統性問題
+   - 生產環境 build 的必經之路
+
+3. **Apple 生態系統要求**:
+   - iOS 開發的基本門檻是付費 Developer Program
+   - 即使是 development/testing，也需要適當的憑證管理
+
+## 參考資料
+
+- **EAS Build 文檔**: https://docs.expo.dev/build/introduction/
+- **Firebase iOS 整合**: https://rnfirebase.io/
+- **React Native 與 Hermes**: https://reactnative.dev/docs/hermes
+- **Apple Developer Program**: https://developer.apple.com/programs/
