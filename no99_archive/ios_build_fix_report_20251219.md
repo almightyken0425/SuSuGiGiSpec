@@ -37,8 +37,7 @@
 
 **可行解決方案**：
 1. **付費註冊 Apple Developer** ($99/年) + 使用 EAS Build
-2. **暫時移除 Firebase**，改用 mock auth 繼續開發
-3. **優先開發 Android**（不需要付費帳號，Firebase 功能完全相同）
+2. **暫時移除 Firebase**，改用 mock ㄧ
 4. **等待 Expo SDK 更新**（期待未來版本支援 React Native 0.82+）
 
 **結論**：這是 Expo SDK 54 的系統性限制問題。在沒有付費 Apple Developer 帳號的情況下，建議優先開發 Android 或暫時移除 Firebase。
@@ -295,10 +294,69 @@ end
 - 有付費帳號後再重新整合 Firebase
 
 #### 選項 3: 優先進行 Android 開發與測試（推薦，免費替代）
-- Android 不需要付費開發者帳號
-- 可立即編譯和測試
-- Firebase 功能完全相同
+
+**Android 開發不需要付費開發者帳號，Firebase 功能完全相同，可以完整驗證整合。**
+
+##### 步驟 1: 安裝 Android Studio
+1. **下載 Android Studio**:
+   - 前往 https://developer.android.com/studio
+   - 下載適用於 macOS 的版本（約 1GB）
+   - 需要約 5GB 硬碟空間
+
+2. **安裝 Android Studio**:
+   - 打開下載的 `.dmg` 檔案
+   - 將 Android Studio 拖到 Applications 資料夾
+   - 首次開啟時，會執行設置向導
+
+3. **完成初始設置**:
+   - 選擇 "Standard" 安裝類型
+   - 接受 Android SDK 授權協議
+   - 等待下載 Android SDK、Platform Tools、Build Tools
+
+##### 步驟 2: 設置 Android 模擬器
+1. 在 Android Studio 中開啟 **Device Manager**（工具列上的手機圖示）
+2. 點擊 **Create Device**
+3. 選擇裝置類型（推薦：Pixel 5 或 Pixel 6）
+4. 選擇系統映像檔（推薦：最新的 API Level，例如 API 34）
+5. 完成設置並啟動模擬器
+
+##### 步驟 3: 配置環境變數（重要）
+在 `~/.zshrc` 或 `~/.bash_profile` 添加：
+```bash
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+```
+
+然後執行：
+```bash
+source ~/.zshrc  # 或 source ~/.bash_profile
+```
+
+##### 步驟 4: 執行 Android Build
+```bash
+cd /Users/kenchio/Documents/GitHub/SuSuGiGiApp
+npx expo run:android
+```
+
+##### 步驟 5: 測試 Firebase 功能
+- Firebase Auth 登入/登出
+- Firestore 資料讀寫
+- 驗證所有功能正常運作
+
+##### 替代方案：使用實體 Android 手機
+如果您有 Android 手機，可以跳過模擬器設置：
+1. 在手機設定中找到「關於手機」
+2. 連續點擊「版本號碼」7 次啟用開發者選項
+3. 在開發者選項中啟用「USB 偵錯」
+4. 用 USB 連接到 Mac
+5. 執行 `npx expo run:android`
+
+**優點**：
+- 完全免費，不需要付費帳號
+- 可以測試真實的 Firebase 功能（不是 mock）
 - 驗證整合無誤後再處理 iOS
+- 開發速度比等待 iOS build 快很多
 
 #### 選項 4: 等待 Expo SDK 更新（長期觀察）
 - 目前 Expo SDK 54 是最新版本（使用 React Native 0.81.5）
