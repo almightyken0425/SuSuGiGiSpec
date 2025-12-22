@@ -36,12 +36,12 @@
 - ✗ EAS Build（需要付費 Apple Developer 帳號 $99/年）
 
 **可行解決方案**：
-1. **升級到 Expo SDK 55+**（RN 0.82+ 對 Hermes 整合更好）
-2. **付費註冊 Apple Developer** + 使用 EAS Build
-3. **暫時移除 Firebase**，改用 mock auth 繼續開發
-4. **優先開發 Android**（不需要付費帳號）
+1. **付費註冊 Apple Developer** ($99/年) + 使用 EAS Build
+2. **暫時移除 Firebase**，改用 mock auth 繼續開發
+3. **優先開發 Android**（不需要付費帳號，Firebase 功能完全相同）
+4. **等待 Expo SDK 更新**（期待未來版本支援 React Native 0.82+）
 
-**結論**：這是版本兼容性的系統性問題，不是配置錯誤。需要選擇升級路徑或替代方案。
+**結論**：這是 Expo SDK 54 的系統性限制問題。在沒有付費 Apple Developer 帳號的情況下，建議優先開發 Android 或暫時移除 Firebase。
 
 ---
 
@@ -280,7 +280,7 @@ end
 
 ### 後續選項
 
-#### 選項 1: 註冊 Apple Developer Program（推薦）
+#### 選項 1: 註冊 Apple Developer Program（推薦，如需 iOS 開發）
 - **費用**: $99 美元/年
 - **優點**: 
   - 可使用 EAS Build 生成 development build
@@ -288,23 +288,23 @@ end
   - 存取完整的開發工具與功能
 - **流程**: https://developer.apple.com/programs/
 
-#### 選項 2: 暫時移除 Firebase，使用 Expo Go 繼續開發
+#### 選項 2: 暫時移除 Firebase，使用 Expo Go 繼續開發（推薦，短期方案）
 - 移除所有 Firebase 依賴
 - 使用 `npx expo start` + Expo Go 測試
 - 其他功能照常開發
 - 有付費帳號後再重新整合 Firebase
 
-#### 選項 3: 優先進行 Android 開發與測試
+#### 選項 3: 優先進行 Android 開發與測試（推薦，免費替代）
 - Android 不需要付費開發者帳號
 - 可立即編譯和測試
 - Firebase 功能完全相同
 - 驗證整合無誤後再處理 iOS
 
-#### 選項 4: 升級 Expo SDK（長期方案）
-- 升級到 Expo SDK 55+（使用 React Native 0.82+）
-- RN 0.82+ 對 Hermes 整合更完善
-- 需要完整測試現有代碼
-- 可能解決當前的版本兼容性問題
+#### 選項 4: 等待 Expo SDK 更新（長期觀察）
+- 目前 Expo SDK 54 是最新版本（使用 React Native 0.81.5）
+- 期待未來 SDK 版本支援 React Native 0.82+
+- RN 0.82+ 對 Hermes 整合更完善，可能解決當前問題
+- 時間未知，不適合作為短期解決方案
 
 ### 技術學習重點
 
