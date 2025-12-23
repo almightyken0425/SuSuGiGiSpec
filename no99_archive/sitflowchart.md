@@ -210,9 +210,9 @@ graph TD
     RiskLock("Status: Lock<br/>(Risk Review)")
     
     RiskAction{"Risk Approve/Reject"}
-    Checked("Status: Checked")
     
     Switch{"Auto Finance<br/>Enabled?"}
+    Checked("Status: Checked")
 
     FinanceLockM["Finance Lock<br/>(Manual)"]
     FinanceActionM{"Finance Action<br/>(Select Channel)"}
