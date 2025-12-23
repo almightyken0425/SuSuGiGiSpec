@@ -256,22 +256,5 @@ graph TD
     
     ApprovedA -->|"Callback: Approve"| Success
     ApprovedA -->|"Callback: Reject"| Decline
-
-    %% linkStyle 索引對應:
-    %% 0: Start->Pending, 1: Pending->RiskLockBox, 2: RiskLockBox->RiskLock
-    %% 3: RiskLock->RiskAction, 4: RiskAction->Decline, 5: RiskAction->Checked
-    %% 6: Checked->Switch, 7: Switch->FinanceLockM, 8: Switch->FinanceLockA
-    %% 9: FinanceLockM->FinanceActionM, 10: FinanceActionM->RequestM, 11: FinanceActionM->Decline
-    %% 12: RequestM->ApprovedM, 13: RequestM->Checked, 14: ApprovedM->Success, 15: ApprovedM->Checked
-    %% 16: FinanceLockA->FinanceActionA, 17: FinanceActionA->RequestA
-    %% 18: RequestA->ApprovedA, 19: RequestA->Decline, 20: ApprovedA->Success, 21: ApprovedA->Decline
-
-    linkStyle 19,21 stroke:#F24F13,stroke-width:4px
-    linkStyle 13,15 stroke:#F29F13,stroke-width:4px
-    linkStyle 6,7,8 stroke:#20308c,stroke-width:4px
     
-    style Switch fill:#ffd700,stroke:#333,stroke-width:2px
-    style Checked fill:#e1f5fe,stroke:#01579b
-    style Decline fill:#ffebee,stroke:#c62828
-    style Success fill:#e8f5e9,stroke:#2e7d32
 ```
