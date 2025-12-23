@@ -263,3 +263,144 @@ graph TD
     - **IF** 三方 Reject/API Fail: 狀態**直接轉為 `Declined`**，視為該筆訂單終止，不再退回人工處理。
 
 ---
+
+## 完整提款審核流程圖 (Complete Flow)
+
+此流程圖整合所有審核模式與分支邏輯，包括：
+- Auto Finance 設定判斷
+- Payment Channel 選擇（Online/Offline）
+- API 請求處理
+- Payment Callback 處理
+
+```mermaid
+graph TD
+    %% 節點定義
+    Start(["Player Submit Withdraw<br/>Create Withdraw Order"])
+    Pending("Status: Pending")
+    
+    RiskLockAction["Risk Lock"]
+    RiskLockStatus("Status: Lock")
+    
+    RiskDecision{"Risk<br/>Approve/Reject"}
+    
+    AutoFinanceCheck1{"Auto Finance Approve<br/>On/Off"}
+    
+    MarkAutoFalse["Mark Withdraw Order<br/>Auto Finance Approve<br/>False"]
+    MarkAutoTrue["Mark Withdraw Order<br/>Auto Finance Approve<br/>True"]
+    
+    CheckedStatus("Status: Checked")
+    
+    FinanceLock["Finance Lock"]
+    FinanceDecision{"Finance<br/>Approve/Reject"}
+    
+    PaymentChannelCheck{"Payment Channel<br/>Online/Offline"}
+    
+    SendAPI["Send Withdraw<br/>API Request"]
+    APIResult{"API Request<br/>Success/Fail"}
+    
+    ApprovedStatus("Status: Approved")
+    DeclinedStatus("Status: Declined")
+    
+    AutoFinanceCheck2{"Withdraw Order<br/>Auto Finance Approve<br/>True/False"}
+    
+    %% Payment Callback 流程
+    PaymentCallback(["Payment Callback"])
+    UpdateVendorTxID["Update Vendor TX ID"]
+    CallbackDecision{"Callback<br/>Approve/Reject"}
+    DoNothing["Do Nothing"]
+    AutoFinanceCheck3{"Withdraw Order<br/>Auto Finance Approve<br/>On/Off"}
+    
+    %% 主流程連接
+    Start --> Pending
+    Pending --> RiskLockAction
+    RiskLockAction --> RiskLockStatus
+    RiskLockStatus --> RiskDecision
+    
+    RiskDecision -->|"Reject"| DeclinedStatus
+    RiskDecision -->|"Approve"| AutoFinanceCheck1
+    
+    %% Manual 路徑 (OFF)
+    AutoFinanceCheck1 -->|"OFF"| MarkAutoFalse
+    MarkAutoFalse --> CheckedStatus
+    CheckedStatus --> FinanceLock
+    FinanceLock --> FinanceDecision
+    
+    FinanceDecision -->|"Reject"| DeclinedStatus
+    FinanceDecision -->|"Approve"| PaymentChannelCheck
+    
+    PaymentChannelCheck -->|"Online"| SendAPI
+    SendAPI --> APIResult
+    
+    APIResult -->|"Success"| ApprovedStatus
+    APIResult -->|"Fail"| AutoFinanceCheck2
+    
+    AutoFinanceCheck2 -->|"ON"| DeclinedStatus
+    AutoFinanceCheck2 -->|"OFF"| CheckedStatus
+    
+    PaymentChannelCheck -->|"Offline"| ApprovedStatus
+    
+    %% Auto 路徑 (ON)
+    AutoFinanceCheck1 -->|"ON"| MarkAutoTrue
+    MarkAutoTrue --> ApprovedStatus
+    
+    %% Payment Callback 流程
+    PaymentCallback --> UpdateVendorTxID
+    UpdateVendorTxID --> CallbackDecision
+    
+    CallbackDecision -->|"Approve"| DoNothing
+    CallbackDecision -->|"Reject"| AutoFinanceCheck3
+    
+    AutoFinanceCheck3 -->|"OFF"| CheckedStatus
+    AutoFinanceCheck3 -->|"ON"| DeclinedStatus
+    
+    %% 樣式定義
+    style Start fill:#d4e9f7,stroke:#1976d2
+    style Pending fill:#e1f5fe,stroke:#01579b
+    style RiskLockStatus fill:#e1f5fe,stroke:#01579b
+    style CheckedStatus fill:#e1f5fe,stroke:#01579b
+    style ApprovedStatus fill:#c8e6c9,stroke:#388e3c
+    style DeclinedStatus fill:#ffcdd2,stroke:#d32f2f
+    
+    style RiskLockAction fill:#bbdefb,stroke:#1976d2
+    style FinanceLock fill:#bbdefb,stroke:#1976d2
+    style MarkAutoFalse fill:#e1f5fe,stroke:#0288d1
+    style MarkAutoTrue fill:#e1f5fe,stroke:#0288d1
+    style SendAPI fill:#bbdefb,stroke:#1976d2
+    style UpdateVendorTxID fill:#bbdefb,stroke:#1976d2
+    style DoNothing fill:#f1f8e9,stroke:#689f38
+```
+
+### 流程說明
+
+#### 主要流程
+1. **玩家提交提款** → Pending 狀態
+2. **Risk 鎖定與審核**
+   - Reject → Declined
+   - Approve → 檢查 Auto Finance 設定
+
+#### Auto Finance OFF（手動模式）
+1. 標記 Auto Finance Approve = False
+2. 進入 Checked 狀態
+3. Finance Lock → Finance 審核
+   - Reject → Declined
+   - Approve → 檢查 Payment Channel
+4. **Online Channel**: 發送 API → 等待結果
+   - Success → Approved
+   - Fail → 根據 Auto Finance 設定決定
+     - ON → Declined
+     - OFF → 退回 Checked
+5. **Offline Channel**: 直接 Approved
+
+#### Auto Finance ON（自動模式）
+1. 標記 Auto Finance Approve = True
+2. 直接進入 Approved 狀態
+
+#### Payment Callback 處理
+1. 收到 Payment Callback
+2. 更新 Vendor TX ID
+3. 判斷 Callback 結果
+   - Approve → Do Nothing
+   - Reject → 根據 Auto Finance 設定
+     - OFF → 退回 Checked
+     - ON → Declined
+
