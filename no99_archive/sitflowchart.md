@@ -239,7 +239,7 @@ graph TD
     Switch ==>|"No (Manual)"| Checked
     Checked ==> FinanceLockM
 
-    Switch ==>|"Yes (Auto)"| FinanceLockA
+    Switch ==>|"Yes (Auto)"| RequestA
 
     FinanceLockM ==> FinanceActionM
     FinanceActionM ==>|"Approve"| RequestM
@@ -250,9 +250,6 @@ graph TD
     
     ApprovedM -->|"Callback: Approve"| Success
     ApprovedM -->|"Callback: Reject"| Checked
-
-    FinanceLockA ==> FinanceActionA
-    FinanceActionA ==>|"Auto Approve"| RequestA
     
     RequestA -->|"Success"| ApprovedA
     RequestA -->|"Fail"| Decline
