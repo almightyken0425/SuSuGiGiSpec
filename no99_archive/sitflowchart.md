@@ -1,5 +1,76 @@
 # 提款審核流程規格：手動與自動模式對照
 
+
+## 混合模式對照流程 (Hybrid Flow)
+
+- **目的:** 呈現系統如何依據「自動財務審核」設定值分流，以及不同模式下失敗路徑的差異。
+- **關鍵差異:**
+    - **手動模式 (Manual):** API 失敗或三方拒絕後，退回 `Checked`，由財務人工介入重試或改得通道。
+    - **自動模式 (Auto):** API 失敗或三方拒絕後，直接 `Decline`，不退回人工，避免無效卡單。
+
+```mermaid
+graph TD
+    %% 節點定義
+    Start(["Player Submit Withdrawal"])
+    Pending("Status: Pending")
+    
+    RiskLockActionBox["Risk Lock"]
+    RiskLock("Status: Lock<br/>(Risk Review)")
+    
+    RiskAction{"Risk Approve/Reject"}
+    
+    AutoFinanceSetting{"Auto Finance<br/>Enabled?"}
+    WithdrawOrderAutoFinanceSetting{"Withdraw Order<br/>Auto Finance Approve?"}
+    Checked("Status: Checked")
+
+    FinanceLockM["Finance Lock<br/>(Manual)"]
+    FinanceActionM{"Finance Action<br/>(Select Channel)"}
+    RequestM{"Send Request<br/>(Manual)"}
+    ApprovedM("Status: Approved<br/>(Wait Callback)")
+
+    FinanceLockA["Finance Lock<br/>(Auto)"]
+    FinanceActionA{"Finance Action<br/>(Auto)"}
+    RequestA{"Send Request<br/>(Auto)"}
+    ApprovedA("Status: Approved<br/>(Wait Callback)")
+
+    Decline("Status: Declined")
+    Success("Update Vendor Tx ID<br/>(Success)")
+    
+    %% 連接定義
+    Start --> Pending
+    Pending --> RiskLockActionBox
+    RiskLockActionBox --> RiskLock
+    RiskLock --> RiskAction
+    
+    RiskAction -->|"Reject"| Decline
+    RiskAction -->|"Approve"| AutoFinanceSetting
+    
+    AutoFinanceSetting -->|"No (Manual)"| Checked
+    Checked --> FinanceLockM
+
+    AutoFinanceSetting -->|"Yes (Auto)"| RequestA
+
+    FinanceLockM --> FinanceActionM
+    FinanceActionM -->|"Approve"| RequestM
+    FinanceActionM -->|"Reject"| Decline
+    
+    RequestM -->|"Success"| ApprovedM
+    RequestM -->|"Fail"| Checked
+    
+    ApprovedM -->|"Callback: Approve"| Success
+    ApprovedM -->|"Callback: Reject"| Checked
+    
+    RequestA -->|"Success"| ApprovedA
+    RequestA -->|"Fail"| Decline
+    
+    ApprovedA -->|"Callback: Approve"| Success
+    ApprovedA -->|"Callback: Reject"| WithdrawOrderAutoFinanceSetting
+    WithdrawOrderAutoFinanceSetting -->|"Yes"| Decline
+    WithdrawOrderAutoFinanceSetting -->|"No"| Checked
+
+
+```
+
 ---
 
 ## 畫面目標
@@ -192,69 +263,3 @@ graph TD
     - **IF** 三方 Reject/API Fail: 狀態**直接轉為 `Declined`**，視為該筆訂單終止，不再退回人工處理。
 
 ---
-
-## 混合模式對照流程 (Hybrid Flow)
-
-- **目的:** 呈現系統如何依據「自動財務審核」設定值分流，以及不同模式下失敗路徑的差異。
-- **關鍵差異:**
-    - **手動模式 (Manual):** API 失敗或三方拒絕後，退回 `Checked`，由財務人工介入重試或改得通道。
-    - **自動模式 (Auto):** API 失敗或三方拒絕後，直接 `Decline`，不退回人工，避免無效卡單。
-
-```mermaid
-graph TD
-    %% 節點定義
-    Start(["Player Submit Withdrawal"])
-    Pending("Status: Pending")
-    
-    RiskLockActionBox["Risk Lock"]
-    RiskLock("Status: Lock<br/>(Risk Review)")
-    
-    RiskAction{"Risk Approve/Reject"}
-    
-    Switch{"Auto Finance<br/>Enabled?"}
-    Checked("Status: Checked")
-
-    FinanceLockM["Finance Lock<br/>(Manual)"]
-    FinanceActionM{"Finance Action<br/>(Select Channel)"}
-    RequestM{"Send Request<br/>(Manual)"}
-    ApprovedM("Status: Approved<br/>(Wait Callback)")
-
-    FinanceLockA["Finance Lock<br/>(Auto)"]
-    FinanceActionA{"Finance Action<br/>(Auto)"}
-    RequestA{"Send Request<br/>(Auto)"}
-    ApprovedA("Status: Approved<br/>(Wait Callback)")
-
-    Decline("Status: Declined")
-    Success("Update Vendor Tx ID<br/>(Success)")
-    
-    %% 連接定義
-    Start --> Pending
-    Pending --> RiskLockActionBox
-    RiskLockActionBox --> RiskLock
-    RiskLock --> RiskAction
-    
-    RiskAction -->|"Reject"| Decline
-    RiskAction -->|"Approve"| Switch
-    
-    Switch -->|"No (Manual)"| Checked
-    Checked --> FinanceLockM
-
-    Switch -->|"Yes (Auto)"| RequestA
-
-    FinanceLockM --> FinanceActionM
-    FinanceActionM -->|"Approve"| RequestM
-    FinanceActionM -->|"Reject"| Decline
-    
-    RequestM -->|"Success"| ApprovedM
-    RequestM -->|"Fail"| Checked
-    
-    ApprovedM -->|"Callback: Approve"| Success
-    ApprovedM -->|"Callback: Reject"| Checked
-    
-    RequestA -->|"Success"| ApprovedA
-    RequestA -->|"Fail"| Decline
-    
-    ApprovedA -->|"Callback: Approve"| Success
-    ApprovedA -->|"Callback: Reject"| Decline
-
-```
