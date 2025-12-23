@@ -202,7 +202,7 @@ graph TD
 
 ```mermaid
 graph TD
-    %% === 共用階段 (Risk) ===
+    %% 節點定義
     Start(["Player Submit Withdrawal"])
     Pending("Status: Pending")
     
@@ -214,23 +214,20 @@ graph TD
     
     Switch{"Auto Finance<br/>Enabled?"}
 
-    %% === 手動流程 (Manual Path) ===
     FinanceLockM["Finance Lock<br/>(Manual)"]
     FinanceActionM{"Finance Action<br/>(Select Channel)"}
     RequestM{"Send Request<br/>(Manual)"}
     ApprovedM("Status: Approved<br/>(Wait Callback)")
 
-    %% === 自動流程 (Auto Path) ===
     FinanceLockA["Finance Lock<br/>(Auto)"]
     FinanceActionA{"Finance Action<br/>(Auto)"}
     RequestA{"Send Request<br/>(Auto)"}
     ApprovedA("Status: Approved<br/>(Wait Callback)")
 
-    %% === 終結狀態 ===
     Decline("Status: Declined")
     Success("Update Vendor Tx ID<br/>(Success)")
     
-    %% === 共用連接 ===
+    %% 連接定義
     Start --> Pending
     Pending --> RiskLockActionBox
     RiskLockActionBox --> RiskLock
@@ -241,11 +238,9 @@ graph TD
     
     Checked ==> Switch
 
-    %% === 分流邏輯 ===
     Switch ==>|"No (Manual)"| FinanceLockM
     Switch ==>|"Yes (Auto)"| FinanceLockA
 
-    %% === Manual 詳細流程 ===
     FinanceLockM ==> FinanceActionM
     FinanceActionM ==>|"Approve"| RequestM
     FinanceActionM -->|"Reject"| Decline
@@ -256,7 +251,6 @@ graph TD
     ApprovedM -->|"Callback: Approve"| Success
     ApprovedM -->|"Callback: Reject"| Checked
 
-    %% === Auto 詳細流程 ===
     FinanceLockA ==> FinanceActionA
     FinanceActionA ==>|"Auto Approve"| RequestA
     
@@ -266,18 +260,18 @@ graph TD
     ApprovedA -->|"Callback: Approve"| Success
     ApprovedA -->|"Callback: Reject"| Decline
 
-    %% === 樣式定義 ===
-    %% 標記 Auto 失敗路徑 (紅色)
-    linkStyle 22,24 stroke:#F24F13,stroke-width:4px; 
-    %% RequestA->Decline, ApprovedA(Reject)->Decline
+    %% linkStyle 索引對應:
+    %% 0: Start->Pending, 1: Pending->RiskLockBox, 2: RiskLockBox->RiskLock
+    %% 3: RiskLock->RiskAction, 4: RiskAction->Decline, 5: RiskAction->Checked
+    %% 6: Checked->Switch, 7: Switch->FinanceLockM, 8: Switch->FinanceLockA
+    %% 9: FinanceLockM->FinanceActionM, 10: FinanceActionM->RequestM, 11: FinanceActionM->Decline
+    %% 12: RequestM->ApprovedM, 13: RequestM->Checked, 14: ApprovedM->Success, 15: ApprovedM->Checked
+    %% 16: FinanceLockA->FinanceActionA, 17: FinanceActionA->RequestA
+    %% 18: RequestA->ApprovedA, 19: RequestA->Decline, 20: ApprovedA->Success, 21: ApprovedA->Decline
 
-    %% 標記 Manual 失敗路徑 (橘色/退回)
-    linkStyle 16,18 stroke:#F29F13,stroke-width:4px;
-    %% RequestM->Checked, ApprovedM(Reject)->Checked
-
-    %% 標記 主要成功路徑 (藍色加粗)
-    linkStyle 7,12,13 stroke:#20308c,stroke-width:4px;
-    %% Checked->Switch, Switch->FinLockM, Switch->FinLockA (這段只是分流，可選)
+    linkStyle 19,21 stroke:#F24F13,stroke-width:4px
+    linkStyle 13,15 stroke:#F29F13,stroke-width:4px
+    linkStyle 6,7,8 stroke:#20308c,stroke-width:4px
     
     style Switch fill:#ffd700,stroke:#333,stroke-width:2px
     style Checked fill:#e1f5fe,stroke:#01579b
