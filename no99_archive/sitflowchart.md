@@ -193,8 +193,96 @@ graph TD
 
 ---
 
-**文件結束**
+## 混合模式對照流程 (Hybrid Flow)
 
----
+- **目的:** 呈現系統如何依據「自動財務審核」設定值分流，以及不同模式下失敗路徑的差異。
+- **關鍵差異:**
+    - **手動模式 (Manual):** API 失敗或三方拒絕後，退回 `Checked`，由財務人工介入重試或改得通道。
+    - **自動模式 (Auto):** API 失敗或三方拒絕後，直接 `Decline`，不退回人工，避免無效卡單。
 
-**文件結束**
+```mermaid
+graph TD
+    %% === 共用階段 (Risk) ===
+    Start(["Player Submit Withdrawal"])
+    Pending("Status: Pending")
+    
+    RiskLockActionBox["Risk Lock"]
+    RiskLock("Status: Lock<br/>(Risk Review)")
+    
+    RiskAction{"Risk Approve/Reject"}
+    Checked("Status: Checked")
+    
+    Switch{"Auto Finance<br/>Enabled?"}
+
+    %% === 手動流程 (Manual Path) ===
+    FinanceLockM["Finance Lock<br/>(Manual)"]
+    FinanceActionM{"Finance Action<br/>(Select Channel)"}
+    RequestM{"Send Request<br/>(Manual)"}
+    ApprovedM("Status: Approved<br/>(Wait Callback)")
+
+    %% === 自動流程 (Auto Path) ===
+    FinanceLockA["Finance Lock<br/>(Auto)"]
+    FinanceActionA{"Finance Action<br/>(Auto)"}
+    RequestA{"Send Request<br/>(Auto)"}
+    ApprovedA("Status: Approved<br/>(Wait Callback)")
+
+    %% === 終結狀態 ===
+    Decline("Status: Declined")
+    Success("Update Vendor Tx ID<br/>(Success)")
+    
+    %% === 共用連接 ===
+    Start --> Pending
+    Pending --> RiskLockActionBox
+    RiskLockActionBox --> RiskLock
+    RiskLock --> RiskAction
+    
+    RiskAction -->|"Reject"| Decline
+    RiskAction -->|"Approve"| Checked
+    
+    Checked ==> Switch
+
+    %% === 分流邏輯 ===
+    Switch ==>|"No (Manual)"| FinanceLockM
+    Switch ==>|"Yes (Auto)"| FinanceLockA
+
+    %% === Manual 詳細流程 ===
+    FinanceLockM ==> FinanceActionM
+    FinanceActionM ==>|"Approve"| RequestM
+    FinanceActionM -->|"Reject"| Decline
+    
+    RequestM -->|"Success"| ApprovedM
+    RequestM -->|"Fail"| Checked
+    
+    ApprovedM -->|"Callback: Approve"| Success
+    ApprovedM -->|"Callback: Reject"| Checked
+
+    %% === Auto 詳細流程 ===
+    FinanceLockA ==> FinanceActionA
+    FinanceActionA ==>|"Auto Approve"| RequestA
+    
+    RequestA -->|"Success"| ApprovedA
+    RequestA -->|"Fail"| Decline
+    
+    ApprovedA -->|"Callback: Approve"| Success
+    ApprovedA -->|"Callback: Reject"| Decline
+
+    %% === 樣式定義 ===
+    linkStyle default stroke-width:2px,fill:none,stroke:#333;
+
+    %% 標記 Auto 失敗路徑 (紅色)
+    linkStyle 22,24 stroke:#F24F13,stroke-width:4px; 
+    %% RequestA->Decline, ApprovedA(Reject)->Decline
+
+    %% 標記 Manual 失敗路徑 (橘色/退回)
+    linkStyle 16,18 stroke:#F29F13,stroke-width:4px;
+    %% RequestM->Checked, ApprovedM(Reject)->Checked
+
+    %% 標記 主要成功路徑 (藍色加粗)
+    linkStyle 7,12,13 stroke:#20308c,stroke-width:4px;
+    %% Checked->Switch, Switch->FinLockM, Switch->FinLockA (這段只是分流，可選)
+    
+    style Switch fill:#ffd700,stroke:#333,stroke-width:2px
+    style Checked fill:#e1f5fe,stroke:#01579b
+    style Decline fill:#ffebee,stroke:#c62828
+    style Success fill:#e8f5e9,stroke:#2e7d32
+```
