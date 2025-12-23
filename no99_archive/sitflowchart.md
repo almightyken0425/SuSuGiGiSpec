@@ -234,11 +234,11 @@ graph TD
     RiskLock --> RiskAction
     
     RiskAction -->|"Reject"| Decline
-    RiskAction -->|"Approve"| Checked
+    RiskAction -->|"Approve"| Switch
     
-    Checked ==> Switch
+    Switch ==>|"No (Manual)"| Checked
+    Checked ==> FinanceLockM
 
-    Switch ==>|"No (Manual)"| FinanceLockM
     Switch ==>|"Yes (Auto)"| FinanceLockA
 
     FinanceLockM ==> FinanceActionM
