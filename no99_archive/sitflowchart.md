@@ -267,8 +267,6 @@ graph TD
     ApprovedA -->|"Callback: Reject"| Decline
 
     %% === 樣式定義 ===
-    linkStyle default stroke-width:2px,fill:none,stroke:#333;
-
     %% 標記 Auto 失敗路徑 (紅色)
     linkStyle 22,24 stroke:#F24F13,stroke-width:4px; 
     %% RequestA->Decline, ApprovedA(Reject)->Decline
