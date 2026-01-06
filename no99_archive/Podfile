@@ -1,0 +1,86 @@
+require Pod::Executable.execute_command('node', ['-p',
+  'require.resolve(
+    "react-native/scripts/react_native_pods.rb",
+    {paths: [process.argv[1]]},
+  )', __dir__]).strip
+
+platform :ios, min_ios_version_supported
+prepare_react_native_project!
+
+static_frameworks = [
+  'FirebaseAuthInterop',
+  'FirebaseAppCheckInterop',
+  'FirebaseCore',
+  'FirebaseCoreExtension',
+  'FirebaseMessaging',
+  'GoogleUtilities',
+  'RecaptchaInterop',
+  'FirebaseCoreInternal',
+  'FirebaseInstallations',
+  'GoogleDataTransport',
+  'nanopb',
+  'FirebaseABTesting',
+  'FirebaseAuth'
+]
+
+pre_install do |installer|
+  installer.pod_targets.each do |pod|
+    if static_frameworks.include?(pod.name)
+      puts "Configuring #{pod.name} as static framework"
+      def pod.build_type
+        Pod::BuildType.new(:linkage => :static, :packaging => :framework)
+      end
+    end
+  end
+end
+
+project 'MeFresh',{
+  'Debug-Staging' => :debug,
+  'Debug' => :debug,
+  'Release-Staging' => :release,
+  'Release' => :release,
+}
+
+target 'MeFresh' do
+
+  pod 'react-native-config', :path => '../node_modules/react-native-config'
+  
+  # For extensions without React dependencies
+  pod 'react-native-config/Extension', :path => '../node_modules/react-native-config'
+
+  config = use_native_modules!
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
+  )
+
+  pod 'FirebaseAuth'
+  pod 'FirebaseAuthInterop'
+  pod 'FirebaseAppCheckInterop'
+  pod 'FirebaseCore'
+  pod 'FirebaseCoreExtension'
+  pod 'FirebaseCoreInternal'
+  pod 'FirebaseMessaging'
+  pod 'GoogleUtilities'
+  pod 'RecaptchaInterop'
+  pod 'nanopb'
+  pod 'FirebaseABTesting'
+  pod 'FirebaseInstallations'
+  pod 'GoogleDataTransport'
+
+  post_install do |installer|
+    react_native_post_install(
+      installer,
+      config[:reactNativePath],
+      :mac_catalyst_enabled => false
+    )
+
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['SWIFT_VERSION'] = '5.0'
+        config.build_settings['DEFINES_MODULE'] = 'YES'
+      end
+    end
+  end
+end
