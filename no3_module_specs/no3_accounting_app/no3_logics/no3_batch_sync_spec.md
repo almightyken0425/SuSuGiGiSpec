@@ -101,3 +101,49 @@
     - **上傳階段:** 查詢 `updatedOn > 0`，上傳本機所有資料
     - **下載階段:** 查詢 `updatedOn > 0`，下載雲端所有資料寫入本機（LWW 策略自動合併）
     - **完成階段:** `lastSyncTimestamp` 更新為當前時間
+
+---
+
+## 實作驗證: Sync Engine Logic
+
+以下為 `src/services/syncEngine.ts` 實際程式碼邏輯的視覺化流程圖，供規格比對使用。
+
+```mermaid
+flowchart TD
+    Start([syncEngine.sync()]) --> CheckUser{Check User Auth}
+    CheckUser -- No User --> End([End])
+    CheckUser -- Has User --> CheckProgress{Check inProgress}
+    CheckProgress -- True --> End
+    CheckProgress -- False --> Lock[Set inProgress = true]
+    
+    Lock --> PushStart[Push Changes]
+    PushStart --> GetChanges[getLocalChanges > lastPushTimestamp]
+    GetChanges --> CheckCount{Total Changes > 0?}
+    CheckCount -- No --> PullStart
+    CheckCount -- Yes --> SplitBatch[Chunk into Batches of 500]
+    
+    SplitBatch --> LoopBatch{Loop Batches}
+    LoopBatch --> WriteFirestore[Firestore Batch Write]
+    WriteFirestore --> NextBatch{Has More?}
+    NextBatch -- Yes --> LoopBatch
+    NextBatch -- No --> UpdatePushTime[Update lastPushTimestamp]
+    
+    UpdatePushTime --> PullStart[Pull Changes]
+    PullStart --> PullCollections[Pull All Collections > lastPullTimestamp]
+    PullCollections --> LoopDocs{Loop Remotes}
+    LoopDocs --> ConflictCheck{Local.updatedOn < Remote.updatedOn}
+    ConflictCheck -- Yes --> UpdateLocal[Update Local DB (LWW)]
+    ConflictCheck -- No --> Skip
+    
+    UpdateLocal --> NextDoc{Next Doc?}
+    Skip --> NextDoc
+    NextDoc -- Yes --> LoopDocs
+    NextDoc -- No --> UpdatePullTime[Update lastPullTimestamp]
+    
+    UpdatePullTime --> Listeners[Start Real-time Listeners]
+    Listeners --> OnSnapshot[onSnapshot Event]
+    OnSnapshot --> WriteLocal[Update Local DB]
+    
+    Listeners --> Unlock[Set inProgress = false]
+    Unlock --> End
+```

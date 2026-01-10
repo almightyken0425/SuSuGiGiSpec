@@ -1,10 +1,10 @@
 # Firebase & RevenueCat 串接施工計劃
 
 > **文件日期:** 2026-01-03  
-> **最後更新:** 2026-01-06  
+> **最後更新:** 2026-01-08  
 > **專案:** SuSuGiGi 記帳 App  
 > **目標:** 實作使用者認證、付費訂閱與雲端同步功能  
-> **執行狀態:** ✅ 階段0完成 | ✅ 階段2.1-2.4完成 | 🚀 階段2.5進行中
+> **執行狀態:** ✅ 階段0完成 | ✅ 階段2完成 | 🚀 階段3進行中
 
 ---
 
@@ -17,22 +17,28 @@
 - PremiumContext 骨架已建立
 - AuthContext 骨架已建立
 - PaywallScreen UI 已實作
+- **Firebase Authentication Google 登入功能已驗證 (Logs Confirmed)**
+- **Firebase Firestore Native SDK 整合已完成 (iOS Static Frameworks)**
 
 ### Mock 狀態
 
-- Firebase 服務: 目前為 Mock 模式
-- RevenueCat 服務: 目前為 Mock 模式
-- 所有權限檢查皆為假資料
+- Firebase Auth: 已使用真實服務 (iOS/Android)
+- Firestore: 準備開始實作真實同步
+- RevenueCat: 尚未填入 iOS 真實 Key (Mock 模式移除中)
 
 ### 技術風險與解決方案
 
 > [!IMPORTANT]
-> **已驗證解決方案:** 根據實際成功案例，Firebase Native SDK 可在 React Native 0.79.6 正常運作。
+> **已驗證解決方案:** 針對 React Native 0.79.6 與 Firebase Firestore (leveldb) 的編譯衝突，已通過以下配置驗證成功：
+> 1. 版本鎖定: `@react-native-firebase/*` v21.14.0
+> 2. Podfile: 啟用 Static Frameworks
+> 3. Podfile: 設定 `CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = 'YES'`
+> 4. Clean Build: 必須清除 Build Cache
 
 **iOS 整合問題:**
 - React Native 0.83.1 與 Native Firebase SDK 有已知相容性問題
 - **驗證解決方案:** 降級至 React Native 0.79.6 可完美整合
-- **參考案例:** 已成功整合 `@react-native-firebase/app` v23.4.0 與 `@react-native-firebase/messaging` v23.4.0
+- **參考案例:** 已成功整合 `@react-native-firebase/app` v21.14.0 (非 v23.4.0)
 - **關鍵配置:** 需使用 static frameworks 配置，詳見參考 Podfile
 
 **Android 整合:**

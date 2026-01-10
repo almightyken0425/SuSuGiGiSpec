@@ -4,7 +4,7 @@
 > **最後更新:** 2026-01-06  
 > **版本:** v2.1 執行中版本  
 > **母文件:** `firebase_revenuecat_integration_plan_20260103.md`  
-> **執行狀態:** ✅ 階段0完成 | ✅ 階段2.1-2.4完成 | 🚀 階段2.5進行中
+> **執行狀態:** ✅ 階段0完成 | ✅ 階段2完成 | 🚀 階段3進行中
 
 ---
 
@@ -264,26 +264,26 @@ graph TD
 
 ---
 
-### ✅ 子階段 2.2: React Native 降級與 SDK 安裝 (已完成)
+### ✅ 子階段 2.2: React Native 降級與 SDK 安裝 (已完成 - 含 Firestore 修復)
 
 **預估時間:** 0.5 天
 
 **工作內容:**
 - 執行 RN 降級至 0.79.6
-- 安裝 `@react-native-firebase/app@^23.4.0`
-- 安裝 `@react-native-firebase/auth@^23.4.0`
-- 安裝 `@react-native-firebase/firestore@^23.4.0`
+- 安裝 `@react-native-firebase/app@21.14.0`
+- 安裝 `@react-native-firebase/auth@21.14.0`
+- 安裝 `@react-native-firebase/firestore@21.14.0` (務必鎖定版本避免 v23.0.0+ 衝突)
 - 安裝 `@react-native-google-signin/google-signin`
 - 執行 `npm install`
 - 測試 build
 
 **產出:**
 - 更新的 `package.json`
-- 更新的 `package-lock.json`
+- 成功解決 leveldb-library 編譯衝突 (使用 `CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES`)
 
 **驗收標準:**
 - 所有套件安裝成功
-- 專案可成功 build
+- 專案可成功 build (包含 Firestore)
 - 無版本衝突
 
 ---
@@ -297,6 +297,7 @@ graph TD
 - 更新 `Podfile`
 - 加入 static frameworks 清單
 - 設定 pre_install hook
+- 加入 `CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = 'YES'`
 - 明確宣告 Firebase pods
 - 更新 `AppDelegate.swift`
 - 匯入 Firebase modules
@@ -341,7 +342,7 @@ graph TD
 
 ---
 
-### 🚀 子階段 2.5: Firebase Auth 服務層實作 (進行中)
+### ✅ 子階段 2.5: Firebase Auth 服務層實作 (已完成)
 
 **預估時間:** 1 天
 
@@ -367,7 +368,7 @@ graph TD
 
 ---
 
-### 子階段 2.6: AuthContext 與 LoginScreen 實作
+### ✅ 子階段 2.6: AuthContext 與 LoginScreen 實作 (已完成)
 
 **預估時間:** 1 天
 
@@ -396,9 +397,14 @@ graph TD
 
 ---
 
-### 子階段 2.7: Firebase Auth 整合測試
+### ✅ 子階段 2.7: Firebase Auth 整合測試 (已完成)
 
 **預估時間:** 1 天
+
+**完成備註:**
+- Google 登入功能驗證通過 (Logs: `[RevenueCat] credentials issue` 確認已進入 Auth 成功區塊)
+- Token 取得正常
+- 資料流邏輯正確
 
 **工作內容:**
 - 測試 Google 登入流程
@@ -423,9 +429,13 @@ graph TD
 
 ## 階段 3: Firestore 資料同步
 
-### 子階段 3.1: Firestore 基礎設定
+### ✅ 子階段 3.1: Firestore 基礎設定 (已完成)
 
 **預估時間:** 0.5 天
+
+**完成備註:**
+- Security Rules 已建立 (`firestore.rules`)
+- 整合於 App Logic
 
 **工作內容:**
 - 啟用 Firestore Database
@@ -446,9 +456,13 @@ graph TD
 
 ---
 
-### 子階段 3.2: Users Collection 實作
+### ✅ 子階段 3.2: Users Collection 實作 (已完成)
 
 **預估時間:** 1 天
+
+**完成備註:**
+- `userService.ts` 已實作
+- `AuthContext` 自動同步邏輯已整合
 
 **工作內容:**
 - 實作使用者建立邏輯
@@ -492,9 +506,13 @@ graph TD
 
 ---
 
-### 子階段 3.4: 偏好設定同步實作
+### ✅ 子階段 3.4: 偏好設定同步實作 (已完成)
 
 **預估時間:** 1 天
+
+**完成備註:**
+- `settingsService.ts` 已實作 (雙向同步)
+- `PreferenceContext` 整合完成 (Local變更->Cloud, Cloud變更->Local)
 
 **工作內容:**
 - 實作本地寫入 Firestore
