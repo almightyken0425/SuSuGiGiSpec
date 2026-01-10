@@ -10,6 +10,100 @@
 
 ## 階段拆解總覽
 
+1.  **階段 0: 準備工作 (Preparation)**
+    - 0.1: React Native Version Evaluation
+    - 0.2: Developer Accounts
+    - 0.3: Product Planning
+2.  **階段 1: RevenueCat 基礎整合 (Foundation)**
+    - 1.1: Dashboard Setup
+    - 1.2: Service Implementation
+    - 1.3: Paywall UI
+    - 1.4: Sandbox Testing
+3.  **階段 2: Firebase Auth 整合 (Authentication)**
+    - 2.1: Project Setup (iOS/Android)
+    - 2.2: SDK Integration
+    - 2.3: iOS Config
+    - 2.4: Android Config
+    - 2.5: Service Implementation
+    - 2.6: UI Integration
+    - 2.7: Integration Testing
+4.  **階段 3: Firestore 資料同步 (Data Sync)**
+    - 3.1: Firestore Setup
+    - 3.2: Users Collection
+    - 3.3: RevenueCat Extension
+    - 3.4: Preference Sync
+    - 3.5: SyncEngine Foundation
+    - 3.6: Premium Logic
+5.  **階段 4: 完整同步引擎 (Full Engine)**
+    - 4.1: Collection Design
+    - 4.2: Incremental Sync
+    - 4.3: Initial Sync
+    - 4.4: Error Handling
+    - 4.5: UI Integration
+6.  **階段 5: 整合測試與優化 (Optimization)**
+    - 5.1: E2E Testing
+    - 5.2: Performance
+    - 5.3: Monitoring
+    - 5.4: Documentation
+
+---
+
+## ✅ 階段 0: 準備工作 (已完成)
+
+### ✅ 子階段 0.1: React Native 版本評估 (已完成)
+
+**預估時間:** 0.5 天
+
+**原定工作內容:**
+- 檢查當前專案狀態與版本資訊
+- 研究 RN 0.79.6 breaking changes
+- 檢查套件相容性
+- 建立版本評估報告
+
+**產出:**
+- 版本評估報告 `version_evaluation_report.md`
+
+**實際執行紀錄 (Actual Execution):**
+- **Evaluation:** 評估了從 RN 0.83.x 降級至 0.79.6 的必要性，主要為了配合 Firebase Native SDK 的穩定性。
+- **Decision:** 決定降級以確保與 `@react-native-firebase` 生態系的完全相容。
+
+---
+
+### ✅ 子階段 0.2: Firebase 與 RevenueCat 免費帳號準備 (已完成)
+
+**預估時間:** 0.5 天
+
+**原定工作內容:**
+- 規劃 Firebase 專案建立步驟
+- 規劃 RevenueCat 免費帳號註冊
+- 建立帳號準備檢查清單
+
+**產出:**
+- 帳號準備清單 `developer_accounts_checklist.md`
+
+**實際執行紀錄 (Actual Execution):**
+- **Accounts:** 完成 Firebase Project 建立與 RevenueCat 帳號註冊。
+- **Setup:** 建立了基礎的開發環境配置。
+
+---
+
+### ✅ 子階段 0.3: RevenueCat 產品規劃 (已完成)
+
+**預估時間:** 0.5 天
+
+**原定工作內容:**
+- 定義訂閱產品結構 (月費、年費)
+- 規劃定價策略
+- 設計 Entitlement 架構
+- 建立產品規格文件
+
+**產出:**
+- 產品規格書 `revenuecat_product_spec.md`
+
+**實際執行紀錄 (Actual Execution):**
+- **Products:** 確定了 `pro_monthly` 與 `pro_yearly` 兩大訂閱產品。
+- **Entitlements:** 定義 `premium` level entitlement，並將其與 Firestore user schema 中的 `rc_entitlements` 欄位對齊。
+
 ## ✅ 階段 1: RevenueCat 基礎整合 (架構已完成)
 
 ### ✅ 子階段 1.1: RevenueCat Dashboard 設定 (已完成)
