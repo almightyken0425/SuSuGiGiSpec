@@ -110,10 +110,10 @@
 
 ```mermaid
 flowchart TD
-    Start([syncEngine.sync()]) --> CheckUser{Check User Auth}
-    CheckUser -- No User --> End([End])
+    Start(["syncEngine.sync()"]) --> CheckUser{Check User Auth}
+    CheckUser -- No User --> EndWith(["End"])
     CheckUser -- Has User --> CheckProgress{Check inProgress}
-    CheckProgress -- True --> End
+    CheckProgress -- True --> EndWith
     CheckProgress -- False --> Lock[Set inProgress = true]
     
     Lock --> PushStart[Push Changes]
@@ -145,5 +145,5 @@ flowchart TD
     OnSnapshot --> WriteLocal[Update Local DB]
     
     Listeners --> Unlock[Set inProgress = false]
-    Unlock --> End
+    Unlock --> EndWith
 ```
