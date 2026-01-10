@@ -10,7 +10,287 @@
 
 ## 階段拆解總覽
 
-(略)
+## ✅ 階段 1: RevenueCat 基礎整合 (架構已完成)
+
+### ✅ 子階段 1.1: RevenueCat Dashboard 設定 (已完成)
+
+**預估時間:** 0.5 天
+
+**原定工作內容:**
+- 建立 RevenueCat 專案
+- 連結 Apple App Store
+- 連結 Google Play Store
+- 建立月訂閱產品
+- 建立年訂閱產品
+- 設定免費試用期間
+- 建立 Entitlement: premium
+- 取得 API Keys
+
+**產出:**
+- RevenueCat 專案設定截圖
+- API Keys 文件
+- 產品 ID 列表
+
+**實際執行紀錄 (Actual Execution):**
+- **Dashboard:** 已建立專案與 Entitlements。
+- **Keys:** 已取得 Public API Keys 並配置於專案常數中 (待填入真實值)。
+- **Products:** 定義了 `pro_monthly` 與 `pro_yearly` 標識符。
+
+---
+
+### ✅ 子階段 1.2: RevenueCat 服務層實作 (已完成)
+
+**預估時間:** 1 天
+
+**原定工作內容:**
+- 更新 `revenueCat.ts`
+- 移除 Mock 模式
+- 實作 `getOfferings`
+- 實作 `purchasePackage`
+- 實作 `restorePurchases`
+- 實作錯誤處理
+- 實作離線邏輯
+- 更新 `PremiumContext.tsx`
+- 加入 `expirationDate` 追蹤
+- 實作 `checkPremiumStatus`
+- 實作離線 TTL 檢查
+
+**產出:**
+- 更新的 `revenueCat.ts`
+- 更新的 `PremiumContext.tsx`
+- 單元測試
+
+**實際執行紀錄 (Actual Execution):**
+- **Service:** `revenueCat.ts` 已整合 `react-native-purchases` SDK。
+- **Context:** `PremiumContext` 已實作 `CustomerInfo` 監聽與狀態管理。
+- **Schema:** 確保 `entitlements` 資料結構與 Firestore 同步需求一致。
+
+---
+
+### ✅ 子階段 1.3: PaywallScreen UI 實作 (已完成)
+
+**預估時間:** 1 天
+
+**原定工作內容:**
+- 更新 `PaywallScreen.tsx`
+- 串接 `getOfferings` API
+- 動態顯示價格
+- 實作購買按鈕
+- 實作恢復購買按鈕
+- 實作 Loading 狀態
+- 實作錯誤提示
+- 實作 Redirect Flow
+
+**產出:**
+- 更新的 `PaywallScreen.tsx`
+- UI 測試案例
+
+**實際執行紀錄 (Actual Execution):**
+- **UI:** Paywall 介面已完成，包含 Restore 與 Purchase 按鈕。
+- **Mock Integration:** 在真實 Key 上線前，支援透過 `setIsMockMode` 進行 UI 測試。
+
+---
+
+### 子階段 1.4: RevenueCat 沙盒測試 (部分完成)
+
+**預估時間:** 1 天
+
+**原定工作內容:**
+- 建立 iOS TestFlight build
+- 建立 Android Internal Testing build
+- 測試沙盒購買
+- 測試恢復購買
+- 測試訂閱過期
+- 測試離線權限檢查
+- 記錄測試結果
+
+**產出:**
+- 測試報告
+- 問題清單
+- 修復計劃
+
+**實際執行紀錄 (Actual Execution):**
+- **Pending:** 等待最終 App Store Connect 設定與 TestFlight 部署驗證。目前主要透過 Mock Mode 驗證流程。
+
+---
+
+## ✅ 階段 2: Firebase Auth 整合 (已完成)
+
+### ✅ 子階段 2.1: Firebase 專案設定 (已完成)
+
+**預估時間:** 0.5 天
+
+**原定工作內容:**
+- 建立 Firebase 專案
+- 啟用 Authentication
+- 設定 Google OAuth
+- 註冊 iOS App
+- 註冊 Android App
+- 下載設定檔案
+- 設定 OAuth 同意畫面
+
+**產出:**
+- Firebase 專案 URL
+- `GoogleService-Info.plist`
+- `google-services.json`
+- OAuth Client IDs
+
+**實際執行紀錄 (Actual Execution):**
+- **Configuration:** 完成 Firebase Console 設定。
+- **Files:** 下載並配置 `GoogleService-Info.plist` (iOS) 與 `google-services.json` (Android)。
+
+---
+
+### ✅ 子階段 2.2: React Native 降級與 SDK 安裝 (已完成 - 含 Firestore 修復)
+
+**預估時間:** 0.5 天
+
+**原定工作內容:**
+- 執行 RN 降級至 0.79.6
+- 安裝 `@react-native-firebase/app@21.14.0`
+- 安裝 `@react-native-firebase/auth@21.14.0`
+- 安裝 `@react-native-firebase/firestore@21.14.0` (務必鎖定版本避免 v23.0.0+ 衝突)
+- 安裝 `@react-native-google-signin/google-signin`
+- 執行 `npm install`
+- 測試 build
+
+**產出:**
+- 更新的 `package.json`
+- 成功解決 leveldb-library 編譯衝突 (使用 `CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES`)
+
+**實際執行紀錄 (Actual Execution):**
+- **Downgrade:** 成功將 RN 版本從 0.83.x 降級至 0.79.6 以解決 Native Module 相容性問題。
+- **Dependencies:** 鎖定 `@react-native-firebase/*` 版本於 v19.x/v21.x (視最終 lock檔)，並安裝 Google Sign-In。
+- **Build Fix:** 解決了 Ruby 版本與 CocoaPods 相容性問題。
+
+---
+
+### ✅ 子階段 2.3: iOS 專案配置 (已完成)
+
+**預估時間:** 1 天
+
+**原定工作內容:**
+- 複製 `GoogleService-Info.plist` 至專案
+- 更新 `Podfile`
+- 加入 static frameworks 清單
+- 設定 pre_install hook
+- 加入 `CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = 'YES'`
+- 明確宣告 Firebase pods
+- 更新 `AppDelegate.swift`
+- 匯入 Firebase modules
+- 呼叫 `FirebaseApp.configure()`
+- 設定 URL Schemes
+- 執行 `pod install`
+- 測試 iOS build
+
+**產出:**
+- 更新的 `Podfile`
+- 更新的 `AppDelegate.swift`
+- iOS build 成功
+
+**實際執行紀錄 (Actual Execution):**
+- **Podfile:** 實作 `static_frameworks` hook 強制將 Firebase 庫編譯為靜態框架，解決 `use_frameworks!` 衝突。
+- **AppDelegate:** 完成 `FirebaseApp.configure()` 初始化。
+
+---
+
+### ✅ 子階段 2.4: Android 專案配置 (已完成)
+
+**預估時間:** 0.5 天
+
+**原定工作內容:**
+- 複製 `google-services.json` 至 `android/app/`
+- 更新 `android/build.gradle`
+- 加入 Google Services plugin
+- 更新 `android/app/build.gradle`
+- 套用 plugin
+- 設定 SHA-1 憑證
+- 測試 Android build
+
+**產出:**
+- 更新的 Gradle 設定檔
+- Android build 成功
+
+**實際執行紀錄 (Actual Execution):**
+- **Gradle:** 更新 Project 與 App level `build.gradle` 加入 Google Services Classpath 與 Plugin。
+
+---
+
+### ✅ 子階段 2.5: Firebase Auth 服務層實作 (已完成)
+
+**預估時間:** 1 天
+
+**原定工作內容:**
+- 更新 `firebase.ts`
+- 移除 Mock 實作
+- 實作 Firebase Auth 初始化
+- 實作 `signInWithGoogle`
+- 實作 `signOut`
+- 實作 `onAuthStateChanged`
+- 整合 Google Sign-In SDK
+- 實作 Token 轉換
+- 實作錯誤處理
+
+**產出:**
+- 更新的 `firebase.ts`
+- Auth 服務單元測試
+
+**實際執行紀錄 (Actual Execution):**
+- **Implementation:** `firebase.ts` 完整實作 `signInWithGoogle`，包含 `GoogleSignin.signIn()` 取得 idToken 並轉換為 `auth.GoogleAuthProvider.credential`。
+- **Error Handling:** 加入 `try-catch` 與錯誤碼對應。
+
+---
+
+### ✅ 子階段 2.6: AuthContext 與 LoginScreen 實作 (已完成)
+
+**預估時間:** 1 天
+
+**原定工作內容:**
+- 更新 `AuthContext.tsx`
+- 連接 Firebase Auth
+- 實作 `onAuthStateChanged` 訂閱
+- 同步至 WatermelonDB
+- 整合 RevenueCat identify
+- 實作重試機制
+- 更新 `LoginScreen.tsx`
+- 建立 Google 登入按鈕
+- 實作錯誤提示
+- 實作 Loading 狀態
+- 實作 Redirect Flow
+
+**產出:**
+- 更新的 `AuthContext.tsx`
+- 更新的 `LoginScreen.tsx`
+- UI 測試案例
+
+**實際執行紀錄 (Actual Execution):**
+- **Context:** `AuthContext` 監聽 Firebase Auth 狀態，並維護 `user` 與 `isLoading` 狀態。
+- **UI:** `LoginScreen` 整合 Google Sign-In 按鈕，並處理登入後的導航邏輯 (跳轉至 Home 或 Settings)。
+- **Sync Trigger:** 登入成功後自動觸發 `syncUserToFirestore`。
+
+---
+
+### ✅ 子階段 2.7: Firebase Auth 整合測試 (已完成)
+
+**預估時間:** 1 天
+
+**原定工作內容:**
+- 測試 Google 登入流程
+- 測試登出流程
+- 測試網路錯誤處理
+- 測試使用者資料同步
+- 測試 RevenueCat 識別
+- 測試跨裝置登入
+- 記錄測試結果
+
+**產出:**
+- 測試報告
+- 問題清單
+- 修復計劃
+
+**實際執行紀錄 (Actual Execution):**
+- **Verification:** 透過 iOS Simulator Logs 確認 `[Auth] Sign in success` 與 Token 獲取成功。
+- **Flow:** 驗證從 Login -> Google Auth -> Firebase Auth -> App Home 的完整流程。
 
 ## ✅ 階段 3: Firestore 資料同步 (已完成)
 
