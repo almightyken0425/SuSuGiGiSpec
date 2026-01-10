@@ -16,81 +16,261 @@
 
 ### ✅ 子階段 3.1: Firestore 基礎設定 (已完成)
 
-(略)
+**預估時間:** 0.5 天
+
+**原定工作內容:**
+- 啟用 Firestore Database
+- 選擇資料庫區域
+- 建立 Security Rules
+- 設定 users collection 規則
+- 建立基本索引
+- 測試 Rules
+
+**產出:**
+- Firestore Security Rules 檔案
+- 索引設定文件
+
+**實際執行紀錄 (Actual Execution):**
+- **Firestore Console:** 已啟用 Native Mode，區域設定完成。
+- **Security Rules:** 建立 `firestore.rules`，設定 `match /users/{userId}` 僅限本人讀寫 (`request.auth.uid == userId`)。
+- **規則測試:** 透過 `permission-denied` 錯誤驗證了規則的有效性 (當 User ID 不匹配時拒絕寫入)。
+
+---
 
 ### ✅ 子階段 3.2: Users Collection 實作 (已完成)
 
-(略)
+**預估時間:** 1 天
+
+**原定工作內容:**
+- 實作使用者建立邏輯
+- 實作重試機制
+- 實作 Schema 驗證
+- 實作偏好設定欄位
+- 測試使用者建立
+- 測試查詢效能
+
+**產出:**
+- Users Collection 實作程式碼
+- Schema 驗證規則
+
+**實際執行紀錄 (Actual Execution):**
+- **UserService:** 實作 `userService.ts`，包含 `syncUserToFirestore` 與 `updateUserPreferences`。
+- **AuthContext:** 在登入成功後自動觸發 `syncUserToFirestore`。
+- **Schema Alignment:** 確保 `FirestoreUser` 介面包含 `email`, `displayName`, `photoUrl`, `providers` 等欄位。
+
+---
 
 ### ✅ 子階段 3.3: RevenueCat Firebase Extension 整合 (已完成)
 
-**完成備註:**
-- Schema 已對齊 `rc_entitlements` 與 `rc_active_subscriptions`
-- 移除 App 端 `isPremium` 寫入權限，改由 Extension 處理
+**預估時間:** 0.5 天
 
-(略)
+**原定工作內容:**
+- 安裝 RevenueCat Extension
+- 設定 API Key
+- 配置 Webhook
+- 設定目標 Collection
+- 測試權限同步
+- 測試過期處理
+
+**產出:**
+- Extension 設定文件
+- Webhook 測試報告
+
+**實際執行紀錄 (Actual Execution):**
+- **Schema Update:** 更新 `coreSchema.ts` 加入 `rc_entitlements` 與 `rc_active_subscriptions` 欄位，以配合 Extension 的輸出格式。
+- **Field Removal:** 從 App 端移除 `isPremium` 寫入邏輯，避免與 Extension 的權限來源衝突。
+- **Local DB:** 更新 WatermelonDB `users` table 加入對應的 JSON 欄位以支援離線存取。
+
+---
 
 ### ✅ 子階段 3.4: 偏好設定同步實作 (已完成)
 
-(略)
+**預估時間:** 1 天
+
+**原定工作內容:**
+- 實作本地寫入 Firestore
+- 實作 Firestore Listener
+- 實作衝突解決
+- 實作 PreferenceContext 整合
+- 測試跨裝置同步
+- 測試離線處理
+
+**產出:**
+- 偏好同步程式碼
+- 同步測試案例
+
+**實際執行紀錄 (Actual Execution):**
+- **Service:** 實作 `settingsService.ts` 處理 `user_settings` 的同步。
+- **Context:** `PreferenceContext` 整合了 `updateUserPreferences`，變更語言/幣別/主題時自動寫入 Firestore。
+
+---
 
 ### ✅ 子階段 3.5: SyncEngine 基礎框架 (已完成)
 
-**完成備註:**
-- `syncEngine.ts` 核心已實作
-- 支援 Accounts, Categories, Transactions, Transfers, Rates, Schedules
+**預估時間:** 1 天
 
-(略)
+**原定工作內容:**
+- 建立 `syncEngine.ts`
+- 實作 `start` 方法
+- 實作 `stop` 方法
+- 實作連線狀態檢查
+- 實作 timestamp 比對
+- 實作基礎上傳框架
+- 實作基礎下載框架
+
+**產出:**
+- `syncEngine.ts` 檔案
+- SyncEngine 架構文件
+
+**實際執行紀錄 (Actual Execution):**
+- **Core Class:** 建立 `SyncEngine` class，實作 `pullChanges` 與 `pushChanges` 核心方法。
+- **Type Safety:** 定義泛型介面 `SyncableModel` 確保所有同步模型具備 `id`, `updated_on`, `is_deleted`。
+- **Collections:** 預先支援 `Accounts`, `Categories`, `Transactions`, `Transfers` 等主要資料表。
+
+---
 
 ### ✅ 子階段 3.6: Premium 升降級邏輯 (已完成)
 
-**完成備註:**
-- `PremiumContext` 整合 Sync 觸發
-- 實作 Force Sync 機制
+**預估時間:** 1 天
 
-(略)
+**原定工作內容:**
+- 實作升級觸發邏輯
+- 實作 Initial Sync 觸發
+- 實作降級觸發邏輯
+- 實作 Sync 停止邏輯
+- 實作狀態通知
+- 測試升級流程
+- 測試降級流程
+
+**產出:**
+- 升降級邏輯程式碼
+- 升降級測試報告
+
+**實際執行紀錄 (Actual Execution):**
+- **Trigger:** 在 `PremiumContext` 中監聽權限變更。
+- **Force Sync:** 在 `SettingsScreen` 實作 "Force Sync Now" 按鈕，手動觸發 `syncEngine.sync()`。
+- **User Repair:** 在 Force Sync 流程中加入 `syncUserToFirestore` 修復邏輯，解決手動刪庫後 User Profile 遺失的問題。
 
 ## ✅ 階段 4: 完整同步引擎 (已完成)
 
 ### ✅ 子階段 4.1: Firestore Collections Schema 設計 (已完成)
 
-**完成備註:**
-- 完整定義 6 大 Collection Schema
-- 實作 Type Mapper (Local <-> Remote)
+**預估時間:** 1 天
 
-(略)
+**原定工作內容:**
+- 設計 transactions schema
+- 設計 accounts schema
+- 設計 categories schema
+- 設計 recurring_settings schema
+- 設計索引策略
+- 建立 Security Rules
+- 測試 Rules
+
+**產出:**
+- Schema 設計文件
+- Security Rules 更新
+- 索引設定文件
+
+**實際執行紀錄 (Actual Execution):**
+- **Schema Design:** 完整定義了 `accounts`, `categories`, `transactions`, `transfers`, `currency_rates`, `schedules` 六大 Collections 的 Schema。
+- **Fields:** 加入必要欄位 `id`, `updated_on`, `is_deleted` 以支援增量同步與軟刪除。
+- **Mappers:** 實作 Local (Snake Case) <-> Remote (Camel Case) 的自動轉換 Mapper。
+
+---
 
 ### ✅ 子階段 4.2: 增量同步實作 (已完成)
 
-**完成備註:**
-- 實作 `pullChanges` 與 `pushChanges`
-- 實作 Last Write Wins (LWW) 衝突解決
-- 實作 Soft Delete 同步
+**預估時間:** 2 天
 
-(略)
+**原定工作內容:**
+- 實作上傳查詢邏輯
+- 實作批次寫入
+- 實作下載查詢邏輯
+- 實作批次更新
+- 實作 timestamp 更新
+- 實作 LWW 衝突解決
+- 測試增量同步
+
+**產出:**
+- 增量同步程式碼
+- 同步測試案例
+
+**實際執行紀錄 (Actual Execution):**
+- **Pull Logic:** 實作 `pullChanges(lastSyncedAt)`，僅拉取 `updatedOn > lastSyncedAt` 的資料。
+- **Push Logic:** 實作 `pushChanges`，上傳本地標記為 Dirty 的資料。
+- **Conflict Resolution:** 採用 Last Write Wins (LWW) 策略，若 Remote 時間戳較新則覆蓋本地。
+- **Soft Delete:** 支援刪除同步 (syncing `isDeleted: true`)。
+
+---
 
 ### ✅ 子階段 4.3: Initial Sync 實作 (已完成)
 
-**完成備註:**
-- 整合於 `sync()` 流程
-- 支援分批處理 (Batch Size: 500)
+**預估時間:** 2 天
 
-(略)
+**原定工作內容:**
+- 實作觸發邏輯判斷
+- 實作完整上傳邏輯
+- 實作完整下載邏輯
+- 實作合併邏輯
+- 實作批次處理
+- 實作進度追蹤
+- 測試 Initial Sync
+
+**產出:**
+- Initial Sync 程式碼
+- 進度追蹤 UI
+
+**實際執行紀錄 (Actual Execution):**
+- **Unified Logic:** Initial Sync 與增量同步共用同一套 `sync()` 邏輯，當 `lastSyncedAt` 為 0 時自動判定為 Initial Sync，執行全量拉取。
+- **Batching:** 實作分批處理 (Batch Size: 500)，避免 Firestore Quota 或記憶體溢位。
+
+---
 
 ### ✅ 子階段 4.4: 錯誤處理與重試 (已完成)
 
-**完成備註:**
-- 實作 `try-catch` 與錯誤 Log
-- UI 顯示同步狀態與錯誤
+**預估時間:** 1 天
 
-(略)
+**原定工作內容:**
+- 實作網路錯誤處理
+- 實作重試機制
+- 實作指數退避
+- 實作 Quota 錯誤處理
+- 實作錯誤記錄
+- 測試錯誤情境
+
+**產出:**
+- 錯誤處理程式碼
+- 錯誤情境測試報告
+
+**實際執行紀錄 (Actual Execution):**
+- **Error Handling:** 核心 `sync()` 流程包覆在 `try-catch` 中。
+- **Recovery:** 實作 `resetSyncState` 用於發生嚴重錯誤時重置時間戳，強制如下次執行完整同步。
+- **Logging:** 整合詳細的 console logs 方便除錯。
+
+---
 
 ### ✅ 子階段 4.5: SyncContext 與 UI 整合 (已完成)
 
-**完成備註:**
-- 整合於 `SettingsScreen`
-- 實作 "Force Sync Now" 按鈕
-- 實作 Database Reset 功能
+**預估時間:** 1 天
+
+**原定工作內容:**
+- 建立 `SyncContext.tsx`
+- 實作狀態管理
+- 更新 SettingsScreen
+- 加入同步狀態顯示
+- 加入手動同步按鈕
+- 加入上次同步時間
+- 測試 UI 互動
+
+**產出:**
+- `SyncContext.tsx` 檔案
+- 更新的 SettingsScreen
+- UI 測試案例
+
+**實際執行紀錄 (Actual Execution):**
+- **UI Integration:** 整合於 `SettingsScreen`，提供 "Force Sync Now" 按鈕。
+- **Developer Tools:** 加入 "Reset Database" 功能方便測試。
+- **User Repair:** 針對 Force Sync 加入了自動修復 User Profile 的邏輯 (Sync Permission Fix)。
 
 ---
 
