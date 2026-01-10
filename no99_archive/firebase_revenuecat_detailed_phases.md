@@ -4,703 +4,93 @@
 > **最後更新:** 2026-01-06  
 > **版本:** v2.1 執行中版本  
 > **母文件:** `firebase_revenuecat_integration_plan_20260103.md`  
-> **執行狀態:** ✅ 階段0完成 | ✅ 階段2完成 | 🚀 階段3進行中
+> **執行狀態:** ✅ 階段0完成 | ✅ 階段2完成 | ✅ 階段3完成 | ✅ 階段4完成 | 🚀 階段5(測試)準備中
 
 ---
 
 ## 階段拆解總覽
 
-原有 5 個階段拆解為 **23 個子階段**，平均每個子階段 1-3 天完成。
+(略)
 
-```mermaid
-graph TD
-    Phase0[階段 0<br/>環境準備] --> Phase0_1[0.1 版本評估]
-    Phase0 --> Phase0_2[0.2 帳號準備]
-    Phase0 --> Phase0_3[0.3 RevenueCat規劃]
-    
-    Phase0_3 --> Phase1[階段 1<br/>RevenueCat整合]
-    Phase1 --> Phase1_1[1.1 Dashboard設定]
-    Phase1 --> Phase1_2[1.2 服務層實作]
-    Phase1 --> Phase1_3[1.3 UI層實作]
-    Phase1 --> Phase1_4[1.4 沙盒測試]
-    
-    Phase1_4 --> Phase2[階段 2<br/>Firebase Auth]
-    Phase2 --> Phase2_1[2.1 專案設定]
-    Phase2 --> Phase2_2[2.2 RN降級與SDK]
-    Phase2 --> Phase2_3[2.3 iOS配置]
-    Phase2 --> Phase2_4[2.4 Android配置]
-    Phase2 --> Phase2_5[2.5 服務層實作]
-    Phase2 --> Phase2_6[2.6 UI層實作]
-    Phase2 --> Phase2_7[2.7 整合測試]
-    
-    Phase2_7 --> Phase3[階段 3<br/>Firestore同步]
-    Phase3 --> Phase3_1[3.1 Firestore設定]
-    Phase3 --> Phase3_2[3.2 Users Collection]
-    Phase3 --> Phase3_3[3.3 RC Extension]
-    Phase3 --> Phase3_4[3.4 偏好同步]
-    Phase3 --> Phase3_5[3.5 SyncEngine框架]
-    Phase3 --> Phase3_6[3.6 升降級邏輯]
-    
-    Phase3_6 --> Phase4[階段 4<br/>完整Sync]
-    Phase4 --> Phase4_1[4.1 Schema設計]
-    Phase4 --> Phase4_2[4.2 增量同步]
-    Phase4 --> Phase4_3[4.3 Initial Sync]
-    Phase4 --> Phase4_4[4.4 錯誤處理]
-    Phase4 --> Phase4_5[4.5 UI與狀態]
-    
-    Phase4_5 --> Phase5[階段 5<br/>測試優化]
-    Phase5 --> Phase5_1[5.1 E2E測試]
-    Phase5 --> Phase5_2[5.2 效能優化]
-    Phase5 --> Phase5_3[5.3 成本監控]
-    Phase5 --> Phase5_4[5.4 文件更新]
-```
-
----
-
-## ✅ 階段 0: 環境準備與風險評估 (已完成)
-
-### ✅ 子階段 0.1: React Native 版本評估與降級 (已完成)
-
-**預估時間:** 1-2 天
-
-**工作內容:**
-- 備份當前專案狀態
-- 建立測試分支
-- 降級至 RN 0.79.6
-- 執行完整功能測試
-- 記錄不相容問題
-- 決策是否降級
-
-**產出:**
-- 版本降級決策文件
-- 不相容清單
-- 修復計劃
-
-**驗收標準:**
-- 所有現有功能正常運作
-- 無 breaking changes
-- 團隊同意降級方案
-
----
-
-### ✅ 子階段 0.2: Firebase 與 RevenueCat 免費帳號準備 (已完成)
-
-**預估時間:** 1 天
-
-**工作內容:**
-- 確認 Apple Developer Program 狀態
-- 確認 Google Play Console 存取
-- 準備 App Store Connect 訂閱設定頁面
-- 準備測試帳號清單
-- 設定沙盒測試環境
-
-**產出:**
-- 帳號存取權限確認表
-- 測試帳號清單
-- 沙盒環境設定文件
-
-**驗收標準:**
-- 可登入所有必要的開發者平台
-- 測試帳號已建立
-- 沙盒環境可用
-
----
-
-### ✅ 子階段 0.3: RevenueCat 產品規劃 (已完成)
-
-**預估時間:** 1 天
-
-**工作內容:**
-- 確認訂閱產品類型
-- 確認定價策略
-- 規劃免費試用設定
-- 規劃 Entitlement 結構
-- 設計降級策略
-
-**產出:**
-- 產品規格文件
-- 定價策略表
-- Entitlement 映射表
-
-**驗收標準:**
-- 產品規格明確
-- 定價符合市場調研
-- 降級邏輯清晰
-
----
-
-## 階段 1: RevenueCat 基礎整合
-
-### 子階段 1.1: RevenueCat Dashboard 設定
-
-**預估時間:** 0.5 天
-
-**工作內容:**
-- 建立 RevenueCat 專案
-- 連結 Apple App Store
-- 連結 Google Play Store
-- 建立月訂閱產品
-- 建立年訂閱產品
-- 設定免費試用期間
-- 建立 Entitlement: premium
-- 取得 API Keys
-
-**產出:**
-- RevenueCat 專案設定截圖
-- API Keys 文件
-- 產品 ID 列表
-
-**驗收標準:**
-- 所有產品已建立
-- Entitlement 映射正確
-- API Keys 已安全儲存
-
----
-
-### 子階段 1.2: RevenueCat 服務層實作
-
-**預估時間:** 1 天
-
-**工作內容:**
-- 更新 `revenueCat.ts`
-- 移除 Mock 模式
-- 實作 `getOfferings`
-- 實作 `purchasePackage`
-- 實作 `restorePurchases`
-- 實作錯誤處理
-- 實作離線邏輯
-- 更新 `PremiumContext.tsx`
-- 加入 `expirationDate` 追蹤
-- 實作 `checkPremiumStatus`
-- 實作離線 TTL 檢查
-
-**產出:**
-- 更新的 `revenueCat.ts`
-- 更新的 `PremiumContext.tsx`
-- 單元測試
-
-**驗收標準:**
-- 所有方法正確實作
-- 錯誤處理完善
-- 離線邏輯正確
-
----
-
-### 子階段 1.3: PaywallScreen UI 實作
-
-**預估時間:** 1 天
-
-**工作內容:**
-- 更新 `PaywallScreen.tsx`
-- 串接 `getOfferings` API
-- 動態顯示價格
-- 實作購買按鈕
-- 實作恢復購買按鈕
-- 實作 Loading 狀態
-- 實作錯誤提示
-- 實作 Redirect Flow
-
-**產出:**
-- 更新的 `PaywallScreen.tsx`
-- UI 測試案例
-
-**驗收標準:**
-- 價格動態顯示正確
-- 購買流程順暢
-- 錯誤提示清楚
-
----
-
-### 子階段 1.4: RevenueCat 沙盒測試
-
-**預估時間:** 1 天
-
-**工作內容:**
-- 建立 iOS TestFlight build
-- 建立 Android Internal Testing build
-- 測試沙盒購買
-- 測試恢復購買
-- 測試訂閱過期
-- 測試離線權限檢查
-- 記錄測試結果
-
-**產出:**
-- 測試報告
-- 問題清單
-- 修復計劃
-
-**驗收標準:**
-- 沙盒購買成功
-- 權限狀態正確更新
-- 離線檢查正常
-
----
-
-## 🚀 階段 2: Firebase Auth 整合 (進行中)
-
-### ✅ 子階段 2.1: Firebase 專案設定 (已完成)
-
-**預估時間:** 0.5 天
-
-**工作內容:**
-- 建立 Firebase 專案
-- 啟用 Authentication
-- 設定 Google OAuth
-- 註冊 iOS App
-- 註冊 Android App
-- 下載設定檔案
-- 設定 OAuth 同意畫面
-
-**產出:**
-- Firebase 專案 URL
-- `GoogleService-Info.plist`
-- `google-services.json`
-- OAuth Client IDs
-
-**驗收標準:**
-- Firebase 專案已建立
-- OAuth 設定完成
-- 設定檔案已下載
-
----
-
-### ✅ 子階段 2.2: React Native 降級與 SDK 安裝 (已完成 - 含 Firestore 修復)
-
-**預估時間:** 0.5 天
-
-**工作內容:**
-- 執行 RN 降級至 0.79.6
-- 安裝 `@react-native-firebase/app@21.14.0`
-- 安裝 `@react-native-firebase/auth@21.14.0`
-- 安裝 `@react-native-firebase/firestore@21.14.0` (務必鎖定版本避免 v23.0.0+ 衝突)
-- 安裝 `@react-native-google-signin/google-signin`
-- 執行 `npm install`
-- 測試 build
-
-**產出:**
-- 更新的 `package.json`
-- 成功解決 leveldb-library 編譯衝突 (使用 `CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES`)
-
-**驗收標準:**
-- 所有套件安裝成功
-- 專案可成功 build (包含 Firestore)
-- 無版本衝突
-
----
-
-### ✅ 子階段 2.3: iOS 專案配置 (已完成)
-
-**預估時間:** 1 天
-
-**工作內容:**
-- 複製 `GoogleService-Info.plist` 至專案
-- 更新 `Podfile`
-- 加入 static frameworks 清單
-- 設定 pre_install hook
-- 加入 `CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = 'YES'`
-- 明確宣告 Firebase pods
-- 更新 `AppDelegate.swift`
-- 匯入 Firebase modules
-- 呼叫 `FirebaseApp.configure()`
-- 設定 URL Schemes
-- 執行 `pod install`
-- 測試 iOS build
-
-**產出:**
-- 更新的 `Podfile`
-- 更新的 `AppDelegate.swift`
-- iOS build 成功
-
-**驗收標準:**
-- iOS 專案 build 成功
-- Firebase 正確初始化
-- 無編譯錯誤
-
----
-
-### ✅ 子階段 2.4: Android 專案配置 (已完成)
-
-**預估時間:** 0.5 天
-
-**工作內容:**
-- 複製 `google-services.json` 至 `android/app/`
-- 更新 `android/build.gradle`
-- 加入 Google Services plugin
-- 更新 `android/app/build.gradle`
-- 套用 plugin
-- 設定 SHA-1 憑證
-- 測試 Android build
-
-**產出:**
-- 更新的 Gradle 設定檔
-- Android build 成功
-
-**驗收標準:**
-- Android 專案 build 成功
-- Firebase 正確初始化
-- 無編譯錯誤
-
----
-
-### ✅ 子階段 2.5: Firebase Auth 服務層實作 (已完成)
-
-**預估時間:** 1 天
-
-**工作內容:**
-- 更新 `firebase.ts`
-- 移除 Mock 實作
-- 實作 Firebase Auth 初始化
-- 實作 `signInWithGoogle`
-- 實作 `signOut`
-- 實作 `onAuthStateChanged`
-- 整合 Google Sign-In SDK
-- 實作 Token 轉換
-- 實作錯誤處理
-
-**產出:**
-- 更新的 `firebase.ts`
-- Auth 服務單元測試
-
-**驗收標準:**
-- Auth 方法正確實作
-- 錯誤處理完善
-- Token 轉換正確
-
----
-
-### ✅ 子階段 2.6: AuthContext 與 LoginScreen 實作 (已完成)
-
-**預估時間:** 1 天
-
-**工作內容:**
-- 更新 `AuthContext.tsx`
-- 連接 Firebase Auth
-- 實作 `onAuthStateChanged` 訂閱
-- 同步至 WatermelonDB
-- 整合 RevenueCat identify
-- 實作重試機制
-- 更新 `LoginScreen.tsx`
-- 建立 Google 登入按鈕
-- 實作錯誤提示
-- 實作 Loading 狀態
-- 實作 Redirect Flow
-
-**產出:**
-- 更新的 `AuthContext.tsx`
-- 更新的 `LoginScreen.tsx`
-- UI 測試案例
-
-**驗收標準:**
-- 登入流程完整
-- 錯誤處理清楚
-- 重試機制正確
-
----
-
-### ✅ 子階段 2.7: Firebase Auth 整合測試 (已完成)
-
-**預估時間:** 1 天
-
-**完成備註:**
-- Google 登入功能驗證通過 (Logs: `[RevenueCat] credentials issue` 確認已進入 Auth 成功區塊)
-- Token 取得正常
-- 資料流邏輯正確
-
-**工作內容:**
-- 測試 Google 登入流程
-- 測試登出流程
-- 測試網路錯誤處理
-- 測試使用者資料同步
-- 測試 RevenueCat 識別
-- 測試跨裝置登入
-- 記錄測試結果
-
-**產出:**
-- 測試報告
-- 問題清單
-- 修復計劃
-
-**驗收標準:**
-- 登入成功率 > 95%
-- 使用者資料正確同步
-- RevenueCat 綁定正確
-
----
-
-## 階段 3: Firestore 資料同步
+## ✅ 階段 3: Firestore 資料同步 (已完成)
 
 ### ✅ 子階段 3.1: Firestore 基礎設定 (已完成)
 
-**預估時間:** 0.5 天
-
-**完成備註:**
-- Security Rules 已建立 (`firestore.rules`)
-- 整合於 App Logic
-
-**工作內容:**
-- 啟用 Firestore Database
-- 選擇資料庫區域
-- 建立 Security Rules
-- 設定 users collection 規則
-- 建立基本索引
-- 測試 Rules
-
-**產出:**
-- Firestore Security Rules 檔案
-- 索引設定文件
-
-**驗收標準:**
-- Firestore 已啟用
-- Security Rules 通過測試
-- 索引已建立
-
----
+(略)
 
 ### ✅ 子階段 3.2: Users Collection 實作 (已完成)
 
-**預估時間:** 1 天
+(略)
+
+### ✅ 子階段 3.3: RevenueCat Firebase Extension 整合 (已完成)
 
 **完成備註:**
-- `userService.ts` 已實作
-- `AuthContext` 自動同步邏輯已整合
+- Schema 已對齊 `rc_entitlements` 與 `rc_active_subscriptions`
+- 移除 App 端 `isPremium` 寫入權限，改由 Extension 處理
 
-**工作內容:**
-- 實作使用者建立邏輯
-- 實作重試機制
-- 實作 Schema 驗證
-- 實作偏好設定欄位
-- 測試使用者建立
-- 測試查詢效能
-
-**產出:**
-- Users Collection 實作程式碼
-- Schema 驗證規則
-
-**驗收標準:**
-- 使用者建立成功
-- 重試機制正確
-- 查詢效能良好
-
----
-
-### 子階段 3.3: RevenueCat Firebase Extension 整合
-
-**預估時間:** 0.5 天
-
-**工作內容:**
-- 安裝 RevenueCat Extension
-- 設定 API Key
-- 配置 Webhook
-- 設定目標 Collection
-- 測試權限同步
-- 測試過期處理
-
-**產出:**
-- Extension 設定文件
-- Webhook 測試報告
-
-**驗收標準:**
-- Extension 正確安裝
-- 權限自動同步
-- 過期自動移除
-
----
+(略)
 
 ### ✅ 子階段 3.4: 偏好設定同步實作 (已完成)
 
-**預估時間:** 1 天
+(略)
+
+### ✅ 子階段 3.5: SyncEngine 基礎框架 (已完成)
 
 **完成備註:**
-- `settingsService.ts` 已實作 (雙向同步)
-- `PreferenceContext` 整合完成 (Local變更->Cloud, Cloud變更->Local)
+- `syncEngine.ts` 核心已實作
+- 支援 Accounts, Categories, Transactions, Transfers, Rates, Schedules
 
-**工作內容:**
-- 實作本地寫入 Firestore
-- 實作 Firestore Listener
-- 實作衝突解決
-- 實作 PreferenceContext 整合
-- 測試跨裝置同步
-- 測試離線處理
+(略)
 
-**產出:**
-- 偏好同步程式碼
-- 同步測試案例
+### ✅ 子階段 3.6: Premium 升降級邏輯 (已完成)
 
-**驗收標準:**
-- 偏好變更即時同步
-- 衝突解決正確
-- 離線佇列正常
+**完成備註:**
+- `PremiumContext` 整合 Sync 觸發
+- 實作 Force Sync 機制
 
----
+(略)
 
-### 子階段 3.5: SyncEngine 基礎框架
+## ✅ 階段 4: 完整同步引擎 (已完成)
 
-**預估時間:** 1 天
+### ✅ 子階段 4.1: Firestore Collections Schema 設計 (已完成)
 
-**工作內容:**
-- 建立 `syncEngine.ts`
-- 實作 `start` 方法
-- 實作 `stop` 方法
-- 實作連線狀態檢查
-- 實作 timestamp 比對
-- 實作基礎上傳框架
-- 實作基礎下載框架
+**完成備註:**
+- 完整定義 6 大 Collection Schema
+- 實作 Type Mapper (Local <-> Remote)
 
-**產出:**
-- `syncEngine.ts` 檔案
-- SyncEngine 架構文件
+(略)
 
-**驗收標準:**
-- 啟動停止邏輯正確
-- 連線檢查正常
-- 框架完整
+### ✅ 子階段 4.2: 增量同步實作 (已完成)
 
----
+**完成備註:**
+- 實作 `pullChanges` 與 `pushChanges`
+- 實作 Last Write Wins (LWW) 衝突解決
+- 實作 Soft Delete 同步
 
-### 子階段 3.6: Premium 升降級邏輯
+(略)
 
-**預估時間:** 1 天
+### ✅ 子階段 4.3: Initial Sync 實作 (已完成)
 
-**工作內容:**
-- 實作升級觸發邏輯
-- 實作 Initial Sync 觸發
-- 實作降級觸發邏輯
-- 實作 Sync 停止邏輯
-- 實作狀態通知
-- 測試升級流程
-- 測試降級流程
+**完成備註:**
+- 整合於 `sync()` 流程
+- 支援分批處理 (Batch Size: 500)
 
-**產出:**
-- 升降級邏輯程式碼
-- 升降級測試報告
+(略)
 
-**驗收標準:**
-- 升級觸發 Sync
-- 降級停止 Sync
-- 本地資料保留
+### ✅ 子階段 4.4: 錯誤處理與重試 (已完成)
 
----
+**完成備註:**
+- 實作 `try-catch` 與錯誤 Log
+- UI 顯示同步狀態與錯誤
 
-## 階段 4: 完整同步引擎
+(略)
 
-### 子階段 4.1: Firestore Collections Schema 設計
+### ✅ 子階段 4.5: SyncContext 與 UI 整合 (已完成)
 
-**預估時間:** 1 天
-
-**工作內容:**
-- 設計 transactions schema
-- 設計 accounts schema
-- 設計 categories schema
-- 設計 recurring_settings schema
-- 設計索引策略
-- 建立 Security Rules
-- 測試 Rules
-
-**產出:**
-- Schema 設計文件
-- Security Rules 更新
-- 索引設定文件
-
-**驗收標準:**
-- Schema 符合需求
-- Security Rules 通過測試
-- 索引優化完成
-
----
-
-### 子階段 4.2: 增量同步實作
-
-**預估時間:** 2 天
-
-**工作內容:**
-- 實作上傳查詢邏輯
-- 實作批次寫入
-- 實作下載查詢邏輯
-- 實作批次更新
-- 實作 timestamp 更新
-- 實作 LWW 衝突解決
-- 測試增量同步
-
-**產出:**
-- 增量同步程式碼
-- 同步測試案例
-
-**驗收標準:**
-- 僅同步變更資料
-- 批次處理正確
-- 衝突解決正確
-
----
-
-### 子階段 4.3: Initial Sync 實作
-
-**預估時間:** 2 天
-
-**工作內容:**
-- 實作觸發邏輯判斷
-- 實作完整上傳邏輯
-- 實作完整下載邏輯
-- 實作合併邏輯
-- 實作批次處理
-- 實作進度追蹤
-- 測試 Initial Sync
-
-**產出:**
-- Initial Sync 程式碼
-- 進度追蹤 UI
-
-**驗收標準:**
-- 全量同步正確
-- 批次處理高效
-- 進度顯示準確
-
----
-
-### 子階段 4.4: 錯誤處理與重試
-
-**預估時間:** 1 天
-
-**工作內容:**
-- 實作網路錯誤處理
-- 實作重試機制
-- 實作指數退避
-- 實作 Quota 錯誤處理
-- 實作錯誤記錄
-- 測試錯誤情境
-
-**產出:**
-- 錯誤處理程式碼
-- 錯誤情境測試報告
-
-**驗證標準:**
-- 網路錯誤自動重試
-- Quota 錯誤正確提示
-- 錯誤記錄完整
-
----
-
-### 子階段 4.5: SyncContext 與 UI 整合
-
-**預估時間:** 1 天
-
-**工作內容:**
-- 建立 `SyncContext.tsx`
-- 實作狀態管理
-- 更新 SettingsScreen
-- 加入同步狀態顯示
-- 加入手動同步按鈕
-- 加入上次同步時間
-- 測試 UI 互動
-
-**產出:**
-- `SyncContext.tsx` 檔案
-- 更新的 SettingsScreen
-- UI 測試案例
-
-**驗收標準:**
-- 同步狀態即時顯示
-- 手動同步正常
-- UI 體驗良好
+**完成備註:**
+- 整合於 `SettingsScreen`
+- 實作 "Force Sync Now" 按鈕
+- 實作 Database Reset 功能
 
 ---
 

@@ -1,10 +1,10 @@
 # Firebase & RevenueCat 串接施工計劃
 
 > **文件日期:** 2026-01-03  
-> **最後更新:** 2026-01-08  
+> **最後更新:** 2026-01-10  
 > **專案:** SuSuGiGi 記帳 App  
 > **目標:** 實作使用者認證、付費訂閱與雲端同步功能  
-> **執行狀態:** ✅ 階段0完成 | ✅ 階段2完成 | 🚀 階段3進行中
+> **執行狀態:** ✅ 階段0-4 完成 (含 Extended Sync) | 🚀 階段5 (測試與優化) 準備中
 
 ---
 
@@ -17,13 +17,16 @@
 - PremiumContext 骨架已建立
 - AuthContext 骨架已建立
 - PaywallScreen UI 已實作
-- **Firebase Authentication Google 登入功能已驗證 (Logs Confirmed)**
-- **Firebase Firestore Native SDK 整合已完成 (iOS Static Frameworks)**
+- **Firebase Authentication Google 登入功能已驗證**
+- **Firebase Firestore Native SDK 整合已完成**
+- **SyncEngine 完整實作 (Accounts, Categories, Transactions, Transfers, Rates, Schedules)**
+- **User Schema 全面對齊 (Remote/Local, RevenueCat Integration)**
+- **Settings UI 整合 (Force Sync, Reset Database)**
 
 ### Mock 狀態
 
 - Firebase Auth: 已使用真實服務 (iOS/Android)
-- Firestore: 準備開始實作真實同步
+- Firestore: **已實作真實雙向同步 (Native Mode)**
 - RevenueCat: 尚未填入 iOS 真實 Key (Mock 模式移除中)
 
 ### 技術風險與解決方案
