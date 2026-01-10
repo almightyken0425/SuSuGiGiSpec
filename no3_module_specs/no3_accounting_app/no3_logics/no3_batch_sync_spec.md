@@ -110,40 +110,40 @@
 
 ```mermaid
 flowchart TD
-    Start(["syncEngine.sync()"]) --> CheckUser{Check User Auth}
+    Start(["syncEngine.sync()"]) --> CheckUser{"Check User Auth"}
     CheckUser -- No User --> EndWith(["End"])
-    CheckUser -- Has User --> CheckProgress{Check inProgress}
+    CheckUser -- Has User --> CheckProgress{"Check inProgress"}
     CheckProgress -- True --> EndWith
-    CheckProgress -- False --> Lock[Set inProgress = true]
+    CheckProgress -- False --> Lock["Set inProgress = true"]
     
-    Lock --> PushStart[Push Changes]
-    PushStart --> GetChanges[getLocalChanges > lastPushTimestamp]
-    GetChanges --> CheckCount{Total Changes > 0?}
+    Lock --> PushStart["Push Changes"]
+    PushStart --> GetChanges["getLocalChanges > lastPushTimestamp"]
+    GetChanges --> CheckCount{"Total Changes > 0?"}
     CheckCount -- No --> PullStart
-    CheckCount -- Yes --> SplitBatch[Chunk into Batches of 500]
+    CheckCount -- Yes --> SplitBatch["Chunk into Batches of 500"]
     
-    SplitBatch --> LoopBatch{Loop Batches}
-    LoopBatch --> WriteFirestore[Firestore Batch Write]
-    WriteFirestore --> NextBatch{Has More?}
+    SplitBatch --> LoopBatch{"Loop Batches"}
+    LoopBatch --> WriteFirestore["Firestore Batch Write"]
+    WriteFirestore --> NextBatch{"Has More?"}
     NextBatch -- Yes --> LoopBatch
-    NextBatch -- No --> UpdatePushTime[Update lastPushTimestamp]
+    NextBatch -- No --> UpdatePushTime["Update lastPushTimestamp"]
     
-    UpdatePushTime --> PullStart[Pull Changes]
-    PullStart --> PullCollections[Pull All Collections > lastPullTimestamp]
-    PullCollections --> LoopDocs{Loop Remotes}
-    LoopDocs --> ConflictCheck{Local.updatedOn < Remote.updatedOn}
-    ConflictCheck -- Yes --> UpdateLocal[Update Local DB (LWW)]
+    UpdatePushTime --> PullStart["Pull Changes"]
+    PullStart --> PullCollections["Pull All Collections > lastPullTimestamp"]
+    PullCollections --> LoopDocs{"Loop Remotes"}
+    LoopDocs --> ConflictCheck{"Local.updatedOn < Remote.updatedOn"}
+    ConflictCheck -- Yes --> UpdateLocal["Update Local DB (LWW)"]
     ConflictCheck -- No --> Skip
     
-    UpdateLocal --> NextDoc{Next Doc?}
+    UpdateLocal --> NextDoc{"Next Doc?"}
     Skip --> NextDoc
     NextDoc -- Yes --> LoopDocs
-    NextDoc -- No --> UpdatePullTime[Update lastPullTimestamp]
+    NextDoc -- No --> UpdatePullTime["Update lastPullTimestamp"]
     
-    UpdatePullTime --> Listeners[Start Real-time Listeners]
-    Listeners --> OnSnapshot[onSnapshot Event]
-    OnSnapshot --> WriteLocal[Update Local DB]
+    UpdatePullTime --> Listeners["Start Real-time Listeners"]
+    Listeners --> OnSnapshot["onSnapshot Event"]
+    OnSnapshot --> WriteLocal["Update Local DB"]
     
-    Listeners --> Unlock[Set inProgress = false]
+    Listeners --> Unlock["Set inProgress = false"]
     Unlock --> EndWith
 ```
