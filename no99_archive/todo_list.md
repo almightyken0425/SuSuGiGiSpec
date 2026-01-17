@@ -1,20 +1,5 @@
 # 待辦事項清單
 
-## 規格文件更新
-
-- [ ] 因應 `theme.ts` 的色碼與結構調整，需變更 `no1_design_tokens.md` 規格文件
-    - **程式碼來源:** `SuSuGiGiApp/src/constants/theme.ts`
-    - **規格文件:** `no3_module_specs/no3_accounting_app/no5_design_system/no1_design_tokens.md`
-    - **待辦內容:** 比對程式碼與規格文件的差異，將規格文件更新至與程式碼一致
-
-- [ ] 將圖示系統從 Expo Vector Icons 遷移至自訂 SVG
-    - **程式碼來源:** `SuSuGiGiApp/assets/definitions/IconDefinition.json`
-    - **待辦內容:**
-        - 建立 `assets/icons/` 資料夾存放 SVG 檔案
-        - 調整 `IconDefinition.json` 結構，移除 `library` 與 `glyph` 欄位
-        - 新增 `svgPath` 欄位指向對應的 SVG 檔案路徑
-        - 更新圖示渲染元件以支援 SVG 載入
-
 ---
 
 ## 功能實作
@@ -28,12 +13,6 @@
         - 實作建立 7 個預設類別邏輯
         - 將 `seed.ts` 的 `seedInitialData()` 改為呼叫正式邏輯
 
-- [ ] 實作時區切換支援
-    - **UI 調整:** `TransactionEditor` 內的 Date Picker 需支援 `YYYYMMDD HHMMSS` 格式選擇
-    - **連動邏輯:** 修改 `Preference` 時區設定時，`HomeScreen` 需即時更新顯示
-    - **影響範圍:** 時間區間計算、交易時間顯示
-
-- [ ] 修正所有頁面的 modal & segue
 
 - [ ] 實作 HomeFilter 帳戶選擇的 Universal Logic
     - **背景:** 目前在 merge 或 delete 帳戶後，若導致篩選列表為空，系統不做任何自動選取。
@@ -43,9 +22,3 @@
         - `SuSuGiGiApp/src/contexts/HomeFilterContext.tsx` (核心邏輯)
         - `SuSuGiGiApp/src/screens/Home/HomeFilterScreen.tsx` (篩選器 UI)
         - `SuSuGiGiSpec/no3_module_specs/no3_accounting_app/no2_screens/no2_home_screen.md` (規格定義)
-
-## 待修復問題
-
-- [ ] 修復首頁 Filter 切換 Group By Category 到 Date 的延遲問題
-    - **問題描述:** 使用者回報在 `HomeScreen` 切換顯示分組從 `Category` 變成 `Date` 時有明顯延遲
-    - **待辦內容:** 檢查 `PeriodDataStore` 的資料處理效率，優化重新分組的邏輯
