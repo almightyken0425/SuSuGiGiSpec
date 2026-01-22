@@ -22,3 +22,5 @@
         - `SuSuGiGiApp/src/contexts/HomeFilterContext.tsx` (核心邏輯)
         - `SuSuGiGiApp/src/screens/Home/HomeFilterScreen.tsx` (篩選器 UI)
         - `SuSuGiGiSpec/no3_module_specs/no3_accounting_app/no2_screens/no2_home_screen.md` (規格定義)
+
+幣別要可以選擇報表顯示位數
