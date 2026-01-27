@@ -24,3 +24,4 @@
         - `SuSuGiGiSpec/no3_module_specs/no3_accounting_app/no2_screens/no2_home_screen.md` (規格定義)
 
 幣別要可以選擇報表顯示位數
+計算機只能輸入到該幣別所設定的最小小數點第幾位
