@@ -64,11 +64,11 @@
         - **轉移交易:** 搜尋所有 `accountId` = 來源ID 的交易，更新為 目標ID
         - **轉移轉帳 From:**
             - 搜尋所有 `fromAccountId` = 來源ID 的轉帳
-            - **IF** `toAccountId` == 目標ID: **軟刪除** (避免自我轉帳)
+            - **IF** `toAccountId` == 目標ID: **軟刪除** 避免自我轉帳
             - **ELSE**: 更新 `fromAccountId` 為 目標ID
         - **轉移轉帳 To:**
             - 搜尋所有 `toAccountId` = 來源ID 的轉帳
-            - **IF** `fromAccountId` == 目標ID: **軟刪除** (避免自我轉帳)
+            - **IF** `fromAccountId` == 目標ID: **軟刪除** 避免自我轉帳
             - **ELSE**: 更新 `toAccountId` 為 目標ID
         - **軟刪除來源:** 設定來源帳戶 `deletedOn`
         - **更新時間:** 所有受影響資料更新 `updatedOn`

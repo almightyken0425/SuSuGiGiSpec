@@ -44,7 +44,7 @@
             - 列表固定高度可容納 4 個項目
             - 列表內部可滾動
         - **資料來源:** StandardCategory.json
-        - **列表過濾:** 依 categoryType 過濾（支出或收入）
+        - **列表過濾:** 依 categoryType 過濾 支出或收入
         - **列表顯示格式:** 顯示 defaultName 或依 translationKey 翻譯後的名稱
         - **搜尋行為:**
             - 即時篩選，不區分大小寫

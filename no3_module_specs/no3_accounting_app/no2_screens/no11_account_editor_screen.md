@@ -125,7 +125,6 @@
             - **IF 涉及匯率輸入:**
                 - **批次操作:** 本機 DB 新增 `CurrencyRates` 和 `Account`
                 - **欄位:** 兩者都必須設定 `updatedOn`
-                - **欄位:** 兩者都必須設定 `updatedOn`
             - **IF 涉及非本幣且該幣別無匯率紀錄:**
                 - **主動建立預設匯率:**
                     - **寫入:** 本機 DB 建立新 `CurrencyRates` 記錄
