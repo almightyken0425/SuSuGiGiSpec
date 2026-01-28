@@ -13,7 +13,7 @@
     - **React Native 層:** App Root View 初始渲染完全相同的 Logo 與背景色 View
     - **JS 載入完成:** RN View 蓋過 Native View 使用者無感
     - **資料讀取完畢:** 執行 Fade Out 動畫移除 RN Splash View，顯示 HomeScreen
-- **目的:** 消除白畫面 White Screen 並掩蓋資料載入時間，創造「秒開」體驗
+- **目的:** 消除白畫面 White Screen 並掩蓋資料載入時間，創造秒開體驗
 
 ## 認證狀態檢查
 

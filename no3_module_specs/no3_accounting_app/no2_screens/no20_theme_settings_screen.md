@@ -28,13 +28,13 @@
         - **導航:** PreferenceScreen
     - `標題` 配色主題
 - **主題列表:**
-    - **UI:** Grid 2 columns 或 List
+    - **UI:** Grid 2 欄位或 List
     - **資料來源:** `ThemeManager.getAvailableThemes()`
     - **主題卡片:**
         - `預覽區`
-            - **顯示:** 主題核心配色 Primary, Background, Surface
+            - **顯示:** 主題核心配色，包含 Primary, Background, Surface
         - `名稱`
-            - **顯示:** 主題名稱 Sample: 海洋藍
+            - **顯示:** 主題名稱，例如海洋藍
         - `標籤`
             - **顯示:** "Light" 或 "Dark"
         - **選取狀態:**

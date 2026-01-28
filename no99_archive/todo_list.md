@@ -16,12 +16,13 @@
 
 - [ ] 實作 HomeFilter 帳戶選擇的 Universal Logic
     - **背景:** 目前在 merge 或 delete 帳戶後，若導致篩選列表為空，系統不做任何自動選取。
-    - **目標:** 定義並實作一個通用的預設選取邏輯（例如：當沒有任何選取時，自動選取排序第一的帳戶，或是顯示特定提示）。
+    - **目標:** 定義並實作一個通用的預設選取邏輯，例如：當沒有任何選取時，自動選取排序第一的帳戶，或是顯示特定提示。
     - **實作位置:** `SuSuGiGiApp/src/contexts/HomeFilterContext.tsx`
     - **相關檔案:**
-        - `SuSuGiGiApp/src/contexts/HomeFilterContext.tsx` (核心邏輯)
-        - `SuSuGiGiApp/src/screens/Home/HomeFilterScreen.tsx` (篩選器 UI)
-        - `SuSuGiGiSpec/no3_module_specs/no3_accounting_app/no2_screens/no2_home_screen.md` (規格定義)
+        - `SuSuGiGiApp/src/contexts/HomeFilterContext.tsx` 核心邏輯
+        - `SuSuGiGiApp/src/screens/Home/HomeFilterScreen.tsx` 篩選器 UI
+        - `SuSuGiGiSpec/no3_module_specs/no3_accounting_app/no2_screens/no2_home_screen.md` 規格定義
 
 幣別要可以選擇報表顯示位數
 計算機只能輸入到該幣別所設定的最小小數點第幾位
+檢查沒用到的 i18n

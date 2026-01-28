@@ -8,7 +8,7 @@
 
 ## 表格結構設計
 
-### 1. 角色Owner表 `role_owners.csv`
+### 角色Owner表 `role_owners.csv`
 
 **用途：** 記錄各角色當前負責人
 
@@ -24,7 +24,7 @@
 
 ---
 
-### 2. 角色Owner異動紀錄表 `role_owner_changes.csv`
+### 角色Owner異動紀錄表 `role_owner_changes.csv`
 
 **用途：** 記錄角色負責人的所有變更歷史
 
@@ -42,7 +42,7 @@
 
 ---
 
-### 3. 功能上線Log `feature_launch_log.csv`
+### 功能上線Log `feature_launch_log.csv`
 
 **用途：** 記錄User Story上線時間及負責人
 
@@ -65,7 +65,7 @@
 
 ---
 
-### 4. Module線上價值點數 `module_live_points.csv`
+### Module線上價值點數 `module_live_points.csv`
 
 **用途：** 統計各模組已上線功能的累積價值點數
 
@@ -81,7 +81,7 @@
 
 ---
 
-### 5. 價值點數發放Log `points_distribution_log.csv`
+### 價值點數發放Log `points_distribution_log.csv`
 
 **用途：** 記錄施工點數和維護點數的發放
 
@@ -96,13 +96,13 @@
 | role_name | string | 角色名稱 | PDM |
 | owner_name | string | 獲得者姓名 | 張三 |
 | points | integer | 發放點數 | 90 |
-| month | string | 發放月份（維運用） | 2025-01 |
+| month | string | 發放月份，維運用 | 2025-01 |
 | reference | string | 參考來源 | LAUNCH_20250120_001 |
 | notes | string | 備註 | 功能上線發放 |
 
 ---
 
-### 6. 價值點數擁有總計 `points_ownership_total.csv`
+### 價值點數擁有總計 `points_ownership_total.csv`
 
 **用途：** 統計每個人累積獲得的價值點數
 
@@ -118,7 +118,7 @@
 
 ---
 
-### 7. 現金代墊Log `cash_advance_log.csv`
+### 現金代墊Log `cash_advance_log.csv`
 
 **用途：** 記錄現金支出及轉換為點數
 
@@ -133,7 +133,7 @@
 | point_to_usd_rate | decimal | 轉換匯率 | 2.00 |
 | converted_points | integer | 轉換點數 | 600 |
 | allocation_type | string | 歸屬類型：module/全產品 | 全產品 |
-| allocated_module | string | 歸屬模組（若有） | - |
+| allocated_module | string | 歸屬模組，若有 | - |
 | invoice_url | string | 發票連結 | https://... |
 | status | string | 狀態：pending/approved/rejected | approved |
 | approved_by | string | 核准人 | Admin |
@@ -141,7 +141,7 @@
 
 ---
 
-### 8. 每月營收紀錄表 `monthly_revenue_log.csv`
+### 每月營收紀錄表 `monthly_revenue_log.csv`
 
 **用途：** 統計各模組營收並計算毛利
 
@@ -161,7 +161,7 @@
 
 ---
 
-### 9. 毛利發放Log `profit_distribution_log.csv`
+### 毛利發放Log `profit_distribution_log.csv`
 
 **用途：** 記錄毛利按點數比例分配給各owner
 
@@ -213,14 +213,14 @@
 ## 關鍵業務邏輯
 
 ### 施工點數發放規則
-1. 功能上線當月，依據`no5_1_module_role_points.csv`中該User Story的角色點數
-2. 發放給`功能上線Log`中記錄的各角色owner
-3. 一次性發放，不重複
+- 功能上線當月，依據`no5_1_module_role_points.csv`中該User Story的角色點數
+- 發放給`功能上線Log`中記錄的各角色owner
+- 一次性發放，不重複
 
 ### 維運點數發放規則
-1. 每月月底，依據`角色Owner表`當月負責人
-2. 發放該User Story對應角色的每月維運點數
-3. 持續每月發放，直到功能下線或owner變更
+- 每月月底，依據`角色Owner表`當月負責人
+- 發放該User Story對應角色的每月維運點數
+- 持續每月發放，直到功能下線或owner變更
 
 ### 費用分類與處理規則
 
@@ -304,10 +304,10 @@ no2_equity_model/operations/
 
 ### 自動化腳本
 建議開發以下Python腳本：
-1. `distribute_construction_points.py` - 功能上線時自動發放施工點數
-2. `distribute_operation_points.py` - 每月自動發放維運點數
-3. `calculate_monthly_profit.py` - 計算月度毛利
-4. `distribute_profit.py` - 按比例分配毛利
+- `distribute_construction_points.py` - 功能上線時自動發放施工點數
+- `distribute_operation_points.py` - 每月自動發放維運點數
+- `calculate_monthly_profit.py` - 計算月度毛利
+- `distribute_profit.py` - 按比例分配毛利
 
 ### 資料驗證
 - 確保發放點數與`no5_1_module_role_points.csv`一致

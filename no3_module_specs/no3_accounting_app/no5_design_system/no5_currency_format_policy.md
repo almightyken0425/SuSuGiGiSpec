@@ -4,7 +4,7 @@
 
 ## 核心策略
 
-- **原則:** 顯示幣別符號 (Symbol) 以符合使用者直覺，金額格式跟隨系統語系 Locale Aware
+- **原則:** 顯示幣別符號 Symbol 以符合使用者直覺，金額格式跟隨系統語系 Locale Aware
 - **技術實作:** 封裝全域函式 formatAppCurrency
 - **模式:** 支援 3 種標準格式 Standard, Compact, ExchangeRate
 
@@ -18,18 +18,18 @@
 - **範例:** NT$1,234.00 或 $10.50
 - **Intl 設定:**
     - style: currency
-    - currency: [ISO Code]
+    - currency: ISO Code
     - currencyDisplay: symbol
-    - minimumFractionDigits: 2 (或依幣別定義)
-    - maximumFractionDigits: 2 (或依幣別定義)
+    - minimumFractionDigits: 2，或是依幣別定義
+    - maximumFractionDigits: 2，或是依幣別定義
 
 ### Compact
 
-- **用途:** 圖表 (Pie Chart)、空間極度受限處
+- **用途:** 圖表 Pie Chart、空間極度受限處
 - **範例:** NT$1.2k 或 $5M
 - **Intl 設定:**
     - style: currency
-    - currency: [ISO Code]
+    - currency: ISO Code
     - currencyDisplay: symbol
     - notation: compact
     - compactDisplay: short

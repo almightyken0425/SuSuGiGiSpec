@@ -22,11 +22,10 @@
         
     - `updatedOn`: Number, Unix Timestamp ms - Not Null, 資料最後更新時間, 同步依據
     
-    > [!NOTE]
-    > **與 User Management 的關係**: 此表為 `users/{uid}/preferences` 的本地快取。
-    > - `language`, `timeZone`, `theme` 直接對應。
-    > - `baseCurrencyId` 對應 `preferences.currency` (需進行 ID <-> ISO Code 轉換)。
-    > - 需保持雙向同步。
+    **與 User Management 的關係**: 此表為 `users/{uid}/preferences` 的本地快取。
+    - `language`, `timeZone`, `theme` 直接對應。
+    - `baseCurrencyId` 對應 `preferences.currency` ，需進行 ID <-> ISO Code 轉換。
+    - 需保持雙向同步。
         
 
 ### 帳戶 Accounts
@@ -91,9 +90,9 @@
         
     - `categoryId`: String - Foreign Key to Categories, Not Null
         
-    - `amountCents`: BigInt - Not Null, 金額 (正數), 收入或支出由 Category 決定
+    - `amountCents`: BigInt - Not Null, 金額正數, 收入或支出由 Category 決定
         
-    - `transactionDate`: Number, Unix Timestamp ms - Not Null, 交易發生日 (使用者可改), 用於報表與排序
+    - `transactionDate`: Number, Unix Timestamp ms - Not Null, 交易發生日，使用者可編輯, 用於報表與排序
         
     - `note`: String | Null - Nullable, 用於搜尋
         

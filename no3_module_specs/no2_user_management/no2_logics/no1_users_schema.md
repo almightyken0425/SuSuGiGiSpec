@@ -29,8 +29,7 @@
 
 ### RevenueCat 權限資料
 
-> [!IMPORTANT]
-> **此區塊由 RevenueCat Firebase Integration 自動寫入，不應手動修改**
+- **重要注意:** 此區塊由 RevenueCat Firebase Integration 自動寫入，不應手動修改
 
 | 欄位 | 型別 | 說明 |
 |------|------|------|

@@ -44,4 +44,4 @@
         - `uid`, `email`, `provider`
         - `preferences`: { language, currency, timezone, theme }，儲存 ISO Code
         - `createdAt`: Server Timestamp
-- **備註:** 不執行 Batch Sync，因無資料需下載
+- **行為:** 不執行 Batch Sync，因無資料需下載

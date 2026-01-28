@@ -62,7 +62,7 @@
 - **篩選邏輯:**
     - **即時更新:**
         - **觸發:** 任一篩選條件變更
-        - **行為:** 立即更新 `HomeScreen` 的篩選狀態 Context 或 Global State
+        - **行為:** 立即更新 `HomeScreen` 的篩選狀態，透過 Context 或 Global State 實作
         - **結果:** `HomeScreen` 背景自動重新查詢與渲染
     - **帳戶篩選:** 排除 `deletedOn` 或 `disabledOn` 非 null 的帳戶
 - **預設值:**

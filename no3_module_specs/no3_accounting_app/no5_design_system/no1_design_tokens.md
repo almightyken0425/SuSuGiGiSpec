@@ -5,7 +5,7 @@
 ### 基礎色盤 Base Palette
 定義系統中使用的所有原始顏色。
 
-- **Neutral (中性色)**: 用於背景、文字、邊框
+- **Neutral 中性色**: 用於背景、文字、邊框
   - `neutral-0`: #FFFFFF
   - `neutral-50`: #FAFAFA
   - `neutral-100`: #F5F5F5
@@ -20,12 +20,12 @@
   - `neutral-950`: #121212
   - `neutral-1000`: #000000
 
-- **Primary (主色)**: 品牌識別色
-  - `primary-100`: #E3F2FD (Lightest)
-  - `primary-500`: #2196F3 (Main)
-  - `primary-900`: #0D47A1 (Darkest)
+- **Primary 主色**: 品牌識別色
+  - `primary-100`: #E3F2FD Lightest
+  - `primary-500`: #2196F3 Main
+  - `primary-900`: #0D47A1 Darkest
 
-- **Semantic (語意色)**
+- **Semantic 語意色**
   - `success`: #4CAF50
   - `warning`: #FFC107
   - `error`: #F44336
@@ -96,6 +96,6 @@
 ---
 
 ## 陰影系統 Shadow System
-- `shadow-sm`: 0 1px 2px 0 rgba(0, 0, 0, 0.05)
-- `shadow-md`: 0 4px 6px -1px rgba(0, 0, 0, 0.1)
-- `shadow-lg`: 0 10px 15px -3px rgba(0, 0, 0, 0.1)
+- `shadow-sm`: `0 1px 2px 0 rgba(0, 0, 0, 0.05)`
+- `shadow-md`: `0 4px 6px -1px rgba(0, 0, 0, 0.1)`
+- `shadow-lg`: `0 10px 15px -3px rgba(0, 0, 0, 0.1)`

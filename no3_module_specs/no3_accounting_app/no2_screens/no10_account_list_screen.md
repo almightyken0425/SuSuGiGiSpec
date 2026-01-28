@@ -78,8 +78,9 @@
     - **觸發:** 點擊新增按鈕
     - **檢查:**
         - `PremiumLogic.checkPremiumAccess()`
+        - `PremiumLogic.checkPremiumAccess()`
         - 檢查全域限制 帳戶 <= 3 AND 類別 <= 10
-    - **IF 被限制 Blocked:**
+    - **IF 被限制:**
         - **導航:** PaywallScreen
     - **ELSE:**
         - **導航:** AccountEditorScreen

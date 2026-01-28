@@ -32,15 +32,15 @@
         - 功能開發優先排序
         - 定義產品願景與使用者故事
     - **UX 設計, UX Designer**
-        - 使用者流程 (User Flow) 與資訊架構 (IA)
-        - 低保真線框圖 (Wireframe) 與原型 (Prototype)
+        - 使用者流程 User Flow 與資訊架構 IA
+        - 低保真線框圖 Wireframe 與原型 Prototype
         - 使用者研究與易用性測試
-        - 規格邏輯驗證與邊緣案例定義 (Edge Cases)
+        - 規格邏輯驗證與邊緣案例定義 Edge Cases
     - **UI 設計, UI Designer**
         - App 的視覺風格、Logo、品牌形象
-        - 高保真視覺稿 (Mockup) 與互動設計
-        - 維護設計系統 (Design System) 與元件庫
-        - 輸出切圖與標註 (Assets & Handoff)
+        - 高保真視覺稿 Mockup 與互動設計
+        - 維護設計系統 Design System 與元件庫
+        - 輸出切圖與標註 Assets 與 Handoff
 - **技術長, CTO**
     - **專案管理, PJM**
         - 專案時程規劃與管理

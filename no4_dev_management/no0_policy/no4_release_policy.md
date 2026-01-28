@@ -25,11 +25,11 @@
 - **PR 階段:**
     - **行為:**
         - 建立 `release/vX.X.X` 指向 `main` 的 PR
-        - **內容:** 此 PR 僅包含版本號與 CHANGELOG 變更
+        - **行為:** 此 PR 僅包含版本號與 CHANGELOG 變更
 - **合併階段:**
     - **行為:**
         - 合併 `release` PR 至 `main`
-        - **機制:** 採用 `Merge commit` 而非 `Squash`
+        - **行為:** 採用 `Merge commit` 而非 `Squash`
 - **標記 Tagging:**
     - **行為:**
         - 於 `main` 分支上建立 `git tag`

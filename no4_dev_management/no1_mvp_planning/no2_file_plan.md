@@ -1,6 +1,6 @@
 # 檔案結構計劃
 
-## 應用程式檔案結構 (Expo / React Native)
+## 應用程式檔案結構 Expo / React Native
 
 ```
 / 專案根目錄

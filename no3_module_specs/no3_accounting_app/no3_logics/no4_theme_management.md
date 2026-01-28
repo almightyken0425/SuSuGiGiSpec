@@ -22,9 +22,9 @@
 
 - **觸發:** App 啟動
 - **讀取:** `Settings` 表中的 `currentThemeId`
-- **IF 無設定值 (首次啟動):**
+- **IF 無設定值，例如首次啟動:**
     - **行為:** 使用預設值 `theme_light_default`
-    - **備註:** 或根據系統深淺色決定
+    - **行為:** 或根據系統深淺色決定
 - **查找:** 根據 ID 從 `BuiltInThemes` 查找對應的主題物件
 - **注入:** 將主題物件注入 App 的 Theme Provider
     - **範例:** React Context 或 Styled Components ThemeProvider
@@ -45,7 +45,7 @@
 
 ## 擴充性設計
 
-- **遠端主題 (Remote Themes):**
+- **遠端主題 Remote Themes:**
     - **來源:** Server 下載 JSON 格式定義
     - **儲存:** 本地資料庫 `Themes` 表
     - **優先級:** 初始化時優先查找本地 `Themes` 表，再查找 `BuiltInThemes`

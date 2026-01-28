@@ -1,7 +1,6 @@
 # 首次登入流程
 
-> [!NOTE]
-> 完整互動流程圖請參閱: `no1_interaction_flow.md`
+**核心注意**: 完整互動流程圖請參閱: `no1_interaction_flow.md`
 
 ## 實作邏輯 Local-First
 
@@ -90,10 +89,10 @@ async function handleGoogleLogin() {
 ### 資料衝突處理 首次登入
 
 若使用者是 Tier 1 且在全新裝置登入：
-- `ensureUserDocument` 會先建立一個「本地空使用者」。
-- `SyncEngine` 啟動後，從 Firestore 拉取「雲端使用者資料」。
+- `ensureUserDocument` 會先建立一個 本地空使用者 。
+- `SyncEngine` 啟動後，從 Firestore 拉取 雲端使用者資料 。
 - `SyncEngine` 執行 LWW Last Write Wins 合併，雲端資料 通常較舊或較新 會覆蓋或合併本地初始資料。
-- **備註:** 由於是全新裝置，本地初始資料僅包含預設值，被雲端覆蓋是預期行為。
+- **行為:** 由於是全新裝置，本地初始資料僅包含預設值，被雲端覆蓋是預期行為。
 
 ---
 

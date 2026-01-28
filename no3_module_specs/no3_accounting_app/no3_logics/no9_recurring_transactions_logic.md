@@ -20,7 +20,7 @@
 - **選項:**
     - **IF 僅此一筆:**
         - **執行:** 直接呼叫 `TransactionLogic.updateTransaction` 或 `TransferLogic.updateTransfer`
-        - **備註:** 不影響 `Schedules` 表
+        - **行為:** 不影響 `Schedules` 表
     - **IF 此筆及未來:**
         - **結束舊排程:**
             - **執行:** 將原 `Schedule` 的 `endOn` 設為此交易日期的前一週期
