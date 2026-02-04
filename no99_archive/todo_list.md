@@ -26,3 +26,11 @@
 幣別要可以選擇報表顯示位數
 計算機只能輸入到該幣別所設定的最小小數點第幾位
 檢查沒用到的 i18n
+提醒文字，同步功能僅限少量紀錄，如果要移轉，請使用匯入匯出功能
+無資料時的行為
+    homefilterscreen,
+    homescreen,
+    editorscreen in transaction transfer,
+    listscreen in category account
+測試匯出功能
+匯入流程優化
