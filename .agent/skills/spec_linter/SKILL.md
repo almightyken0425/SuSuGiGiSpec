@@ -1,11 +1,11 @@
 ---
 name: spec_linter
-description: 專門用於檢查與校正專案規格文件的規範，確保嚴格遵循核心原則、命名規範與格式禁令。
+description: 專門用於檢查與校正任何 Markdown .md 文件的規範，確保嚴格遵循核心原則、命名規範與格式禁令。
 ---
 
 # Spec Linter & Formatter Skill
 
-當處理專案規格文件，特別是 `SuSuGiGiSpec` 或 `SIT/Feature` 目錄下的 `.md` 檔案時，必須嚴格執行以下規範。
+當寫作、生成或編輯任何 Markdown `.md` 檔案時，都必須嚴格執行以下規範。
 
 > **完整政策文件參考:** 本 SKILL 提供自動化檢查清單，完整的規格撰寫政策請參閱同目錄下的 `spec_writing_policy.md`。
 
