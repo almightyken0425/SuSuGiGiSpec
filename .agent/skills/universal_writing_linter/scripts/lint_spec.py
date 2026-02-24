@@ -34,21 +34,19 @@ def lint_file(filepath):
         # Remove components that are within backticks for checking
         line_no_code = re.sub(r'`[^`]*`', '', line)
         
-        if '(' in line_no_code or ')' in line_no_code or '（' in line_no_code or '）' in line_no_code:
-            # Check for link pattern ](
+        # Check for basic parens with exceptions for markdown links
+        if '(' in line_no_code or ')' in line_no_code:
             if '](' not in line_no_code:
-                 # Check if it's strictly just text
                  errors.append(f"Line {line_num}: Found parentheses: {line.strip()}")
 
+        # Check for basic brackets with exceptions for markdown links and checkboxes
         if '[' in line_no_code or ']' in line_no_code:
-            # Check for link pattern [text](url) -> we removed parens check above but brackets remain
-            # or checkbox - [ ]
             if not re.search(r'\[.*\]\(', line) and not re.search(r'-\s*\[[ x]\]', line):
                  errors.append(f"Line {line_num}: Found brackets: {line.strip()}")
                  
-        # Full-width prohibited characters
-        if re.search(r'[「」『』【】]', line_no_code):
-             errors.append(f"Line {line_num}: Found prohibited quotes/brackets: {line.strip()}")
+        # Completely prohibited full-width and special bracket characters
+        if re.search(r'[（）［］｛｝《》〈〉「」『』【】〔〕]', line_no_code):
+             errors.append(f"Line {line_num}: Found prohibited full-width quotes/brackets: {line.strip()}")
 
         # 2. Asterisk Lists
         if stripped.startswith('* ') and not stripped.startswith('**'):

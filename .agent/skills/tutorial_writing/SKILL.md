@@ -15,7 +15,7 @@ description: Comprehensive documentation guidelines for Technical Knowledge and 
 
 ### 深層方法論
 - **資料溯源追蹤:** 每個欄位、每個數值都追溯到源頭，說明 從哪裡來、經過什麼運算、填到哪裡去
-  - **層層拆解範例:** 類似物理學介紹功率時不只說 牛頓每秒 ，還要拆解成 (m×a)每秒 等於 (kg×m每s²)每秒 等於 kg×m每s³
+  - **層層拆解範例:** 類似物理學介紹功率時不只說 牛頓每秒 ，還要拆解成 質量乘以加速度每秒 等於 千克乘以公尺每秒平方再每秒 等於 千克乘以公尺每平方三次方
   - **比特幣範例:** ScriptPubKey 欄位的完整溯源鏈
     ```
     UI 輸入: 使用者輸入地址 "1A1zP1..."
@@ -42,7 +42,7 @@ description: Comprehensive documentation guidelines for Technical Knowledge and 
 
 技術文件的最終目標不是傳遞資訊，而是**在讀者腦中建立可操作的心智模型**。以下是多層次的認知建構方法論：
 
-### 第一層：心智模型地基 Mental Model Foundation
+### 基底抽象：心智模型地基 Mental Model Foundation
 
 #### 概念錦點 Concept Anchoring
 - **定義:** 提供穩固的認知錐點，讓讀者有明確的概念參照點
@@ -69,7 +69,7 @@ description: Comprehensive documentation guidelines for Technical Knowledge and 
 
 ---
 
-### 第二層：認知負載管理 Cognitive Load Management
+### 資訊流控：認知負載管理 Cognitive Load Management
 
 #### 漸進式複雜度 Progressive Complexity
 - **定義:** 控制資訊披露的節奏，避免認知超載
@@ -87,8 +87,8 @@ description: Comprehensive documentation guidelines for Technical Knowledge and 
 #### 分塊與組塊 Chunking and Grouping
 - **定義:** 將資訊分組，利用大腦短期記憶 7加減2 個單位的限制
 - **技巧:**
-  - **五層金字塔:** 將所有文件分為 5 個大類，每類又細分
-    - 目的：讀者只需記住 5 個大框架，避免記憶超載
+  - **模塊化框架:** 將所有文件分為幾個核心大類，每類再細分
+    - 目的：讀者只需記住幾個大框架，避免記憶超載
   - **章節分隔線:** 用 `---` 強制分隔主要上下文
     - 目的：視覺上的分塊，減少閱讀疲勞
   - **標題階層:** ## 主要概念 接 ### 子概念 接 #### 細節
@@ -96,7 +96,7 @@ description: Comprehensive documentation guidelines for Technical Knowledge and 
 
 ---
 
-### 第三層：概念連結網路 Concept Connection Network
+### 關聯編織：概念連結網路 Concept Connection Network
 
 #### 多向連結 Multi-Directional Linking
 - **定義:** 建立概念之間的多重連結，形成知識網路
@@ -123,7 +123,7 @@ description: Comprehensive documentation guidelines for Technical Knowledge and 
 
 ---
 
-### 第四層：理解驗證與回饋 Understanding Verification and Feedback
+### 成效確認：理解驗證與回饋 Understanding Verification and Feedback
 
 #### 立即驗證 Immediate Verification
 - **定義:** 提供立即回饋機制，讓讀者確認自己真的懂了
@@ -153,7 +153,7 @@ description: Comprehensive documentation guidelines for Technical Knowledge and 
 
 ---
 
-### 第五層：記憶提取優化 Memory Retrieval Optimization
+### 思維固化：記憶提取優化 Memory Retrieval Optimization
 
 #### 多重編碼 Multi-Encoding
 - **定義:** 同一個概念以多種形式編碼，提供多個提取路徑
@@ -177,9 +177,9 @@ description: Comprehensive documentation guidelines for Technical Knowledge and 
   - **結論章節:**
     - 範例：每個大章節後的 結論 段落
     - 目的：強化核心訊息的記憶固化
-  - **層級編號:**
-    - 範例：`no1_1` 代表 第一層第一個文件
-    - 目的：提供空間定位記憶索引
+  - **分類定位:**
+    - 範例：`Protocol_Genesis` 代表 核心協議中的創世文件
+    - 目的：提供空間定位與分類記憶索引
 
 #### 連接與回錄 Links and Callbacks
 - **定義:** 建立文件間的連接，但不使用硬編碼檔名
@@ -187,13 +187,13 @@ description: Comprehensive documentation guidelines for Technical Knowledge and 
   - **主題引用:**
     - 範例：依據創世協議規範 而非 依據 no1_1_genesis_protocol_code.md
     - 目的：讀者透過主題連結概念，而非檔案
-  - **層級暱示:**
-    - 範例：交易建立文件中引用 協議層 的概念
-    - 目的：提醒讀者概念的層級位置
+  - **框架提示:**
+    - 範例：交易建立文件中引用 核心協議 的概念
+    - 目的：提醒讀者概念的所屬框架位置
 
 ---
 
-### 第六層：心智模型驗證 Mental Model Validation
+### 壓力測試：心智模型驗證 Mental Model Validation
 
 #### 多場景測試 Multi-Scenario Testing
 - **定義:** 提供多個場景讓讀者測試自己的理解
@@ -209,7 +209,7 @@ description: Comprehensive documentation guidelines for Technical Knowledge and 
     - 目的：讓讀者模擬不同場景的結果
 
 #### 效果驗證 Effect Verification
-- **定義:** 明確說明「這樣做會導致什麼」
+- **定義:** 明確說明執行該行為會導致之具體後果
 - **技巧:**
   - **因果鏈:**
     - 範例：修改歷史區塊 導致 Hash 改變 導致 後續區塊全部無效
@@ -220,9 +220,9 @@ description: Comprehensive documentation guidelines for Technical Knowledge and 
 
 ## High-Level 撰寫脈絡框架
 
-技術知識文件應依循五層金字塔結構，從底層基礎逐步建構至頂層應用：
+技術知識文件應依循多維度關聯架構，從底層基礎逐步建構至頂層應用：
 
-### 第一層：遊戲說明書 Game Rulebook
+### 核心協議：遊戲說明書 Game Rulebook
 - **目標:** 定義系統的核心協議規範與不可變規則
 - **內容範疇:**
   - 協議層面的核心定義與結構規範
@@ -234,7 +234,7 @@ description: Comprehensive documentation guidelines for Technical Knowledge and 
   - 作為所有後續機制的數位憲法
   - 需明確標示哪些是協議定義，哪些是外部技術如 SHA256、ECDSA
 
-### 第二層：關鍵角色 Key Players
+### 靜態模型：關鍵角色 Key Players
 - **目標:** 介紹遊戲規則本身定義的抽象職責與資料結構
 - **內容範疇:**
   - 身份系統與密碼學基礎
@@ -246,7 +246,7 @@ description: Comprehensive documentation guidelines for Technical Knowledge and 
   - 僅描述抽象定義，不涉及具體實作
   - 需提供視覺化譬喻幫助理解，如金幣模型
 
-### 第三層：軟體實作角色 Software Implementation Roles
+### 實體載體：軟體實作角色 Software Implementation Roles
 - **目標:** 介紹非遊戲規則定義但實際運作時必須的軟體角色
 - **內容範疇:**
   - 節點、錢包、礦工等軟體類型
@@ -258,7 +258,7 @@ description: Comprehensive documentation guidelines for Technical Knowledge and 
   - 說明同一協議可有多種客戶端實作
   - 列舉實際軟體範例，如 Bitcoin Core、Metamask
 
-### 第三層：遊戲實際啟動 Game Runtime
+### 動態運行：遊戲實際啟動 Game Runtime
 - **目標:** 描述系統從啟動到持續運作的完整流程
 - **內容範疇:**
   - 交易生命週期：建立、簽署、廣播、驗證
@@ -270,7 +270,7 @@ description: Comprehensive documentation guidelines for Technical Knowledge and 
   - 需提供完整的 Demo Code 或邏輯演示
   - 涵蓋正常流程與邊緣情況
 
-### 第五層：遊戲價值與演化 Core Value & Evolution
+### 生態演化：遊戲價值與演化 Core Value & Evolution
 - **目標:** 闡述系統的核心價值與規則修改機制
 - **內容範疇:**
   - 共識機制的價值：去中心化、抗審查、經濟安全
@@ -284,30 +284,29 @@ description: Comprehensive documentation guidelines for Technical Knowledge and 
 
 ---
 
-## 文件命名規範 (技術文件篇)
+## 文件命名規範針對技術文件篇
 
 ### 技術知識文件格式
-- **格式:** `no層級_序號_主題.md`
-- **層級:**
-  - `1`: 協議規範 Protocol
-  - `2`: 資料結構與角色 Data Structure & Roles
-  - `3`: 軟體實作 Software Implementation
-  - `4`: 運作流程 Runtime Flow
-  - `5`: 共識與治理 Consensus & Governance
-- **序號:**
-  - 同層級內的排序編號
-  - 建議用 `1`, `2`, `3` 而非 `01`, `02`
-- **主題:**
+- **格式:** `no[編號]_[分類模組]_[主題].md`
+- **`[編號]`:**
+  - 遵循系列主題編號，如 `no1`、`no2` 等。
+- **`[分類模組]`:**
+  - `protocol`: 核心協議
+  - `model`: 靜態模型與角色
+  - `client`: 軟體實作
+  - `runtime`: 動態運行
+  - `ecosystem`: 生態演化
+- **`[主題]`:**
   - 全小寫英文
   - 使用 `_` snake_case 分隔
   - 可包含雙語標示如 `identity_and_address`
 
 ### 範例
-- `no1_1_genesis_protocol_code.md`
-- `no2_1_identity_and_address.md`
-- `no3_1_node_and_wallet.md`
-- `no4_1_transaction_creation.md`
-- `no5_2_fork_types.md`
+- `no1_protocol_genesis_code.md`
+- `no1_model_identity_and_address.md`
+- `no3_client_node_and_wallet.md`
+- `no4_runtime_transaction_creation.md`
+- `no5_ecosystem_fork_types.md`
 
 ---
 
@@ -432,7 +431,7 @@ description: Comprehensive documentation guidelines for Technical Knowledge and 
 
 ---
 
-## 章節結構規範 (技術文件篇)
+## 章節結構規範針對技術文件篇
 
 ### 協議規範文件 Protocol Specification
 推薦章節順序：
@@ -460,8 +459,7 @@ description: Comprehensive documentation guidelines for Technical Knowledge and 
 
 ---
 
-## 絕對禁止項目 (繼承 Spec 篇+額外增補)
-
+## 絕對禁止項目包含技術知識文件專屬增補
 - **絕對禁止技術黑箱:**
   - **嚴禁** 使用 底層實現 、 內部處理 等模糊描述
   - **要求:** 必須具體說明演算法或邏輯流程
