@@ -1,5 +1,5 @@
 ---
-name: tutorial_writing
+name: tutorial-writing
 description: Comprehensive documentation guidelines for Technical Knowledge and Tutorials, focusing on cognitive architecture and mental model construction.
 ---
 
