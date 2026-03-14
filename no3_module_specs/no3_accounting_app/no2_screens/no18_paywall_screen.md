@@ -94,7 +94,7 @@
         - **呼叫:** `iapService.requestPurchase`
         - **後續:** `iapService` 內部的 `purchaseUpdatedListener` 收到購買事件後，自動呼叫 `verifyIAPReceipt` Cloud Function 驗證，Cloud Function 驗證成功後寫入 Firestore，`initSubscriptionListener` 的 `onSnapshot` 偵測到變更並更新 `currentTier`
     - **成功後:**
-        - **判斷:** `PremiumContext.currentTier` 升至 LEVEL_1
+        - **偵測:** `PremiumContext.currentTier` 升至 LEVEL_1
         - **提示:** 升級成功
         - **導航:** 自動關閉 PaywallScreen
     - **失敗後:**
@@ -103,7 +103,7 @@
     - **觸發:** 點擊 `恢復購買` 連結
     - **呼叫:** `iapService.restorePurchases`，對每筆既有購買紀錄呼叫 `verifyIAPReceipt` Cloud Function 驗證
     - **成功後:**
-        - **判斷:** `PremiumContext.currentTier` 升至 LEVEL_1
+        - **偵測:** `PremiumContext.currentTier` 升至 LEVEL_1
         - **提示:** 恢復成功
         - **導航:** 自動關閉 PaywallScreen
     - **失敗後:**

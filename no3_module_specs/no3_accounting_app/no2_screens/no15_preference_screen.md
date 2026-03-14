@@ -97,7 +97,7 @@
         - **欄位:** 必須設定 `updatedOn`
     - **雲端同步:**
         - **行為:** 由 Sync Engine 自動處理
-        - **邏輯:** Sync Engine 監聽本地 DB 變更，若 `isPremium` 為 True 則自動同步至 Firestore
+        - **邏輯:** Sync Engine 監聽本地 DB 變更，若 `currentTier` 為非 `PlanTier.LEVEL_0` 則自動同步至 Firestore
         - **錯誤處理:** Sync Engine 內建重試與離線佇列機制
     - **IF 變更時區或語系:**
         - **觸發:** App 相關設定重新載入，確保 UI 即時更新

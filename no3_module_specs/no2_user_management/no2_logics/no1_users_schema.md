@@ -110,10 +110,11 @@
 ### App 端檢查是否為 Premium 會員
 
 ```typescript
-function isPremiumUser(subscription?: Subscription): boolean {
-  if (!subscription) return false;
-  if (subscription.expiresAt === null) return true;
-  return subscription.expiresAt > Date.now();
+function checkSubscriptionTier(subscription?: Subscription): PlanTier {
+  if (!subscription || subscription.tier === 0) return PlanTier.LEVEL_0;
+  if (subscription.expiresAt === null) return subscription.tier;
+  if (subscription.expiresAt > Date.now()) return subscription.tier;
+  return PlanTier.LEVEL_0;
 }
 ```
 
@@ -127,8 +128,7 @@ useEffect(() => {
     .onSnapshot(doc => {
       const userData = doc.data();
       const subscription = userData?.subscription;
-      const tier = isPremiumUser(subscription) ? subscription.tier : PlanTier.LEVEL_0;
-      setCurrentTier(tier);
+      setCurrentTier(checkSubscriptionTier(subscription));
     });
 
   return () => unsubscribe();

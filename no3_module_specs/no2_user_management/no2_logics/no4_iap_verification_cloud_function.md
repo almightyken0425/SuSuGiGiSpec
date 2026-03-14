@@ -63,12 +63,4 @@
 
 ## Firestore 安全規則要求
 
-`users/{uid}` 文件中，`subscription` 欄位的寫入權限僅限 Cloud Function 服務帳戶，客戶端規則範例如下：
-
-```javascript
-match /users/{uid} {
-  allow read: if request.auth.uid == uid;
-  allow write: if request.auth.uid == uid
-    && !request.resource.data.keys().hasAny(['subscription']);
-}
-```
+`users/{uid}` 文件中，`subscription` 欄位的寫入權限僅限 Cloud Function 服務帳戶。Cloud Function 以 Firebase Admin SDK 寫入，繞過客戶端 Security Rules。客戶端規則採用 allowlist 寫法，僅允許修改 `preferences` 與 `updatedAt` 欄位，完整規則定義請參閱 Users Collection Schema 文件。

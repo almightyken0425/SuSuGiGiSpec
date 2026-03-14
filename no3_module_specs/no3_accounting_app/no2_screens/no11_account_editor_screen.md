@@ -116,7 +116,7 @@
                 - **導航:** PaywallScreen
         - **匯率輸入流程:**
             - **條件:**
-                - `PremiumLogic.checkPremiumStatus()` 為 True
+                - `PremiumLogic.checkPremiumStatus()` 回傳非 `PlanTier.LEVEL_0`
                 - 選擇了非基礎貨幣
             - **行為:**
                 - 彈出介面提示使用者輸入初始匯率

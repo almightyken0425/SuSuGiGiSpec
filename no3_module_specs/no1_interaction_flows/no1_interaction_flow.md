@@ -24,18 +24,18 @@ sequenceDiagram
     participant Local as Local DB
     participant Auth as Firebase Auth
     participant Cloud as Firestore
-    participant RC as RevenueCat
+    participant CF as Cloud Function
 
     box "Client Side" #f9f9f9
         participant U
         participant App
         participant Local
     end
-    
+
     box "Server Side" #ececec
         participant Auth
         participant Cloud
-        participant RC
+        participant CF
     end
 
     %% ==========================================
@@ -67,12 +67,12 @@ sequenceDiagram
         par 定期交易與權限檢查於 Local
             App->>Local: 讀取 PremiumContext
             
-            opt PremiumLogic.checkPremiumStatus is False
+            opt currentTier == PlanTier.LEVEL_0
                 App->>App: 降級為 Free
                 Note right of App: 包含離線過期檢查邏輯
             end
 
-            opt isPremium == True
+            opt currentTier != PlanTier.LEVEL_0
                 App->>Local: 檢查定期交易 (Schedules)
                 Note right of App: 依賴本地資料，無網也可執行
             end
@@ -97,7 +97,7 @@ sequenceDiagram
                     Note right of App: 無需重繪，節省資源
                 end
                 
-                opt PremiumLogic.checkPremiumStatus is True
+                opt currentTier != PlanTier.LEVEL_0
                     Note right of App: 確保使用最新權限狀態執行
                     App->>App: 檢查自動同步
                 end
@@ -119,8 +119,8 @@ sequenceDiagram
     App->>Auth: signInWithGoogle
     Auth-->>App: 返回 User Token
     
-    App->>RC: Identify (Login)
-    RC-->>App: 更新 CustomerInfo (Entitlements)
+    App->>Cloud: 建立 onSnapshot 監聽 (subscription)
+    Cloud-->>App: 推送當前 subscription 欄位
     
     rect rgb(240, 248, 255)
         note right of App: 強健資料建立流程
@@ -177,9 +177,10 @@ sequenceDiagram
     %% ==========================================
     %% 外部事件
     %% ==========================================
-    note over U, RC: 權限變更
-    
-    RC->>Cloud: Webhook: 訂閱狀態改變
+    note over U, Cloud: 訂閱狀態變更
+
+    Note right of CF: 購買或 App 啟動重新驗證時，verifyIAPReceipt 寫入 Firestore
+    CF->>Cloud: 寫入 subscription 欄位
     Cloud->>App: onSnapshot 通知
     App->>App: 更新 PremiumContext
     

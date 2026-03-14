@@ -40,7 +40,7 @@
 ### 與 Accounting App 的關係
 
 - **Accounting App** 依賴 **User Management** 提供的 `userId` 來隔離本地資料。
-- **Accounting App** 依賴 **User Management** 提供的 `isPremium` 狀態來決定是否啟用進階功能，如同步。
+- **Accounting App** 依賴 **User Management** 提供的 Firestore `subscription` 欄位，透過 `PremiumContext` 解析出 `currentTier` 狀態來決定是否啟用進階功能，如同步。
 
 ---
 

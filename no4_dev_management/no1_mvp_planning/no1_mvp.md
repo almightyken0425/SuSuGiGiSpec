@@ -6,7 +6,7 @@
     
 - [ ] **使用者認證:** 強制使用 Firebase Auth 的 Google 登入, 用於帳號綁定。
     
-- [ ] **付費牆 PaywallScreen:** 串接 App Store 或 Google Play 訂閱機制, 例如 RevenueCat。
+- [ ] **付費牆 PaywallScreen:** 串接 App Store 與 Google Play 訂閱機制，使用 `react-native-iap` 處理購買流程，並透過 `verifyIAPReceipt` Cloud Function 進行伺服器端收據驗證。
     
 
 ## 免費版功能

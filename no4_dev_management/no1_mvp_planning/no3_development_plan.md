@@ -57,9 +57,11 @@
 
 - [ ] 建立 `PaywallScreen.tsx` 的 UI 介面。
     
-- [ ] 串接 **RevenueCat** 或類似服務處理 App Store 與 Google Play 訂閱。
-    
-- [ ] 實作 `PremiumContext` 或狀態 來管理 `isPremiumUser` 狀態。
+- [ ] 串接 `react-native-iap` 處理 App Store 與 Google Play 購買流程。
+
+- [ ] 實作 `verifyIAPReceipt` Cloud Function，進行伺服器端收據驗證並將結果寫入 Firestore。
+
+- [ ] 實作 `PremiumContext`，透過 `initSubscriptionListener` 監聽 Firestore `subscription` 欄位並維護 `currentTier` 狀態。
     
 - [ ] 在所有 付費功能觸發點 加入付費牆檢查：
     
