@@ -201,18 +201,11 @@
 
 ### PremiumContext Local State
 
-- **說明:** 本地持久化狀態，用於離線檢查 Premium 權限。
+- **說明:** Runtime 記憶體狀態，由 Firestore `users/{uid}.subscription` 的 `onSnapshot` 監聽器即時更新，不需要額外的本地持久化，離線時由 Firestore SDK 的本地快取支撐。
 - **欄位:**
-    - `expirationDate`: Number | Null
-        - **格式:** Timestamp
-        - **說明:** Premium 到期時間，Null 代表無期限 Lifetime。
-        - **來源:** 映射自 `rawCustomerInfo`。
-    - `lastChecked`: Number
-        - **格式:** Timestamp
-        - **說明:** 上次與 RevenueCat 同步的時間。
-    - `rawCustomerInfo`: Object
-        - **格式:** JSON
-        - **說明:** RevenueCat 原始回傳資料，作為除錯與備用。
+    - `currentTier`: PlanTier
+        - **說明:** 當前解析出的訂閱等級，預設為 `PlanTier.LEVEL_0`。
+        - **來源:** 由 `PremiumLogic.checkPremiumStatus` 依 Firestore `subscription` 欄位計算。
 
 ---
 

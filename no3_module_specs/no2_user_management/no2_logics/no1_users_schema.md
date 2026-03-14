@@ -27,33 +27,37 @@
 
 ---
 
-### RevenueCat 權限資料
+### 訂閱狀態
 
-- **重要注意:** 此區塊由 RevenueCat Firebase Integration 自動寫入，不應手動修改
+此區塊由 `verifyIAPReceipt` Cloud Function 在伺服器端驗證收據後寫入，客戶端只讀不寫。使用者尚未購買時，`subscription` 欄位不存在，客戶端應視同 Tier 0。
 
 | 欄位 | 型別 | 說明 |
 |------|------|------|
-| `rc_entitlements` | Object | RevenueCat 權限物件，自動同步 |
-| `rc_active_subscriptions` | Array | 啟用中的訂閱 Product IDs |
+| `subscription.tier` | Number | 訂閱等級，對應 PlanTier 枚舉值，Tier 0 為免費，Tier 1 為 Premium |
+| `subscription.expiresAt` | Number | 訂閱到期的毫秒時間戳，終身授權時為 null |
+| `subscription.productId` | String | 購買的 Product ID |
+| `subscription.platform` | String | 購買平台，值為 ios 或 android |
+| `subscription.verifiedAt` | Number | 最後一次伺服器驗證通過的毫秒時間戳 |
+| `subscription.environment` | String | 驗證環境，值為 production 或 sandbox |
 
-#### 權限映射 Entitlement Mapping
+#### 權限映射 Tier Mapping
 
-| App Tier | RevenueCat Entitlement ID | 說明 | 功能權限 |
-| :--- | :--- | :--- | :--- |
-| **Tier 0 Free** | 無 | 免費版使用者 | 僅本地資料庫，無雲端同步 |
-| **Tier 1 Premium** | `premium` | 付費訂閱者 | 啟用 Sync Engine，支援雲端備份與跨裝置同步 |
+| Tier | 判斷條件 | 功能權限 |
+| :--- | :--- | :--- |
+| **Tier 0 Free** | `subscription` 欄位不存在，或 `expiresAt` 不為 null 且已過期 | 僅本地資料庫，無雲端同步 |
+| **Tier 1 Premium** | `subscription.tier` 為 1，且 `expiresAt` 為 null 或未過期 | 啟用 Sync Engine，支援雲端備份與跨裝置同步 |
 
 **範例資料**：
 ```json
 {
-  "rc_entitlements": {
-    "premium": {
-      "expires_date": "2025-12-31T23:59:59Z",
-      "product_identifier": "com.yourapp.premium.monthly",
-      "purchase_date": "2025-01-01T10:00:00Z"
-    }
-  },
-  "rc_active_subscriptions": ["com.yourapp.premium.monthly"]
+  "subscription": {
+    "tier": 1,
+    "expiresAt": 1767225599000,
+    "productId": "susugigi_level1_yearly",
+    "platform": "ios",
+    "verifiedAt": 1735689600000,
+    "environment": "production"
+  }
 }
 ```
 
@@ -85,15 +89,15 @@
     "theme": "dark"
   },
   
-  "rc_entitlements": {
-    "premium": {
-      "expires_date": "2025-12-31T23:59:59Z",
-      "product_identifier": "com.yourapp.premium.monthly",
-      "purchase_date": "2025-01-01T10:00:00Z"
-    }
+  "subscription": {
+    "tier": 1,
+    "expiresAt": 1767225599000,
+    "productId": "susugigi_level1_yearly",
+    "platform": "ios",
+    "verifiedAt": 1735689600000,
+    "environment": "production"
   },
-  "rc_active_subscriptions": ["com.yourapp.premium.monthly"],
-  
+
   "createdAt": "2025-01-01T08:00:00Z",
   "updatedAt": "2025-01-15T14:30:00Z"
 }
@@ -106,29 +110,46 @@
 ### App 端檢查是否為 Premium 會員
 
 ```typescript
-function isPremiumUser(user: User): boolean {
-  // 直接讀取 RevenueCat 同步的資料
-  return user.rc_entitlements?.premium !== undefined;
+function isPremiumUser(subscription?: Subscription): boolean {
+  if (!subscription) return false;
+  if (subscription.expiresAt === null) return true;
+  return subscription.expiresAt > Date.now();
 }
 ```
 
 ### 監聽權限變更
 
 ```typescript
-// React Native 範例
 useEffect(() => {
   const unsubscribe = firestore()
     .collection('users')
     .doc(currentUser.uid)
     .onSnapshot(doc => {
       const userData = doc.data();
-      const isPremium = userData.rc_entitlements?.premium !== undefined;
-      
-      setUserPremiumStatus(isPremium);
+      const subscription = userData?.subscription;
+      const tier = isPremiumUser(subscription) ? subscription.tier : PlanTier.LEVEL_0;
+      setCurrentTier(tier);
     });
-  
+
   return () => unsubscribe();
 }, [currentUser.uid]);
+```
+
+---
+
+## Firestore Security Rules
+
+使用者只能讀取與更新自己的文件。更新時僅允許修改 `preferences` 與 `updatedAt` 欄位，`subscription` 欄位由 Cloud Function 獨佔寫入，客戶端無寫入權限。
+
+```
+match /users/{userId} {
+  allow read: if request.auth != null && request.auth.uid == userId;
+  allow create: if request.auth != null && request.auth.uid == userId;
+  allow update: if request.auth != null
+                && request.auth.uid == userId
+                && request.resource.data.diff(resource.data).affectedKeys()
+                   .hasOnly(['preferences', 'updatedAt']);
+}
 ```
 
 ---
@@ -146,11 +167,11 @@ useEffect(() => {
 ## 注意事項
 
 ### ✅ 應該做的
-- 透過 Firestore SDK 直接讀寫使用者偏好
-- 監聽 `rc_entitlements` 變更以更新 UI
+- 透過 Firestore SDK 讀寫使用者偏好
+- 監聽 `subscription` 欄位變更以更新 UI 的訂閱狀態
 - 使用 `updatedAt` 追蹤資料變更時間
 
 ### ❌ 不應該做的
-- **不要手動修改** `rc_entitlements` 或 `rc_active_subscriptions`，由 RevenueCat 管理
-- 不要在 Firestore 中儲存敏感資訊，如密碼、信用卡資料
-- 不要手動管理訂閱狀態，交給 RevenueCat
+- 客戶端直接寫入 `subscription` 欄位，此欄位僅由 Cloud Function 寫入
+- 在 Firestore 中儲存原始收據或任何付款敏感資訊
+- 在客戶端自行判斷收據有效性，繞過伺服器驗證流程

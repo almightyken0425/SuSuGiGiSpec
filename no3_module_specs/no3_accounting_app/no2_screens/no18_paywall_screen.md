@@ -62,10 +62,10 @@
 - **訂閱選項區:**
     - **年度方案:**
         - **標籤:** 推薦
-        - **價格:** 動態顯示 RevenueCat 取回的年度價格
+        - **價格:** 動態顯示 `iapService.getSubscriptions` 取回的年度本地化價格
         - **折扣:** 動態計算並顯示月均價
     - **月度方案:**
-        - **價格:** 動態顯示 RevenueCat 取回的月度價格
+        - **價格:** 動態顯示 `iapService.getSubscriptions` 取回的月度本地化價格
 - `行動呼籲按鈕`
     - **文字:** 升級並開始 7 天免費試用
 - **頁腳連結:**
@@ -77,35 +77,33 @@
 
 ## 核心邏輯
 
-- **串接服務:**
-    - **要求:** 串接跨平台購買服務
-    - **範例:** RevenueCat
 - **動態價格載入:**
     - **觸發:** 畫面載入
-    - **呼叫:** `RevenueCat.getOfferings`
+    - **呼叫:** `iapService.getSubscriptions` 傳入所有 Product ID
     - **禁止:** 在 App 內寫死價格
-    - **顯示:** 從 RevenueCat 取回本地化價格字串
+    - **顯示:** 從 `iapService` 取回的本地化價格字串
 - **購買邏輯:**
     - **觸發:** 使用者選擇方案並點擊 CTA
     - **前置檢查採用 Redirect Flow:**
         - **檢查:** `AuthContext.isAnonymous` 確認是否為訪客
         - **IF True 若為訪客:**
             - **行為:** 關閉 Paywall Modal
-            - **導航:** `LoginScreen`，並帶入參數 `{ redirect: 'PaywallScreen' }`
+            - **導航:** `LoginScreen`，並帶入參數 redirect 為 PaywallScreen
             - **目的:** 確保購買歸戶至正式帳號，避免匿名購買遺失
     - **執行購買若已登入:**
-        - **呼叫:** `RevenueCat.purchasePackage`
+        - **呼叫:** `iapService.requestPurchase`
+        - **後續:** `iapService` 內部的 `purchaseUpdatedListener` 收到購買事件後，自動呼叫 `verifyIAPReceipt` Cloud Function 驗證，Cloud Function 驗證成功後寫入 Firestore，`initSubscriptionListener` 的 `onSnapshot` 偵測到變更並更新 `currentTier`
     - **成功後:**
-        - **更新:** 呼叫 `PremiumLogic.refreshPremiumStatus()` 更新權限
+        - **判斷:** `PremiumContext.currentTier` 升至 LEVEL_1
         - **提示:** 升級成功
         - **導航:** 自動關閉 PaywallScreen
     - **失敗後:**
         - **提示:** 購買失敗或已取消
 - **恢復購買邏輯:**
-    - **觸發:** 點擊恢復購買連結
-    - **呼叫:** `RevenueCat.restorePurchases`
+    - **觸發:** 點擊 `恢復購買` 連結
+    - **呼叫:** `iapService.restorePurchases`，對每筆既有購買紀錄呼叫 `verifyIAPReceipt` Cloud Function 驗證
     - **成功後:**
-        - **更新:** 呼叫 `PremiumLogic.refreshPremiumStatus()` 更新權限
+        - **判斷:** `PremiumContext.currentTier` 升至 LEVEL_1
         - **提示:** 恢復成功
         - **導航:** 自動關閉 PaywallScreen
     - **失敗後:**

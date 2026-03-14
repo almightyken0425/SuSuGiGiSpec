@@ -71,9 +71,9 @@
 
 ### 升級 Upgrade Tier 0 to Tier 1
 
-當使用者購買訂閱或恢復購買，獲得 `premium` 權限時：
+當使用者購買訂閱或恢復購買，Cloud Function 驗證成功並寫入 Firestore 後：
 
-- **觸發時機:** RevenueCat 監聽器偵測到 `entitlements.active['premium']` 變為 `true`
+- **觸發時機:** `initSubscriptionListener` 的 `onSnapshot` 偵測到 `subscription.tier` 變為 1
 - **Initial Sync:**
     - **啟動:** Sync Engine
     - **強制執行完整同步:**
@@ -84,9 +84,9 @@
 
 ### 降級 Downgrade Tier 1 to Tier 0
 
-當使用者訂閱過期，失去 `premium` 權限時：
+當使用者訂閱到期，`expiresAt` 已過期時：
 
-- **觸發時機:** RevenueCat 監聽器偵測到 `entitlements.active['premium']` 變為 `undefined` 或 `false`
+- **觸發時機:** `initSubscriptionListener` 的 `onSnapshot` 偵測到 `subscription.expiresAt` 已過期，或 `checkPremiumStatus` 回傳 `PlanTier.LEVEL_0`
 - **Stop & Freeze:**
     - **停止 Sync Engine:** 立即終止所有背景同步排程
     - **保留本地資料:** 使用者在本地的資料完全保留，可繼續離線使用

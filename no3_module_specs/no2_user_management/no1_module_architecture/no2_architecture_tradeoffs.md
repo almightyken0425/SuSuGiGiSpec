@@ -6,14 +6,14 @@
     - **緩解:** 偏好設定變更頻率極低，實際成本影響有限。
 
 - **Server-Side 訂閱管理 vs Client-Side**
-    - **決策:** 選擇 Server-Side 如 RevenueCat
-    - **權衡:** 犧牲一點即時性如 Webhook 延遲，換取安全性與準確性。
-    - **理由:** 避免 Client 端被破解或竄改訂閱狀態，且 RevenueCat 能處理複雜的跨平台訂閱邏輯。
+    - **決策:** 選擇 Server-Side，由 `verifyIAPReceipt` Cloud Function 統一處理收據驗證
+    - **權衡:** 犧牲一點即時性，換取安全性與準確性。
+    - **理由:** 避免 Client 端被破解或竄改訂閱狀態，Cloud Function 為唯一有寫入 Firestore `subscription` 權限的元件，確保訂閱狀態不可偽造。
 
-- **Firebase/RevenueCat vs 自建 Server**
-    - **決策:** 選擇 Firebase Auth/DB 與 RevenueCat 託管
-    - **權衡:** 犧牲部分資料庫結構的彈性如 NoSQL 限制，與對底層的完全控制權。
-    - **理由:** 大幅降低維運成本 Ops Cost 與開發複雜度，讓團隊能專注於 App 核心功能開發。
+- **Firebase Cloud Functions vs 第三方訂閱管理服務**
+    - **決策:** 選擇 Firebase Cloud Functions 自行實作驗證邏輯
+    - **權衡:** 需自行維護 Apple 與 Google 官方 API 的串接邏輯，未來若需支援更複雜的訂閱方案需自行擴充。
+    - **理由:** 避免引入額外的第三方依賴與費用，Firebase 生態系已能完整覆蓋需求，大幅降低維運成本，讓團隊能專注於 App 核心功能開發。
 
 - **強制早登入 Early Login vs 情境式登入 Contextual Login**
     - **決策:** 採納 **情境式登入 Contextual Login**

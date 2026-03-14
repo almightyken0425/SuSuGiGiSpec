@@ -6,11 +6,11 @@
 
 ## 權限檢查
 
-- **檢查:** 呼叫 `PremiumLogic.refreshPremiumStatus()` 更新本地權限狀態
+- **執行:** 呼叫 `PremiumLogic.initSubscriptionListener` 建立 Firestore 訂閱監聽，`currentTier` 由監聽器自動更新
 
 ## 舊用戶邏輯 Premium
 
-- **條件:** `PremiumLogic.checkPremiumStatus()` 為 True
+- **條件:** `PremiumLogic.checkPremiumStatus()` 回傳非 `PlanTier.LEVEL_0`
 - **讀取 User Profile:**
     - **行為:** 嘗試讀取 Firestore `users/{uid}`
 - **IF 讀取成功:**
@@ -25,7 +25,7 @@
 
 ## 新用戶或訪客轉正邏輯
 
-- **條件:** 讀取失敗、文件不存在 或 `PremiumLogic.checkPremiumStatus()` 為 False
+- **條件:** 讀取失敗、文件不存在 或 `PremiumLogic.checkPremiumStatus()` 回傳 `PlanTier.LEVEL_0`
 - **執行:** 初始化流程
 - **決定預設值:**
     - **主要幣別:** 嘗試從裝置 Locale 取得，若無則預設 TWD，需轉換為 ISO Code
@@ -38,7 +38,7 @@
         - 帳戶: 使用主要幣別的現金帳戶
         - 類別: 食衣住行標準類別
 - **寫入雲端 User Management Onboarding:**
-    - **條件:** 僅在 `PremiumLogic.checkPremiumStatus()` 為 True 時執行
+    - **條件:** 僅在 `PremiumLogic.checkPremiumStatus()` 回傳非 `PlanTier.LEVEL_0` 時執行
     - **建立:** Firestore `users/{uid}` 文件
     - **內容:**
         - `uid`, `email`, `provider`
