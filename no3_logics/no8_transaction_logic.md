@@ -3,29 +3,23 @@
 ## createTransaction 建立交易
 
 - **輸入:**
-  - TransactionData
+  - 交易資料
 - **寫入 Transaction:**
-    - **執行:**
-      - 新增一筆記錄至 `Transactions` 表
-    - **欄位:**
-      - 必須設定 `updatedOn`
+  - **執行:**
+    - 新增一筆記錄至 `Transactions` 表
 
 ## updateTransaction 更新交易
 
 - **輸入:**
-  - TransactionData
+  - 交易資料
 - **更新 Transaction:**
-    - **執行:**
-      - 更新 `Transactions` 表中的記錄
-    - **欄位:**
-      - 必須更新 `updatedOn`
+  - **執行:**
+    - 更新 `Transactions` 表中的記錄
 
 ## deleteTransaction 刪除交易
 
 - **輸入:**
-  - TransactionId
+  - 交易識別碼
 - **軟刪除 Transaction:**
-    - **執行:**
-      - 更新 `Transactions` 表
-    - **欄位:**
-      - 設定 `deletedOn` 為當下時間
+  - **執行:**
+    - 更新 `Transactions` 表
