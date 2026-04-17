@@ -1,11 +1,12 @@
-# 設定主頁畫面: SettingsScreen
+# 設定: SettingsScreen
 
 ## 畫面目標
 
-- **提供:**
-  - 存取所有帳戶、資料、偏好設定的中心化入口
-- **提供:**
-  - 升級至付費版的路徑
+- 提供存取所有帳戶、資料與偏好設定的中心化入口
+
+---
+
+## 線框圖
 
 ```text
 +--------------------------------+
@@ -14,8 +15,8 @@
 | Data Management                |
 |  [Icon] Categories             |
 |  [Icon] Accounts               |
-|  [Icon] Currency Rates (Pro)   |
-|  [Icon] Import Data (Pro)      |
+|  [Icon] Currency Rates         |
+|  [Icon] Import Data            |
 |                                |
 | Preferences                    |
 |  [Icon] Preferences            |
@@ -27,73 +28,50 @@
 
 ---
 
-## UI 佈局
+## 佈局
 
-- **頂部導航列:**
-    - `返回按鈕`
-    - `標題`
-- **設定列表:**
-    - **資料管理:**
-        - `類別管理`
-        - `帳戶管理`
-        - `匯率管理` Premium 標籤
-        - `匯入資料` Premium 標籤
-    - **偏好設定:**
-        - `偏好設定`
-    - **升級:**
-        - `升級至 Premium`
-            - **樣式:**
-              - 醒目項目
+### 導覽列
 
----
+- 返回按鈕
+- 設定 標題
 
-## 核心邏輯
+### 設定列表
 
-- **項目可見性:**
-    - **升級至 Premium:**
-        - **邏輯:**
-          - 僅免費版使用者顯示
-- **付費功能檢查:**
-    - **觸發:**
-      - 點擊 `匯率管理` 或 `匯入資料`
-    - **行為:**
-      - 讀取 `PremiumLogic.checkPremiumStatus` 狀態
-    - **IF 免費版:**
-        - **導航:**
-          - PaywallScreen
-    - **IF 付費版:**
-        - **導航:**
-          - 對應的功能畫面
+- 資料管理 分組
+  - 類別管理 入口
+  - 帳戶管理 入口
+  - 匯率管理 入口
+  - 匯入資料 入口
+- 偏好設定 分組
+  - 偏好設定 入口
+- **IF** 未訂閱付費版:
+  - 升級 分組
+    - 升級至付費版 入口
 
 ---
 
-## 導航
+## 互動
 
-- **進入:**
-    - **來源:**
-      - HomeScreen 設定圖示點擊
-- **列表項目導航:**
-    - **類別管理:**
-        - **導航:**
-          - `CategoryListScreen`
-    - **帳戶管理:**
-        - **導航:**
-          - `AccountListScreen`
-    - **匯率管理:**
-        - **導航:**
-          - `CurrencyRateListScreen` 需通過付費檢查
-    - **匯入資料:**
-        - **導航:**
-          - `ImportScreen` 需通過付費檢查
-    - **偏好設定:**
-        - **導航:**
-          - `PreferenceScreen`
-    - **升級至 Premium:**
-        - **導航:**
-          - `PaywallScreen`
+- **點按返回按鈕:**
+  - 返回上一頁
 
-- **退出:**
-    - **觸發:**
-      - 頂部導航列返回按鈕點擊
-    - **導航:**
-      - 返回上一頁
+- **點按類別管理:**
+  - 導航至 CategoryListScreen
+
+- **點按帳戶管理:**
+  - 導航至 AccountListScreen
+
+- **點按匯率管理:**
+  - **IF** = Tier0:
+    - 導航至 PaywallScreen
+  - **IF** > Tier0:
+    - 導航至 CurrencyRateListScreen
+
+- **點按匯入資料:**
+  - 導航至 ImportWizardScreen
+
+- **點按偏好設定:**
+  - 導航至 PreferenceScreen
+
+- **點按升級至付費版:**
+  - 導航至 PaywallScreen

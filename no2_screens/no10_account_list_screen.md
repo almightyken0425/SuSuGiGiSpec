@@ -1,11 +1,12 @@
-# 帳戶列表畫面: AccountListScreen
+# 帳戶列表: AccountListScreen
 
 ## 畫面目標
 
-- **提供:**
-  - 查看、排序、管理所有帳戶的介面
-- **作為:**
-  - 新增、編輯特定帳戶的入口
+- 提供查看、排序與管理所有帳戶的介面，並作為新增或編輯帳戶的入口
+
+---
+
+## 線框圖
 
 ```text
 +--------------------------------+
@@ -16,119 +17,52 @@
 |        Type                    |
 | [Icon] Account Name      [=]   |
 |        Type                    |
-|                                |
-|                                |
 +--------------------------------+
 ```
 
 ---
 
-## UI 佈局
+## 佈局
 
-- **頂部導航列:**
-    - `返回按鈕`
-        - **導航:**
-          - SettingsScreen
-    - `標題` 帳戶管理
-    - `合併按鈕`
-        - **導航:**
-          - MergeEditorScreen
-        - **參數:**
-          - mode = Account
-- **帳戶區:**
-    - **區塊標題:**
-        - `標題` 我的帳戶
-        - `新增按鈕`
-            - **觸發:**
-              - 付費牆檢查
-            - **導航:**
-              - AccountEditorScreen
-    - **帳戶列表:**
-        - **UI:**
-          - DraggableFlatList
-        - **排序:**
-          - 依 `sortOrder` 排序
-        - **空狀態:**
-          - 您尚未建立任何帳戶
-        - **列表項目:**
-            - `圖示`
-            - `名稱`
-            - `帳戶類型`
-            - `拖拉圖示`
-            - **視覺標示停用:**
-                - **條件:**
-                  - `disabledOn` 非 null
-                - **UI:**
-                  - 灰色文字
+### 導覽列
+
+- 返回按鈕
+- 帳戶管理 標題
+- 合併按鈕
+
+### 帳戶區
+
+- 我的帳戶 標題
+- 新增按鈕
+- 帳戶列表
+  - **IF** 列表為空:
+    - 顯示尚未建立任何帳戶提示
+  - 帳戶列表項目
+    - 圖示
+    - 名稱
+    - 帳戶類型
+    - 拖拉圖示
+    - **IF** 已停用:
+      - 顯示灰色文字
 
 ---
 
-## 核心邏輯
+## 互動
 
-- **資料載入:**
-    - **觸發:**
-      - 畫面載入
-    - **來源:**
-      - 本機 DB
-    - **查詢:**
-      - 所有 `Accounts`
-    - **過濾:**
-      - `deletedOn` 為 null
-    - **排序:**
-      - 依 `sortOrder` 初始排序
-- **互動:**
-    - **點擊項目:**
-        - **導航:**
-          - AccountEditorScreen
-        - **模式:**
-          - 編輯
-        - **參數:**
-          - accountId
-    - **拖拉排序:**
-        - **行為:**
-          - 更新受影響帳戶的 `sortOrder`
-        - **儲存:**
-          - 寫入本機 DB
-        - **欄位:**
-          - 必須更新所有受影響帳戶的 `updatedOn`
-    - **點擊新增:**
-        - **導航:**
-          - AccountEditorScreen
-        - **模式:**
-          - 新增
-    - **點擊合併:**
-        - **導航:**
-          - MergeEditorScreen
-        - **參數:**
-          - mode = Account
-- **付費牆檢查:**
-    - **觸發:**
-      - 點擊新增按鈕
-    - **檢查:**
-        - `PremiumLogic.checkPremiumAccess()`
-        - `PremiumLogic.checkPremiumAccess()`
-        - 檢查全域限制 帳戶 <= 3 AND 類別 <= 10
-    - **IF 被限制:**
-        - **導航:**
-          - PaywallScreen
-    - **ELSE:**
-        - **導航:**
-          - AccountEditorScreen
+- **點按返回按鈕:**
+  - 返回上一頁
 
----
+- **點按合併按鈕:**
+  - 導航至 MergeEditorScreen
 
-## 導航
+- **點按新增按鈕:**
+  - **IF** = Tier 0 且超出免費使用限制:
+    - 導航至 PaywallScreen
+  - **IF** > Tier 0:
+    - 導航至 AccountEditorScreen
 
-- **進入:**
-    - **來源:**
-      - SettingsScreen
-- **退出:**
-    - **觸發:**
-      - 頂部導航列返回按鈕
-    - **導航:**
-      - SettingsScreen
-- **導出:**
-    - **觸發:**
-      - 點擊列表項目或新增按鈕
-    - **導航:**
-      - AccountEditorScreen 或 PaywallScreen 或 MergeEditorScreen
+- **點按帳戶列表項目:**
+  - 導航至 AccountEditorScreen
+
+- **拖拉帳戶列表項目:**
+  - 呼叫 reorderAccounts
