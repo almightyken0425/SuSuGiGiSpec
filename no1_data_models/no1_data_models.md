@@ -11,7 +11,7 @@
   - `baseCurrencyId`: Number - Foreign Key to Currencies, Not Null, 主要貨幣
   - `timeZone`: String - Not Null, IANA Timezone ID，例如 Asia/Taipei
   - `theme`: String - Not Null, 主題設定，例如 light、dark、system
-  - `lastSyncedAt`: Number, Unix Timestamp ms - Not Null, 上次完成同步的時間
+  - `lastSyncedAt`: Number | Null, Unix Timestamp ms - Nullable, 上次完成同步的時間；Null 代表尚未同步過
   - `createdAt`: Number, Unix Timestamp ms - Not Null
   - `updatedOn`: Number, Unix Timestamp ms - Not Null, 資料最後更新時間，同步依據
 
@@ -163,6 +163,21 @@
 
 ## App 標準定義資料
 
+### 圖示定義 IconDefinitions
+
+- **說明:**
+  - 定義 App 支援的所有圖示及其所屬圖示庫
+- **檔案:**
+  - `assets/definitions/IconDefinition.json`
+- **欄位:**
+  - `id`: `Number`
+  - `uniqueName`: `String` - 唯一識別名稱，格式如 mci-food、ant-star
+  - `library`: `String` - 圖示庫名稱，例如 MaterialCommunityIcons、AntDesign
+  - `glyph`: `String` - 圖示庫內的字型名稱
+  - `tags`: `Array<String>` - 用途標籤，例如 category、account
+
+---
+
 ### 標準收支類別 StandardCategory
 
 - **說明:**
@@ -214,7 +229,10 @@
 - **說明:**
   - 執行期 Premium 等級狀態；IAP 原始資料快取於 User 實體的 IAP 欄位
 - **欄位:**
-  - `currentTier`: String - Not Null, 當前 Premium 等級；LEVEL_0 代表免費，LEVEL_1 代表訂閱用戶
+  - `currentTier`: String - Not Null, 當前 Premium 等級
+    - `LEVEL_0` — 免費用戶
+    - `LEVEL_1` — 訂閱用戶
+    - `LEVEL_2` — Pro Premium
     - **來源:**
       - 從 IAP 服務回傳的有效訂閱列表解析
 
