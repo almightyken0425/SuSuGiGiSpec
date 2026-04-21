@@ -16,21 +16,21 @@
 
 ```text
 +---------------------------------------+
-|             Filter Report       Done  |
+| [x]           Filter Report           |
 +---------------------------------------+
 | Time Granularity:                     |
-| [Day] [Week] [Month] [Year] [All]     |
+| [Day] [Week] [Month] [Year] [All]    |
 |                                       |
 | Chart Source:                         |
 | [Expense] [Income]                    |
 |                                       |
-| Accounts:                             |
-| [x] Select All                        |
-| [x] Account A                         |
-| [ ] Account B                         |
-|                                       |
 | Group By:                             |
-| [Date] [Category]                     |
+| [Category] [Date]                     |
+|                                       |
+| Accounts (3 selected)   Select All    |
+| [x] Account A                         |
+| [x] Account B                         |
+| [ ] Account C                         |
 +---------------------------------------+
 ```
 
@@ -40,8 +40,8 @@
 
 ### 導覽列
 
-- 篩選報表 標題
-- 完成按鈕
+- 篩選報表標題
+- 關閉按鈕
 
 ### 篩選設定
 
@@ -49,11 +49,15 @@
   - 日、週、月、年、全部
 - 圖表來源 Segmented Control
   - 支出、收入
-- 帳戶篩選 Checkbox 列表
-  - 全選
-  - 帳戶名稱
 - 列表分組 Segmented Control
-  - 日期分組、類別分組
+  - 類別分組、日期分組
+- 帳戶篩選
+  - 已選帳戶數量標題與全選/取消全選切換文字按鈕
+  - Checkbox 列表，列出所有啟用中的帳戶
+  - **IF** 僅剩一個帳戶被選取:
+    - 該帳戶列為不可點按狀態，半透明顯示
+  - **IF** 無可用帳戶:
+    - 顯示無帳戶提示文字
 
 ---
 
@@ -62,7 +66,13 @@
 - **變更任一篩選條件:**
   - HomeScreen 報表即時更新
 
-- **點按完成按鈕:**
+- **點按全選/取消全選切換文字按鈕:**
+  - **IF** 目前為全選狀態:
+    - 取消全選
+  - **ELSE:**
+    - 全選所有帳戶
+
+- **點按關閉按鈕:**
   - 關閉 Modal
 
 - **向下滑動:**
