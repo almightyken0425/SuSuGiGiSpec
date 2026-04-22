@@ -77,7 +77,8 @@
   - 展開或收合日期時間選擇器
 
 - **點按定期轉帳按鈕:**
-  - **IF** 為 LEVEL_0:
+  - 呼叫 canUserPerformAction，動作識別碼 createRecurringTransaction
+  - **IF** 回傳禁止:
     - 導航至 PaywallScreen
   - **ELSE:**
     - 導航至 RecurringSettingScreen

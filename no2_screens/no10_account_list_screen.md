@@ -56,7 +56,8 @@
   - 以帳戶模式導航至 MergeEditorScreen
 
 - **點按新增按鈕:**
-  - **IF** 為 LEVEL_0 且已超出免費使用限制:
+  - 呼叫 canUserPerformAction，動作識別碼 createAccount
+  - **IF** 回傳禁止:
     - 導航至 PaywallScreen
   - **ELSE:**
     - 導航至 AccountEditorScreen

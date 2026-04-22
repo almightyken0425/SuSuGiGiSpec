@@ -99,12 +99,15 @@
 
 - **點按儲存按鈕:**
   - **IF** 新增模式:
-    - **IF** 為 LEVEL_0 且已超出免費帳戶數量限制:
+    - 呼叫 canUserPerformAction，動作識別碼 createAccount
+    - **IF** 回傳禁止:
       - 導航至 PaywallScreen
-    - **IF** 為 LEVEL_0 且選擇外幣:
-      - 導航至 PaywallScreen
-    - **IF** 非 LEVEL_0 且選擇外幣:
-      - 顯示初始匯率輸入提示
+    - **IF** 選擇外幣:
+      - 呼叫 canUserPerformAction，動作識別碼 useForeignCurrency
+      - **IF** 回傳禁止:
+        - 導航至 PaywallScreen
+      - **IF** 回傳允許:
+        - 顯示初始匯率輸入提示
     - 呼叫 createAccount
     - **IF** 操作成功:
       - 返回上一頁

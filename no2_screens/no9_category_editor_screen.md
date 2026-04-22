@@ -85,7 +85,8 @@
 
 - **點按完成按鈕:**
   - **IF** 新增模式:
-    - **IF** 為 LEVEL_0 且已超出免費使用限制:
+    - 呼叫 canUserPerformAction，動作識別碼 createCategory
+    - **IF** 回傳禁止:
       - 導航至 PaywallScreen
     - **ELSE:**
       - 呼叫 createCategory

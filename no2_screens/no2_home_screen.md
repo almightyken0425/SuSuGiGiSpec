@@ -150,21 +150,24 @@
     - 導航至 TransferEditorScreen
 
 - **點按新增支出按鈕:**
-  - **IF** 為 LEVEL_0 且已超出免費使用限制:
+  - 呼叫 canUserPerformAction，動作識別碼 createTransaction
+  - **IF** 回傳禁止:
     - 導航至 PaywallScreen
   - **ELSE:**
     - 帶入當前報表日期
     - 導航至 TransactionEditorScreen，支出模式
 
 - **點按新增收入按鈕:**
-  - **IF** 為 LEVEL_0 且已超出免費使用限制:
+  - 呼叫 canUserPerformAction，動作識別碼 createTransaction
+  - **IF** 回傳禁止:
     - 導航至 PaywallScreen
   - **ELSE:**
     - 帶入當前報表日期
     - 導航至 TransactionEditorScreen，收入模式
 
 - **點按新增轉帳按鈕:**
-  - **IF** 為 LEVEL_0 且已超出免費使用限制:
+  - 呼叫 canUserPerformAction，動作識別碼 createTransfer
+  - **IF** 回傳禁止:
     - 導航至 PaywallScreen
   - **ELSE:**
     - 帶入當前報表日期
