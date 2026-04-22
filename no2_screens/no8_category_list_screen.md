@@ -68,16 +68,16 @@
   - 返回上一頁
 
 - **點按合併按鈕:**
-  - 導航至 MergeEditorScreen
+  - 以類別模式導航至 MergeEditorScreen
 
 - **點按新增按鈕:**
-  - **IF** = Tier0:
+  - **IF** 為 LEVEL_0 且已超出免費使用限制:
     - 導航至 PaywallScreen
-  - **IF** > Tier0:
+  - **ELSE:**
     - 導航至 CategoryEditorScreen
 
 - **點按類別列表項目:**
   - 導航至 CategoryEditorScreen
 
 - **拖拉類別列表項目:**
-  - 呼叫 reorderCategories
+  - 依所在分區的分類類型呼叫 reorderCategories

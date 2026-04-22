@@ -27,6 +27,19 @@
 
 ---
 
+## createInitialCurrencyRate 建立初始匯率
+
+- 為新建立的非基礎幣別帳戶寫入初始匯率，供後續換算使用
+- **輸入:**
+  - 原始幣別
+  - 基礎幣別
+  - 初始匯率
+- **寫入 CurrencyRate:**
+  - **執行:**
+    - 新增一筆記錄至 `CurrencyRates` 表
+
+---
+
 ## resolveTransferDisplay 取得轉帳顯示資料
 
 - 依所選帳戶範圍，判斷轉帳的顯示方式及是否需要換算

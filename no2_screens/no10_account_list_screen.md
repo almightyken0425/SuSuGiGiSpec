@@ -53,12 +53,12 @@
   - 返回上一頁
 
 - **點按合併按鈕:**
-  - 導航至 MergeEditorScreen
+  - 以帳戶模式導航至 MergeEditorScreen
 
 - **點按新增按鈕:**
-  - **IF** = Tier 0 且超出免費使用限制:
+  - **IF** 為 LEVEL_0 且已超出免費使用限制:
     - 導航至 PaywallScreen
-  - **IF** > Tier 0:
+  - **ELSE:**
     - 導航至 AccountEditorScreen
 
 - **點按帳戶列表項目:**

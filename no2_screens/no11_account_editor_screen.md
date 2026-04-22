@@ -99,14 +99,13 @@
 
 - **點按儲存按鈕:**
   - **IF** 新增模式:
-  - 呼叫 createAccount
-    - **IF** = Tier0 且超出免費帳戶數量限制:
+    - **IF** 為 LEVEL_0 且已超出免費帳戶數量限制:
       - 導航至 PaywallScreen
-    - **IF** = Tier0 且選擇外幣:
+    - **IF** 為 LEVEL_0 且選擇外幣:
       - 導航至 PaywallScreen
-    - **IF** > Tier0 且選擇外幣:
+    - **IF** 非 LEVEL_0 且選擇外幣:
       - 顯示初始匯率輸入提示
-      - 呼叫 createAccount
+    - 呼叫 createAccount
     - **IF** 操作成功:
       - 返回上一頁
     - **IF** 操作失敗:
@@ -123,6 +122,7 @@
   - **IF** 確認刪除:
     - 呼叫 deleteAccount
     - **IF** 操作成功:
+      - 呼叫 UndoLogic.showUndo
       - 返回上一頁
     - **IF** 操作失敗:
       - 顯示錯誤提示

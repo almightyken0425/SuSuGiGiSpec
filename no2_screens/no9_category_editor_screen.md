@@ -85,9 +85,9 @@
 
 - **點按完成按鈕:**
   - **IF** 新增模式:
-    - **IF** = Tier0 且超出免費使用限制:
+    - **IF** 為 LEVEL_0 且已超出免費使用限制:
       - 導航至 PaywallScreen
-    - **IF** > Tier0:
+    - **ELSE:**
       - 呼叫 createCategory
       - **IF** 操作成功:
         - 返回上一頁
@@ -105,6 +105,7 @@
   - **IF** 確認刪除:
     - 呼叫 deleteCategory
     - **IF** 操作成功:
+      - 呼叫 UndoLogic.showUndo
       - 返回上一頁
     - **IF** 操作失敗:
       - 顯示錯誤提示
