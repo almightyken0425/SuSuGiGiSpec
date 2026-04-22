@@ -77,9 +77,9 @@
   - 展開或收合日期時間選擇器
 
 - **點按定期轉帳按鈕:**
-  - **IF** = Tier0:
+  - **IF** 為 LEVEL_0:
     - 導航至 PaywallScreen
-  - **IF** > Tier0:
+  - **ELSE:**
     - 導航至 RecurringSettingScreen
 
 - **點按完成按鈕:**
@@ -87,7 +87,8 @@
     - **IF** 新增模式:
       - 呼叫 createSchedule
     - **IF** 編輯模式:
-      - 呼叫 updateSchedule
+      - 呼叫 deleteTransfer
+      - 呼叫 createSchedule
   - **IF** 一般轉帳:
     - **IF** 新增模式:
       - 呼叫 createTransfer
