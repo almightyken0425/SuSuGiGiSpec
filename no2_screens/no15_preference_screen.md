@@ -13,18 +13,20 @@
 | < Back      Preferences        |
 +--------------------------------+
 | Appearance                     |
-|  Theme: [ Current Theme ] >    |
+|  Theme: Current Theme >        |
+|  Launch Mode: Default >        |
 |                                |
-| Localization                   |
-|  Base Currency: [ TWD ] >      |
-|  Time Zone: [ Asia/Taipei ] >  |
-|  Language: [ English ] >       |
+| Currency & Finance             |
+|  Base Currency: TWD >          |
+|  Currency Format Settings >    |
+|  Exchange Rates >              |
 |                                |
-| Sync                           |
-|  [ Sync Now ]                  |
+| Region & Language              |
+|  Language: 繁體中文 >          |
+|  Time Zone: Asia/Taipei >      |
 |                                |
 | Account                        |
-|  [ Login / Logout ]            |
+|  Login / Logout                |
 +--------------------------------+
 ```
 
@@ -42,15 +44,18 @@
 - 外觀 分組
   - 配色主題 入口
     - 顯示當前主題名稱
-- 本地化 分組
+  - 啟動模式 入口
+    - 顯示當前啟動模式
+- 貨幣與財務 分組
   - 主要貨幣 入口
     - 顯示當前設定的基礎貨幣代碼
-  - 時區 入口
-    - 顯示當前設定的時區
+  - 貨幣格式設定 入口
+  - 匯率管理 入口
+- 地區與語言 分組
   - 語系 入口
     - 顯示當前 App 語言
-- 資料同步 分組
-  - 立即同步 按鈕
+  - 時區 入口
+    - 顯示當前設定的時區
 - 帳號 分組
   - **IF** 已登入:
     - 登出 按鈕
@@ -67,31 +72,23 @@
 - **點按配色主題:**
   - 導航至 ThemeSettingsScreen
 
+- **點按啟動模式:**
+  - 導航至 LaunchModeSettingScreen
+
 - **點按主要貨幣:**
-  - 展開貨幣選擇器
-  - 支援輸入幣別代碼或名稱篩選
+  - 導航至 BaseCurrencySettingScreen
 
-- **選擇主要貨幣:**
-  - 呼叫 updateBaseCurrency
-  - 收合貨幣選擇器
+- **點按貨幣格式設定:**
+  - 導航至 CurrencyListScreen
 
-- **點按時區:**
-  - 展開時區選擇器
-
-- **選擇時區:**
-  - 呼叫 updateTimeZone
-  - 收合時區選擇器
+- **點按匯率管理:**
+  - 導航至 CurrencyRateListScreen
 
 - **點按語系:**
-  - 展開語系選擇器
+  - 導航至 LanguageSettingScreen
 
-- **選擇語系:**
-  - 呼叫 updateLanguage
-  - 收合語系選擇器
-  - 即時切換 App 顯示語言
-
-- **點按立即同步:**
-  - 呼叫 syncNow
+- **點按時區:**
+  - 導航至 TimeZoneSettingScreen
 
 - **點按登出:**
   - 顯示登出確認對話框

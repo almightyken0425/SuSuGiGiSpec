@@ -15,8 +15,7 @@
 | Data Management                |
 |  [Icon] Categories             |
 |  [Icon] Accounts               |
-|  [Icon] Currency Rates         |
-|  [Icon] Import Data            |
+|  [Icon] Data Management        |
 |                                |
 | Preferences                    |
 |  [Icon] Preferences            |
@@ -40,8 +39,7 @@
 - 資料管理 分組
   - 類別管理 入口
   - 帳戶管理 入口
-  - 匯率管理 入口
-  - 匯入資料 入口
+  - 資料管理 入口
 - 偏好設定 分組
   - 偏好設定 入口
 - **IF** 未訂閱付費版:
@@ -61,14 +59,8 @@
 - **點按帳戶管理:**
   - 導航至 AccountListScreen
 
-- **點按匯率管理:**
-  - **IF** = Tier0:
-    - 導航至 PaywallScreen
-  - **IF** > Tier0:
-    - 導航至 CurrencyRateListScreen
-
-- **點按匯入資料:**
-  - 導航至 ImportWizardScreen
+- **點按資料管理:**
+  - 導航至 DataManagementScreen
 
 - **點按偏好設定:**
   - 導航至 PreferenceScreen
