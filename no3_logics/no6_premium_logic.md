@@ -2,40 +2,16 @@
 
 ## 目的
 
-- 集中管理所有 Premium 權限檢查與同步邏輯，確保離線支援與邏輯一致性
+- 提供從 IAP 平台更新本機訂閱狀態的入口
+- 受限動作的授權判斷由 SubscriptionGateLogic 的 canUserPerformAction 處理
 
 ---
 
-## checkPremiumStatus 查詢 Premium 狀態
+## refreshStatus 更新訂閱狀態
 
-- **輸入:**
-  - Premium 本地狀態
 - **性質:**
-  - 純本地計算，不發出網路請求
+  - 非同步執行，需處理網路錯誤
 - **執行:**
-  - 讀取 `expirationDate`
-  - **IF** `expirationDate` 為 Null:
-    - **回傳:** True，代表 Lifetime Access
-  - **ELSE:**
-    - **IF** `expirationDate` 大於當下時間:
-      - **回傳:** True，代表 Active Subscription
-    - **ELSE:**
-      - **回傳:** False，代表 Expired
-
----
-
-## refreshPremiumStatus 更新 Premium 狀態
-
-- **性質:**
-  - 網路請求，非同步執行，需處理網路錯誤
-- **查詢 IAP 購買紀錄:**
-  - **執行:**
-    - 向 IAP 平台查詢當前帳號的有效購買紀錄，取回購買清單
-    - 解析購買清單，判斷是否包含 Premium 等級的項目
-- **更新 Premium 本地狀態:**
-  - **執行:**
-    - 將查詢結果寫入 Premium 本地狀態
-  - **欄位:**
-    - rawPurchases: IAP 平台回傳的原始資料
-    - lastChecked: 當下時間戳
-    - expirationDate: 解析出的到期日，若無有效訂閱則為 Null
+  - 向 IAP 平台查詢當前帳號的有效購買紀錄
+  - 解析購買清單，判斷是否包含有效 Premium 等級項目
+  - 更新本機訂閱狀態
