@@ -14,9 +14,9 @@
 +--------------------------------+
 | [ Search Currency... ]         |
 +--------------------------------+
-| USD  United States Dollar   ✓  |
-| TWD  New Taiwan Dollar         |
-| JPY  Japanese Yen              |
+| USD - United States Dollar  ✓  |
+| TWD - New Taiwan Dollar        |
+| JPY - Japanese Yen             |
 | ...                            |
 +--------------------------------+
 ```

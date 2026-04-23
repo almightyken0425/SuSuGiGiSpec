@@ -48,9 +48,17 @@
 ## generateMissingInstances 補產生實例
 
 - **執行:**
-  - 讀取 lastRecurringCheckDate
-  - 計算從 lastRecurringCheckDate 之後到使用者時區當日為止，所有應產生的 instanceDate
-  - 遍歷所有 `deletedOn` 為 null 的 `Schedules`，對每筆排程：
-    - **IF** 對應的排程實例尚未存在:
+  - 取得使用者時區的當日結束時間
+  - 遍歷所有 `Schedules`，對每筆排程：
+    - 查詢此排程已產生的最後一筆實例：
+      - **IF** 已有實例:
+        - 取最後實例的 `scheduleInstanceDate` 為起點，依排程的 `frequency` 與 `interval` 推算下一個 instanceDate
+      - **IF** 尚無實例:
+        - 取 `startOn` 為起點 instanceDate
+    - 從推算之 instanceDate 起迴圈：
+      - **IF** instanceDate 晚於使用者時區當日結束時間:
+        - 結束此排程的迴圈
+      - **IF** 排程設有 `endOn` 且 instanceDate 晚於 `endOn`:
+        - 結束此排程的迴圈
       - 依排程類型呼叫 createTransfer 或 createTransaction，帶入 instanceDate 為 transactionDate、scheduleId 與 scheduleInstanceDate
-  - 更新 lastRecurringCheckDate 為使用者時區當日日期
+      - 依 `frequency` 與 `interval` 推算下一個 instanceDate

@@ -106,8 +106,6 @@
       - 呼叫 canUserPerformAction，動作識別碼 useForeignCurrency
       - **IF** 回傳禁止:
         - 導航至 PaywallScreen
-      - **IF** 回傳允許:
-        - 顯示初始匯率輸入提示
     - 呼叫 createAccount
     - **IF** 操作成功:
       - 返回上一頁

@@ -58,7 +58,12 @@
 ### 金額輸入區
 
 - 金額輸入框
-- 定期交易按鈕
+- 定期切換按鈕
+
+### 定期設定區
+
+- **IF** 定期設定區為展開:
+  - 嵌入 RecurringOptions
 
 ### 操作區
 
@@ -75,12 +80,8 @@
 - **點按日期標題列:**
   - 展開或收合日期時間選擇器
 
-- **點按定期交易按鈕:**
-  - 呼叫 canUserPerformAction，動作識別碼 createRecurringTransaction
-  - **IF** 回傳禁止:
-    - 導航至 PaywallScreen
-  - **ELSE:**
-    - 導航至 RecurringSettingScreen
+- **點按定期切換按鈕:**
+  - 切換定期設定區的展開或收合狀態
 
 - **點按完成按鈕:**
   - **IF** 定期交易:

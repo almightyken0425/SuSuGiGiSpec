@@ -24,7 +24,6 @@
   - 觸發 Firebase Auth 登出，清除本地登入憑證
   - **IF** Firebase Auth 登出失敗:
     - 強制清除本地 Firebase session token，下次啟動時以 auth 狀態重新驗證
-  - 重置 lastRecurringCheckDate 與 lastSyncCheckDate
 
 ---
 
