@@ -4,17 +4,27 @@
 
 - **輸入:**
   - 交易資料
-- **寫入 Transaction:**
-  - **執行:**
-    - 新增一筆記錄至 `Transactions` 表
+- **IF** 輸入缺少 Transactions 必填欄位 (userId / accountId / categoryId / amount / date):
+  - **回傳:** 驗證失敗
+- **IF** amount 等於 0:
+  - **回傳:** 驗證失敗
+- **ELSE:**
+  - **寫入 Transaction:**
+    - **執行:**
+      - 新增一筆記錄至 `Transactions` 表
 
 ## updateTransaction 更新交易
 
 - **輸入:**
   - 交易資料
-- **更新 Transaction:**
-  - **執行:**
-    - 更新 `Transactions` 表中的記錄
+- **IF** 輸入缺少 Transactions 必填欄位 (userId / accountId / categoryId / amount / date):
+  - **回傳:** 驗證失敗
+- **IF** amount 等於 0:
+  - **回傳:** 驗證失敗
+- **ELSE:**
+  - **更新 Transaction:**
+    - **執行:**
+      - 更新 `Transactions` 表中的記錄
 
 ## deleteTransaction 刪除交易
 

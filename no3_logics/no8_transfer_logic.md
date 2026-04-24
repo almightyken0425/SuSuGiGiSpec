@@ -5,27 +5,41 @@
 - 建立轉帳紀錄，跨幣別時 Append-Only 補錄隱含匯率
 - **輸入:**
   - 轉帳資料
-- **寫入 Transfer:**
-  - **執行:**
-    - 新增一筆記錄至 `Transfers` 表
-- **匯率連動 Append-Only:**
-  - **條件:**
-    - 跨幣別轉帳且有隱含匯率
-  - **執行:**
-    - 新增一筆記錄至 `CurrencyRates` 表
+- **IF** 輸入缺少 Transfers 必填欄位 (userId / accountFromId / accountToId / amountFrom / amountTo / date):
+  - **回傳:** 驗證失敗
+- **IF** amountFrom 小於等於 0 或 amountTo 小於等於 0:
+  - **回傳:** 驗證失敗
+- **IF** accountFromId 等於 accountToId:
+  - **回傳:** 驗證失敗
+- **ELSE:**
+  - **寫入 Transfer:**
+    - **執行:**
+      - 新增一筆記錄至 `Transfers` 表
+  - **匯率連動 Append-Only:**
+    - **條件:**
+      - 跨幣別轉帳且有隱含匯率
+    - **執行:**
+      - 新增一筆記錄至 `CurrencyRates` 表
 
 ## updateTransfer 更新轉帳
 
 - **輸入:**
   - 轉帳資料
-- **更新 Transfer:**
-  - **執行:**
-    - 更新 `Transfers` 表中的記錄
-- **匯率連動 Append-Only:**
-  - **條件:**
-    - 跨幣別且隱含匯率變動或交易日期變動
-  - **執行:**
-    - 新增一筆記錄至 `CurrencyRates` 表
+- **IF** 輸入缺少 Transfers 必填欄位 (userId / accountFromId / accountToId / amountFrom / amountTo / date):
+  - **回傳:** 驗證失敗
+- **IF** amountFrom 小於等於 0 或 amountTo 小於等於 0:
+  - **回傳:** 驗證失敗
+- **IF** accountFromId 等於 accountToId:
+  - **回傳:** 驗證失敗
+- **ELSE:**
+  - **更新 Transfer:**
+    - **執行:**
+      - 更新 `Transfers` 表中的記錄
+  - **匯率連動 Append-Only:**
+    - **條件:**
+      - 跨幣別且隱含匯率變動或交易日期變動
+    - **執行:**
+      - 新增一筆記錄至 `CurrencyRates` 表
 
 ## deleteTransfer 刪除轉帳
 
