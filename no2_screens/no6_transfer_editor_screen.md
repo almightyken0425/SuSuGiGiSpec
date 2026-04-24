@@ -89,8 +89,9 @@
     - **IF** 新增模式:
       - 呼叫 createSchedule
     - **IF** 編輯模式:
-      - 呼叫 deleteTransfer
-      - 呼叫 createSchedule
+      - 顯示定期編輯模式對話框
+      - **IF** 選擇僅此一筆 或 此筆及未來:
+        - 呼叫 updateSchedule
   - **IF** 一般轉帳:
     - **IF** 新增模式:
       - 呼叫 createTransfer
@@ -103,7 +104,9 @@
 
 - **點按刪除按鈕:**
   - **IF** 定期轉帳:
-    - 呼叫 deleteSchedule
+    - 顯示定期刪除模式對話框
+    - **IF** 選擇僅此一筆 或 此筆及未來:
+      - 呼叫 deleteSchedule
   - **IF** 一般轉帳:
     - 呼叫 deleteTransfer
   - **IF** 操作成功:
