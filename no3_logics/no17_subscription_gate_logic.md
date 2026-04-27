@@ -28,6 +28,7 @@
     - createRecurringTransaction
     - triggerCloudSync
     - importData
+    - manageCurrencyRate
   - 總數限制:
     - 帳戶總數上限 3 個
     - 類別總數上限 10 個
@@ -55,6 +56,7 @@
   - createRecurringTransaction
   - triggerCloudSync
   - importData
+  - manageCurrencyRate
 - **性質:**
   - 純本地計算，可讀取當前使用者的帳戶總數與類別總數
 - **執行:**
@@ -77,6 +79,11 @@
     - **ELSE:**
       - **回傳:** 允許
   - **IF** 動作識別碼為 useForeignCurrency:
+    - **IF** 當前訂閱等級為 LEVEL_0:
+      - **回傳:** 禁止
+    - **ELSE:**
+      - **回傳:** 允許
+  - **IF** 動作識別碼為 manageCurrencyRate:
     - **IF** 當前訂閱等級為 LEVEL_0:
       - **回傳:** 禁止
     - **ELSE:**
