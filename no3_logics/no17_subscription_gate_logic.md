@@ -11,7 +11,8 @@
 
 - 跨 Module 的 LEVEL 商業定義: `no1_product_initiation/no3_business_model.md`
 - 記帳 App 視角下各 LEVEL 可用能力的白話總覽: `no2_product_planning/no2_product_map/app/payment.md` 的 LEVEL 能力清單
-- 本檔的規則表與上述兩者對齊，任一變更時需同步更新
+- triggerCloudBackup 與 triggerMultiDeviceSync 拆解依據: `no99_archive/r1_decision_matrix.md` R1 Round 5 拍板
+- 本檔的規則表與上述三者對齊，任一變更時需同步更新
 
 ---
 
@@ -26,9 +27,11 @@
   - 禁止動作:
     - useForeignCurrency
     - createRecurringTransaction
-    - triggerCloudSync
+    - triggerMultiDeviceSync
     - importData
     - manageCurrencyRate
+  - 不在禁止清單動作（含 LEVEL_0 全 LEVEL 允許）:
+    - triggerCloudBackup
   - 總數限制:
     - 帳戶總數上限 3 個
     - 類別總數上限 10 個
@@ -54,7 +57,8 @@
   - createTransfer
   - useForeignCurrency
   - createRecurringTransaction
-  - triggerCloudSync
+  - triggerCloudBackup
+  - triggerMultiDeviceSync
   - importData
   - manageCurrencyRate
 - **性質:**
@@ -93,7 +97,9 @@
       - **回傳:** 禁止
     - **ELSE:**
       - **回傳:** 允許
-  - **IF** 動作識別碼為 triggerCloudSync:
+  - **IF** 動作識別碼為 triggerCloudBackup:
+    - **回傳:** 允許
+  - **IF** 動作識別碼為 triggerMultiDeviceSync:
     - **IF** 當前訂閱等級為 LEVEL_0:
       - **回傳:** 禁止
     - **ELSE:**
