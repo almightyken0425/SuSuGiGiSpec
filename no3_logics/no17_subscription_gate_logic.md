@@ -30,7 +30,7 @@
     - triggerMultiDeviceSync
     - importData
     - manageCurrencyRate
-  - 不在禁止清單動作（含 LEVEL_0 全 LEVEL 允許）:
+  - 不在禁止清單，含 LEVEL_0 在內全 LEVEL 允許:
     - triggerCloudBackup
   - 總數限制:
     - 帳戶總數上限 3 個
