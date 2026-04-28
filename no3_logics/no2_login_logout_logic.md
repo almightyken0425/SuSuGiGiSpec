@@ -19,7 +19,6 @@
 
 - **執行:**
   - 清除本地 Premium 快取狀態
-  - 歸零每日 Firestore 讀寫計數
   - 保留本地帳務資料，不執行清除
   - 觸發 Firebase Auth 登出，清除本地登入憑證
   - **IF** Firebase Auth 登出失敗:
