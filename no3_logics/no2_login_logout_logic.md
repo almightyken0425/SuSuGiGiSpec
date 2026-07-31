@@ -2,13 +2,19 @@
 
 ## handleLogin 執行登入流程
 
+- 兩門共用單一登入管線，帳號各自獨立、不連結不合併
+- **輸入:**
+  - 登入門，可為 Google 或 Apple
 - **執行:**
-  - 觸發 Google Sign-In 第三方認證程序，取得 ID Token
-  - **IF** Google Sign-In 連線或認證失敗:
+  - **IF** 登入門為 Google:
+    - 觸發 Google Sign-In 第三方認證程序，取得 ID Token
+  - **ELSE:**
+    - 喚起 Sign in with Apple 原生面板，取得 Identity Token 與 Nonce
+  - **IF** 認證程序遭取消、連線或認證失敗:
     - 顯示登入失敗提示
     - RETURN
   - **ELSE:**
-    - 以 ID Token 向 Firebase Auth 進行身份驗證
+    - 以取得的憑證向 Firebase Auth 進行身份驗證
     - **IF** Firebase Auth 驗證失敗:
       - 顯示登入失敗提示
       - RETURN
@@ -18,7 +24,7 @@
 ## logout 登出
 
 - **執行:**
-  - 保留本地帳務資料，不執行清除（清除僅在 handleReLogin 偵測到不同帳號時，依使用者選擇執行）
+  - 保留本地帳務資料，不執行清除；清除僅在 handleReLogin 偵測到不同帳號時，依使用者選擇執行
   - 觸發 Firebase Auth 登出，清除本地登入憑證
   - **IF** Firebase Auth 登出失敗:
     - 仍將本地登入狀態清為登出
