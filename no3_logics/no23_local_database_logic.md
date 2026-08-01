@@ -5,6 +5,7 @@
 - 定義本機資料庫共用查詢入口與清除操作的行為規則
 - 本機資料庫保存所有曾登入使用者的資料
 - 登出不清除本機資料
+- 清除操作三形態各有歸屬：resetAllData 軟刪並同步雲端在本文件、clearLocalData 整庫硬重置在 LoginLogoutLogic、destroyUserData 按帳號硬刪不傳播在 DeleteUserAccountLogic
 - 租戶隔離仰賴查詢層過濾
 - 清單查詢一律以 `userId` 限定範圍
 - 清單查詢一律排除軟刪記錄

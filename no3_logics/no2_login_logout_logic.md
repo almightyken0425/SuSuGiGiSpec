@@ -23,6 +23,7 @@
 
 ## logout 登出
 
+- 帳號刪除為獨立流程，不經本操作編排，詳見 DeleteUserAccountLogic
 - **執行:**
   - 保留本地帳務資料，不執行清除；清除僅在 handleReLogin 偵測到不同帳號時，依使用者選擇執行
   - 觸發 Firebase Auth 登出，清除本地登入憑證
