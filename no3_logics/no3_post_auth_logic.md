@@ -5,6 +5,7 @@
 - 認證成功後依本機與雲端資料是否存在分派初始化路徑
 - 全 user 一致、無條件執行，不分訂閱等級
 - Premium 狀態刷新由 PremiumLogic 的 refreshStatus 承載，不在本流程內，登入不等待 IAP 服務回應
+- 帳號刪除中斷復原命中時整段跳過，不得重建剛刪除的雲端文件，詳見 DeleteUserAccountLogic
 - **執行:**
   - **IF** 本機無此帳號的 Users 與 Settings 紀錄:
     - 呼叫 initializeLocalUser

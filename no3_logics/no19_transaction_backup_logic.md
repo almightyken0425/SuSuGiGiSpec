@@ -23,6 +23,8 @@
   - 非同步執行
   - 需處理網路錯誤與 Firestore 配額錯誤
 - **執行:**
+  - **IF** 帳號刪除進行中:
+    - RETURN；上傳與伺服器刪除交錯會把資料寫回成雲端孤兒，詳見 DeleteUserAccountLogic
   - **IF** 當前無登入使用者:
     - RETURN
   - **IF** 備份已在進行中:
