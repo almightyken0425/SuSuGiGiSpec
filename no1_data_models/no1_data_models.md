@@ -210,7 +210,8 @@
 ### PremiumContext Local State
 
 - **說明:**
-  - 執行期 Premium 等級狀態；授權真相由伺服器端驗證後的授權記錄承載，離線授權快取另見 PremiumCache
+  - 執行期 Premium 等級狀態；授權真相在 StoreKit，由當前有效購買推定，離線由 StoreKit 系統快取承載
+  - User 實體的 IAP 欄位為棄用殘欄、不承載授權
   - 各 LEVEL 在記帳 App 視角下的可用能力白話總覽，見 `no2_product_planning/no2_product_map/app/payment.md` 的 LEVEL 能力清單
   - 動作識別碼與授權判斷邏輯，見 `no3_product_specs/no2_accounting_app/no3_logics/no17_subscription_gate_logic.md`
 - **欄位:**
@@ -220,23 +221,11 @@
     - `LEVEL_2`
     - LEVEL_3、LEVEL_B 非 IAP 解析持有的 runtime tier，故不列入
     - **來源:**
-      - 由伺服器端授權記錄的訂閱更新解析；離線時依 PremiumCache 推定，見 `no3_logics/no6_premium_logic.md`
+      - 由 StoreKit 當前有效購買推定，見 `no3_logics/no6_premium_logic.md`
   - `isPremiumLoaded`: Boolean - Not Null, 訂閱狀態是否已就緒；首次解析完成前為 false，期間不以佔位的 LEVEL_0 判定授權
     - 初值 false，首次更新前 currentTier 為佔位 LEVEL_0、不可信
-    - 線上更新或離線回退任一完成後設為 true
-    - 登出時維持 true，使登出後不再等待訂閱解析
-
----
-
-### PremiumCache Local State
-
-- **說明:**
-  - 離線可讀的本地授權快取，以帳號為範圍；付費者離線時依此維持該帳號訂閱等級，不誤降為 LEVEL_0
-  - 線上更新成功時寫入本機，作為離線回退
-  - 為解析後的本地授權狀態，唯一的本地授權承載；User 實體的 IAP 欄位為棄用殘欄、不承載授權
-- **欄位:**
-  - `tier`: Number - Not Null, 快取的訂閱等級，值域對應 LEVEL_0..LEVEL_B，僅涵蓋 IAP 可解析範圍 LEVEL_0、LEVEL_1、LEVEL_2
-  - `expirationDate`: Number | Null, Unix Timestamp ms - Nullable, 訂閱到期日；Null 代表無期限，到期日早於或等於當下時間視為失效
+    - StoreKit 首次解析完成或逾時保底後設為 true
+    - 身分未就緒時歸 false，身分就緒後重新解析
 
 ---
 

@@ -61,7 +61,7 @@
 ## uploadAllPreferences 全量上傳本機偏好
 
 - 將本機 Settings 全部偏好欄位一次上傳雲端
-- 供 PostAuthLogic 的 handlePostAuth 與 LoginLogoutLogic 的 handleReLogin 同帳號分支呼叫
+- 供 PostAuthLogic 的 handlePostAuth 呼叫
 
 - **執行:**
   - 讀取本機 Settings 表中各偏好欄位的實際值
