@@ -1,11 +1,12 @@
-# 登入後初始化流程: PostAuthLogic
+# 身分後初始化流程: PostAuthLogic
 
-## handlePostAuth 處理登入後初始化
+## handlePostAuth 處理身分後初始化
 
-- 認證成功後依本機與雲端資料是否存在分派初始化路徑
+- 身分就緒後依本機與雲端資料是否存在分派初始化路徑
+- 身分來源為匿名建立、熱啟動沿用、或 legacy 登入帳號升級沿用，路徑一致
 - 全 user 一致、無條件執行，不分訂閱等級
-- Premium 狀態刷新由 PremiumLogic 的 refreshStatus 承載，不在本流程內，登入不等待 IAP 服務回應
-- 帳號刪除中斷復原命中時整段跳過，不得重建剛刪除的雲端文件，詳見 DeleteUserAccountLogic
+- Premium 狀態刷新由 PremiumLogic 的 refreshStatus 承載，不在本流程內，bootstrap 不等待 IAP 服務回應
+- 資料清除中斷復原命中時整段跳過，不得重建剛刪除的雲端文件，詳見 DeleteUserAccountLogic
 - **執行:**
   - **IF** 本機無此帳號的 Users 與 Settings 紀錄:
     - 呼叫 initializeLocalUser
@@ -64,7 +65,7 @@
     - preferences 欄位取本機 Settings 的實際值，而非寫死預設
   - **欄位:**
     - `uid`
-    - `email`
-    - `provider`
+    - `email`: 恆為空值；不收集身分欄位，legacy 登入帳號亦不上傳
+    - `provider`: 匿名身分標 anonymous；legacy 登入帳號照其登入門真值
     - `createdAt`
     - `preferences`

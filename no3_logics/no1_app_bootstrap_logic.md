@@ -4,18 +4,19 @@
 
 ## bootstrapApp 啟動 App
 
-- 確認 Firebase Auth 狀態，依登入結果調度背景任務並決定初始導航
+- 確認 Firebase Auth 狀態，依身分結果調度背景任務並決定初始導航
+- App 無登入牆，主畫面為唯一路線；身分收斂由 AnonymousBootstrapLogic 承載
 - **執行:**
-  - 讀取本地快取的 Firebase Auth 狀態
-  - **IF** 已登入:
+  - 讀取本地快取的 Firebase Auth 狀態，交由 handleAuthEvent 收斂身分
+  - **IF** 身分就緒:
     - 呼叫 runCoreBackgroundTasks，於背景執行核心維護任務
     - 等待 PremiumLogic 的訂閱狀態就緒
     - 呼叫 resolveLaunchDestination，取得初始落點與付費牆攔截結果
     - 導航至初始落點
     - **IF** 攔截付費牆:
       - 導航至 PaywallScreen
-  - **IF** 未登入:
-    - 導航至 LoginScreen
+  - **IF** 身分未就緒:
+    - 顯示 OfflineRetryScreen，重試由 retryBootstrap 驅動
 
 ---
 
@@ -26,7 +27,7 @@
   - 非同步，不阻塞主流程
 - **Premium 狀態更新:**
   - **執行:**
-    - 向 IAP 服務查詢最新購買憑證，更新本地 Premium 到期狀態
+    - 向 StoreKit 查詢當前有效購買，更新訂閱等級；行為由 PremiumLogic 定義
 - **定期交易補產生:**
   - **條件:**
     - 以當前時刻為截止點，比較排程實例時刻與當前時刻的絕對先後
@@ -56,16 +57,16 @@
 
 ## handleForegroundResume 前景恢復觸發背景任務
 
-- App 自背景恢復至前景且已登入時，重新觸發交易備份上傳
+- App 自背景恢復至前景且身分就緒時，重新觸發交易備份上傳
 - 同一前景恢復事件另觸發 PremiumLogic 的 refreshStatus 重新刷新訂閱狀態，刷新行為由 PremiumLogic 規格定義
 - **條件:**
   - 應用自背景回到前景
-  - 使用者已登入
+  - 身分已就緒
 - **執行:**
   - 委派 TransactionBackupLogic 的 runBackup，上傳背景期間累積的本地變更
 - **理由:**
   - 與啟動時共用同一備份委派入口，閘控由 runBackup 自管
-  - 不補產生定期交易，定期補產生僅在登入後觸發
+  - 不補產生定期交易，定期補產生僅在 bootstrap 觸發
 
 ---
 

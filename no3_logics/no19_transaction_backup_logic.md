@@ -8,7 +8,7 @@
 - 法律基礎為 Contract，履行記帳服務契約所必要
 - 單向上傳，無 user 端取回介面
 - 不使用 Firestore Real-time listener
-- 觸發來源為 AppBootstrapLogic 的 runCoreBackgroundTasks 與 LoginLogoutLogic 的 handleReLogin
+- 觸發來源為 AppBootstrapLogic 的 runCoreBackgroundTasks
 - 冷卻時間戳屬裝置層級持久化，跨 App 重啟與使用者切換不重置
 - lastSyncedAt 屬 per-user 的 Delta watermark
 - 冷卻時間戳與 lastSyncedAt 兩種儲存層級不混用
