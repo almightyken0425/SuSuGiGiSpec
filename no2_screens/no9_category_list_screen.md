@@ -74,4 +74,4 @@
   - 導航至 CategoryEditorScreen
 
 - **拖拉類別列表項目:**
-  - 依所在分區的類別類型呼叫 reorderCategories
+  - 以所在分區的有序類別清單呼叫 reorderCategories

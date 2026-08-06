@@ -70,7 +70,7 @@
 
 ## createCurrencyRate 手動新增匯率
 
-- 使用者在匯率編輯器手動指定幣別對與匯率，寫入一筆匯率記錄；與 createInitialCurrencyRate 的帳戶初始化入口區隔
+- 使用者在匯率編輯器對既有幣別對手動輸入匯率，寫入一筆匯率記錄；與 createInitialCurrencyRate 的帳戶初始化入口區隔
 - **輸入:**
   - 來源幣別
   - 目標幣別
