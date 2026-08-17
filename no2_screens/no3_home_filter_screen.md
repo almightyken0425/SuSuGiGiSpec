@@ -16,7 +16,7 @@
 
 ```text
 +---------------------------------------+
-| [X]            顯示設定               |
+| [X]            顯示設定           [✓] |
 +---------------------------------------+
 |                                       |
 | +-------------+ +-------------+       |
@@ -43,9 +43,12 @@
 
 ### 導覽列
 
-- Header 模式: D
+- Header 模式: C
 - 關閉按鈕
 - 顯示設定 標題
+- 完成按鈕
+  - **IF** 首頁顯示狀態尚未準備完成:
+    - 不可點按
 
 ### 篩選摘要條
 
@@ -71,22 +74,42 @@
 
 ## 互動
 
+- **進入此畫面:**
+  - 呼叫 beginHomeDisplayDraft
+
 - **點按時間粒度卡片:**
   - 切換至下一個時間粒度
-  - HomeScreen 報表即時更新
-  - 選定值由 persistHomeDisplayState 跨啟動保留
+  - 僅更新本次編輯草稿
+  - HomeScreen 報表維持不變
 
 - **點按分組方式卡片:**
   - 切換至下一個分組方式
-  - HomeScreen 報表即時更新
-  - 選定值由 persistHomeDisplayState 跨啟動保留
+  - 僅更新本次編輯草稿
+  - HomeScreen 報表維持不變
 
 - **點按帳戶卡:**
   - 切換該帳戶選取狀態
-  - HomeScreen 報表即時更新
-  - 選取結果由 persistHomeDisplayState 跨啟動保留
+  - 僅更新本次編輯草稿
+  - HomeScreen 報表維持不變
   - **IF** 該帳戶為僅剩一個被選取:
     - 不可點按
 
 - **點按關閉按鈕:**
+  - 呼叫 discardHomeDisplayDraft
+  - 丟棄本次編輯草稿
+  - HomeScreen 報表維持不變
   - 關閉 Modal
+
+- **點按完成按鈕:**
+  - **IF** 首頁顯示狀態尚未準備完成:
+    - 不執行任何動作
+  - **ELSE:**
+    - 呼叫 applyHomeDisplayDraft
+    - **IF** 草稿與已套用狀態相同:
+      - 不寫回首頁顯示狀態
+      - HomeScreen 報表維持不變
+    - **ELSE:**
+      - 一次套用全部草稿值
+      - 套用值由 persistHomeDisplayState 跨啟動保留
+      - HomeScreen 依套用值更新報表
+    - 關閉 Modal
