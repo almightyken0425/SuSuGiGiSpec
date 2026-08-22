@@ -8,9 +8,10 @@
 - Premium 狀態刷新由 PremiumLogic 的 refreshStatus 承載，不在本流程內，bootstrap 不等待 IAP 服務回應
 - 資料清除中斷復原命中時整段跳過，不得重建剛刪除的雲端文件，詳見 DeleteUserAccountLogic
 - **執行:**
+  - 讀取 Firestore `users/{uid}` 文件的存在性
   - **IF** 本機無此帳號的 Users 與 Settings 紀錄:
     - 呼叫 initializeLocalUser
-  - 讀取 Firestore `users/{uid}` 文件的存在性
+  - 呼叫 initializeDefaultEntities
   - **IF** 文件不存在:
     - 呼叫 initializeCloudUser
   - **ELSE:**
@@ -52,6 +53,27 @@
     - `theme`: theme1
     - `launchMode`: home
     - `weekStart`: auto
+
+---
+
+## initializeDefaultEntities 建立預設記帳資料
+
+- 帳戶與類別皆無紀錄時建立預設資料
+- **性質:**
+  - 純本機，無雲端動作
+- **執行:**
+  - 查詢目前使用者的全部帳戶與類別
+  - 查詢範圍包含已刪除紀錄
+  - **IF** 任一帳戶或類別已存在:
+    - **回傳:**
+      - 不建立任何資料
+  - **ELSE:**
+    - 建立現金與信用卡帳戶
+    - 兩個帳戶皆採主要貨幣
+    - 建立三個支出類別
+    - 建立兩個收入類別
+    - 名稱採本機設定語系
+    - 不建立交易、轉帳與排程
 
 ---
 
