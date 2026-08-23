@@ -13,6 +13,7 @@
 - BigQuery mirror 不納入 preference，上傳資料留存 Firestore、暫無分析管線消費
 - 全 user 享有，不做 Premium 篩選
 - 不使用 Real-time listener
+- `usageAnalyticsConsent` 不參與上傳
 
 ---
 

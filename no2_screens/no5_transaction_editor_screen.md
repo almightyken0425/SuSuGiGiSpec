@@ -107,6 +107,7 @@
       - 當前定期規則為空
   - **IF** 新增模式:
     - 當前定期規則為空
+    - 呼叫 recordFirstEntryStarted
   - 定期設定區預設為收合
   - 金額輸入框預設聚焦
 
@@ -143,9 +144,14 @@
   - **IF** 不屬於任何排程且定期規則已設定:
     - **IF** 新增模式:
       - 呼叫 createSchedule
+      - **IF** 操作成功:
+        - 呼叫 recordRecurringCreated
+        - 呼叫 recordFirstEntryCompleted
     - **IF** 編輯模式:
       - 原一般交易轉為排程
       - 呼叫 convertToSchedule
+      - **IF** 操作成功:
+        - 呼叫 recordRecurringCreated
   - **IF** 不屬於任何排程且定期規則為空:
     - **IF** 新增模式:
       - 呼叫 canUserPerformAction，動作識別碼 createTransaction
@@ -153,6 +159,8 @@
         - 導航至 PaywallScreen
       - **ELSE:**
         - 呼叫 createTransaction
+        - **IF** 操作成功:
+          - 呼叫 recordFirstEntryCompleted
     - **IF** 編輯模式:
       - 呼叫 updateTransaction
   - **IF** 操作成功:

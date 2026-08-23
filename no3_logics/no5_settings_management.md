@@ -86,6 +86,17 @@
 
 ---
 
+## setUsageAnalyticsConsent 設定使用分析同意
+
+- **輸入:**
+  - 目標同意狀態
+- **執行:**
+  - 更新 `usageAnalyticsConsent`
+  - 委派 configureUsageAnalytics
+  - 不參與偏好上傳
+
+---
+
 ## setCurrencyFormat 設定貨幣顯示格式
 
 - **輸入:**

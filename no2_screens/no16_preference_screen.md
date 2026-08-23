@@ -22,10 +22,8 @@
 |  Time Zone: Asia/Taipei >      |
 |  Week Start: 跟隨語系 >        |
 +--------------------------------+
-|  Allow Data Analytics    [ON]  |
-+--------------------------------+
-|  Logout                        |
-|  Delete Account                |
+|  Allow Financial Analysis [ON] |
+|  Share Usage Data         [OFF]|
 +--------------------------------+
 ```
 
@@ -60,8 +58,11 @@
   - 週起始日 入口
     - 顯示當前週起始日選項
 - 第四組
-  - 分析同意 開關
+  - 財務分析同意 開關
     - 顯示 analyticsConsent 目前狀態
+  - 使用分析同意 開關
+    - 顯示 usageAnalyticsConsent 目前狀態
+    - 說明不含記帳內容
 
 ---
 
@@ -91,6 +92,10 @@
 - **點按週起始日:**
   - 導航至 WeekStartSettingScreen
 
-- **切換分析同意開關:**
+- **切換財務分析同意開關:**
   - 呼叫 setAnalyticsConsent
+  - 即時生效
+
+- **切換使用分析同意開關:**
+  - 呼叫 setUsageAnalyticsConsent
   - 即時生效
