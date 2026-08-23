@@ -92,6 +92,9 @@
 
 ## 互動
 
+- **進入畫面:**
+  - 呼叫 recordPaywallViewed
+
 - **點按關閉按鈕:**
   - 關閉 Modal
 

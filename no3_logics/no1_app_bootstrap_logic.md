@@ -7,6 +7,9 @@
 - 確認 Firebase Auth 狀態，依身分結果調度背景任務並決定初始導航
 - App 無登入牆，主畫面為唯一路線；身分收斂由 AnonymousBootstrapLogic 承載
 - **執行:**
+  - 啟動時維持使用行為分析關閉
+  - 讀取 `usageAnalyticsConsent`
+  - 委派 configureUsageAnalytics
   - 讀取本地快取的 Firebase Auth 狀態，交由 handleAuthEvent 收斂身分
   - **IF** 身分就緒:
     - 呼叫 runCoreBackgroundTasks，於背景執行核心維護任務

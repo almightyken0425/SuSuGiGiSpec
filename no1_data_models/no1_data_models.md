@@ -14,6 +14,7 @@
   - `launchMode`: String - Not Null, Default `home`, 啟動模式，可為 `home`、`expense`、`income`、`transfer`
   - `weekStart`: String - Not Null, Default `auto`, 週起始日偏好，可為 `auto`、`sunday`、`monday`；`auto` 代表依使用者語系慣例決定
   - `analyticsConsent`: Boolean - Not Null, Default `true`, 分析同意開關，控制記帳資料是否納入分析管線
+  - `usageAnalyticsConsent`: Boolean - Not Null, Default `false`, 使用行為分析同意開關
   - `homeTimeGranularity`: String | Null - Nullable, 首頁時間粒度顯示狀態，可為 `day`、`week`、`month`、`year`、`all`；Null 或集外值載入時視為 `day`
   - `homeGroupMode`: String | Null - Nullable, 首頁列表分組模式顯示狀態，可為 `category`、`date`；Null 或集外值載入時視為 `category`
   - `homeSelectedAccountIds`: String | Null - Nullable, 首頁已選帳戶清單，JSON 字串陣列序列化；Null 或無法解析視為無既有清單
@@ -24,6 +25,7 @@
 **與 User Management 的關係**: 本機此表為偏好設定唯一真相；`users/{uid}/preferences` 為單向上傳鏡像，僅供資料分析維度，永不下載套用。
 - 整份 `users/{uid}` 雲端文件含 `provider`、文件根層 `updatedAt` 等頂層欄位的形狀權威屬 User Management module 的 Users 資料模型，本 module 不重複承載定義
 - `language`、`timeZone`、`theme`、`launchMode`、`weekStart`、`analyticsConsent` 直接對應上傳
+- `usageAnalyticsConsent` 僅存本機
 - `baseCurrencyId` 上傳時轉 ISO Code 寫入 `preferences.currency`，單向轉換不反向
 - `homeTimeGranularity`、`homeGroupMode`、`homeSelectedAccountIds` 為首頁顯示狀態，僅存本機，不參與上傳
 - 偏好設定屬裝置層級設定，不隨帳號跨裝置下載

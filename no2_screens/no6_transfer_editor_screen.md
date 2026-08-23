@@ -163,9 +163,13 @@
   - **IF** 不屬於任何排程且定期規則已設定:
     - **IF** 新增模式:
       - 呼叫 createSchedule
+      - **IF** 操作成功:
+        - 呼叫 recordRecurringCreated
     - **IF** 編輯模式:
       - 原一般轉帳轉為排程
       - 呼叫 convertToSchedule
+      - **IF** 操作成功:
+        - 呼叫 recordRecurringCreated
   - **IF** 不屬於任何排程且定期規則為空:
     - **IF** 新增模式:
       - 呼叫 canUserPerformAction，動作識別碼 createTransfer
