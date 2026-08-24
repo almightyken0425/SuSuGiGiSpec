@@ -12,6 +12,21 @@
 
 ---
 
+## resolveUsageAnalyticsConsent 解析使用分析同意
+
+- **輸入:**
+  - 使用行為分析同意狀態
+  - 使用分析同意是否已選擇
+- **執行:**
+  - **IF** 尚未選擇:
+    - 委派 configureUsageAnalytics 為拒絕
+    - **回傳:** 需要詢問
+  - **ELSE:**
+    - 委派 configureUsageAnalytics 套用同意狀態
+    - **回傳:** 不需詢問
+
+---
+
 ## configureUsageAnalytics 設定使用分析
 
 - **輸入:**

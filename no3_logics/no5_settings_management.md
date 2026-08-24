@@ -76,22 +76,13 @@
 
 ---
 
-## setAnalyticsConsent 設定分析同意
-
-- **輸入:**
-  - 目標同意狀態
-- **執行:**
-  - 更新 `Settings` 表中的 `analyticsConsent` 為目標值
-  - 委派 PreferenceUploadLogic 的 uploadPreferences，帶入 analyticsConsent 欄位為目標值
-
----
-
 ## setUsageAnalyticsConsent 設定使用分析同意
 
 - **輸入:**
   - 目標同意狀態
 - **執行:**
   - 更新 `usageAnalyticsConsent`
+  - 更新 `usageAnalyticsConsentDecided` 為 true
   - 委派 configureUsageAnalytics
   - 不參與偏好上傳
 
