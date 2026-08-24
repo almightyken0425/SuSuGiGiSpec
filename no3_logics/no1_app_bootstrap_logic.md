@@ -9,7 +9,8 @@
 - **執行:**
   - 啟動時維持使用行為分析關閉
   - 讀取 `usageAnalyticsConsent`
-  - 委派 configureUsageAnalytics
+  - 讀取 `usageAnalyticsConsentDecided`
+  - 委派 resolveUsageAnalyticsConsent
   - 讀取本地快取的 Firebase Auth 狀態，交由 handleAuthEvent 收斂身分
   - **IF** 身分就緒:
     - 呼叫 runCoreBackgroundTasks，於背景執行核心維護任務
