@@ -16,6 +16,14 @@
 - 不把 Design 細節寫入 Spec。
 - 不把 Impl 細節寫入 Spec。
 
+## 命名規則
+
+- GitHub repository 與正式 checkout 資料夾使用 `susugigi-spec-no2-accounting-app`。
+- 自建資料夾與檔名使用 `snake_case`。
+- 規格前後關係使用不補零的 `noN_` 前綴。
+- 模板與指南檔名不得使用 shell 特殊字元。
+- runtime contract 中已定義的輸出名稱不因來源檔改名而變更。
+
 ## 多層配對
 
 - Design 仲裁視覺與互動。
