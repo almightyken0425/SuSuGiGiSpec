@@ -18,11 +18,13 @@
 
 ## 命名規則
 
-- GitHub repository 與正式 checkout 資料夾使用 `susugigi-spec-no2-accounting-app`。
+- GitHub remote slug 使用 `susugigi-spec-no2-accounting-app`。
+- 獨立 clone 的預設資料夾使用 `susugigi-spec-no2-accounting-app`。
+- 產品 manifest 內的實體路徑使用 module id `no2_accounting_app`。
 - 自建資料夾與檔名使用 `snake_case`。
 - 規格前後關係使用不補零的 `noN_` 前綴。
-- 模板與指南檔名不得使用 shell 特殊字元。
-- runtime contract 中已定義的輸出名稱不因來源檔改名而變更。
+- repo 內的模板與指南來源檔名不得使用 shell 特殊字元。
+- runtime contract 中已定義的輸出名稱沿用既有契約，不受來源檔名禁令限制。
 
 ## 多層配對
 

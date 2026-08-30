@@ -122,7 +122,7 @@
 - **執行:**
   - 產生含欄位標頭與範例列的範本內容
   - 欄位標頭、欄位順序與範例值格式皆依 ImportWizardScreen 的 CSV 欄位規格，與匯入接受格式、匯出格式同源
-  - 範本檔名依模式命名，交易模式為 wish_transaction_template.csv，轉帳模式為 wish_transfer_template.csv
+  - 範本檔名依模式命名，交易模式為 $wish_transaction_template.csv，轉帳模式為 $wish_transfer_template.csv
   - 觸發系統分享面板，讓使用者選擇儲存位置
 
 ---
@@ -148,5 +148,5 @@
     - 文字欄位值若含逗號，須以雙引號包覆
     - 名稱前後空白會被忽略
     - 日期時間欄可加時區偏移後綴，附規範與範例；加註後該列以內嵌偏移解讀，匯入畫面所選來源時區對該列無效
-  - 說明檔名依模式命名，交易模式為 wish_transaction_guide.txt，轉帳模式為 wish_transfer_guide.txt
+  - 說明檔名依模式命名，交易模式為 $wish_transaction_guide.txt，轉帳模式為 $wish_transfer_guide.txt
   - 觸發系統分享面板，讓使用者選擇儲存位置
